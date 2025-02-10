@@ -14,7 +14,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Server, Shield, Cloud } from "lucide-react";
 import { Particles } from "@/components/ui/particles";
 import { FloatingElement } from "@/components/ui/floating-element";
-import { GradientBlob } from "@/components/ui/gradient-blob";
 import { throttle } from "lodash";
 
 export const HeroSection: React.FC = () => {
@@ -84,17 +83,6 @@ export const HeroSection: React.FC = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-blue-950 via-blue-900 to-indigo-900">
       {isMounted && <Particles />}
 
-      <GradientBlob
-        colors={["#3b82f6", "#2dd4bf"]}
-        className="top-0 left-0 -translate-x-1/2 -translate-y-1/2"
-        size={300}
-      />
-      <GradientBlob
-        colors={["#8b5cf6", "#ec4899"]}
-        className="bottom-0 right-0 translate-x-1/2 translate-y-1/2"
-        size={300}
-      />
-
       <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-transparent to-purple-500/10" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]" />
 
@@ -137,13 +125,13 @@ export const HeroSection: React.FC = () => {
         </FloatingElement>
 
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight sm:leading-tight md:leading-tight lg:leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-white">
-          Expert IT Solutions for
+          Trusted IT Expertise
           <br className="hidden sm:inline" />
-          <span className="sm:inline">Finance & Legal Sectors</span>
+          <span className="sm:inline">That Fuels Growth</span>
         </h1>
 
         <FloatingElement yOffset={10} duration={5} delay={0.2}>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 sm:mb-12 text-blue-100/90 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 sm:mb-12 text-white max-w-3xl mx-auto">
             Delivering secure, compliant, and reliable IT services that drive
             growth and protect your business.
           </p>
@@ -184,34 +172,32 @@ export const HeroSection: React.FC = () => {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto px-4">
-          {services.map((item, index) => (
-            <div
-              key={index}
-              className="group relative flex flex-col items-center p-6 rounded-xl border border-white/10 backdrop-blur-md hover:border-white/20 transition-all duration-300"
-              style={{
-                boxShadow:
-                  "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-                background: "rgba(255, 255, 255, 0.1)",
-              }}
-            >
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto px-4 pb-16">
+            {services.map((item, index) => (
               <div
-                className={`mb-4 p-3 rounded-xl bg-gradient-to-br ${item.gradient} shadow-lg group-hover:shadow-2xl transition-all duration-300`}
-              >
-                <item.icon className="h-8 w-8 text-white" />
-              </div>
-              <h3 className="text-lg font-semibold mb-1">{item.text}</h3>
-              <p className="text-sm text-blue-200">{item.desc}</p>
-              <div
-                className="absolute inset-0 rounded-xl bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                key={index}
+                className="group relative flex flex-col items-center p-6 rounded-xl border border-white/10 backdrop-blur-md hover:border-white/20 transition-all duration-300"
                 style={{
-                  backgroundImage:
-                    "radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%)",
+                  background: "rgba(255, 255, 255, 0.1)",
                 }}
-              />
-            </div>
-          ))}
-        </div>
+              >
+                <div
+                  className={`mb-4 p-3 rounded-xl bg-gradient-to-br ${item.gradient} shadow-lg group-hover:shadow-2xl transition-all duration-300`}
+                >
+                  <item.icon className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-lg font-semibold mb-1">{item.text}</h3>
+                <p className="text-sm text-blue-200">{item.desc}</p>
+                <div
+                  className="absolute inset-0 rounded-xl bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    backgroundImage:
+                      "radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%)",
+                  }}
+                />
+              </div>
+            ))}
+          </div>
       </motion.div>
 
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-blue-950/50 pointer-events-none" />

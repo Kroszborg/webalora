@@ -2,7 +2,6 @@
 
 import type React from "react";
 import { motion } from "framer-motion";
-import { SectionTitle } from "@/components/ui/section-title";
 import { CheckCircle, Zap, Users, TrendingUp, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -49,10 +48,24 @@ export const AdvantagesSection: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <SectionTitle
-            title="The WebAlora Advantage"
-            subtitle="Why Industry Leaders Choose WebAlora"
-          />
+          <div className="text-center">
+            <motion.h2
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-3xl sm:text-4xl font-extrabold text-white mb-2"
+            >
+              The WebAlora Advantage
+            </motion.h2>
+            <motion.h3
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-lg sm:text-xl text-white"
+            >
+              Why Industry Leaders Choose WebAlora
+            </motion.h3>
+          </div>
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mt-8 sm:mt-12">

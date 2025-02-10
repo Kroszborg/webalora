@@ -5,7 +5,6 @@ import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { SectionTitle } from "@/components/ui/section-title";
 import { Button } from "@/components/ui/button";
 import { Star, ChevronLeft, ChevronRight, FileText } from "lucide-react";
 
@@ -48,19 +47,19 @@ export const TestimonialsSection: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextTestimonial = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+    setCurrentIndex((prev) => (prev + 2) % testimonials.length);
   }, []);
 
   const prevTestimonial = useCallback(() => {
     setCurrentIndex(
-      (prev) => (prev - 1 + testimonials.length) % testimonials.length
+      (prev) => (prev - 2 + testimonials.length) % testimonials.length
     );
   }, []);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       nextTestimonial();
-    }, 5000);
+    }, 8000);
 
     return () => clearInterval(intervalId);
   }, [nextTestimonial]);
@@ -70,7 +69,7 @@ export const TestimonialsSection: React.FC = () => {
       {/* Centered world map background */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80"
+          src="https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?auto=format&fit=crop&q=80&w=1000"
           alt="World Map"
           fill
           className="opacity-20 object-cover"
@@ -86,98 +85,105 @@ export const TestimonialsSection: React.FC = () => {
       </div>
 
       <div className="container relative z-20 mx-auto px-4 sm:px-6 lg:px-8 text-white mb-8 sm:mb-16">
-        <SectionTitle
-          title="Global Client Success Stories"
-          subtitle="Trusted by Industry Leaders Worldwide"
-        />
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            Global Client Success Stories
+          </h2>
+          <h3 className="text-xl sm:text-2xl text-white">
+            Trusted by Industry Leaders Worldwide
+          </h3>
+        </div>
 
-        <div className="relative max-w-4xl mx-auto">
+        <div className="relative max-w-7xl mx-auto">
+          {/* Testimonials Carousel */}
+          <div className="overflow-hidden px-4 sm:px-6 md:px-8">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentIndex}
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ duration: 0.5 }}
+                className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8"
+              >
+                {[currentIndex, (currentIndex + 1) % testimonials.length].map(
+                  (index) => (
+                    <div
+                      key={index}
+                      className="bg-white/10 backdrop-blur-lg rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col"
+                    >
+                      <div className="mb-6 sm:mb-8 h-12 sm:h-16 flex items-center justify-center">
+                        <div className="relative w-[150px] h-[45px] sm:w-[200px] sm:h-[60px]">
+                          <Image
+                            src={testimonials[index].logo || "/placeholder.svg"}
+                            alt={testimonials[index].company}
+                            fill
+                            className="object-contain"
+                            priority
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex gap-1 mb-4 sm:mb-6 justify-center">
+                        {[...Array(testimonials[index].rating)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 fill-yellow-400"
+                          />
+                        ))}
+                      </div>
+
+                      <blockquote className="text-base sm:text-lg text-white mb-6 sm:mb-8 leading-relaxed flex-grow italic">
+                        &quot;{testimonials[index].quote}&quot;
+                      </blockquote>
+
+                      <div className="text-white mt-auto text-center">
+                        <p className="font-semibold text-base sm:text-lg">
+                          {testimonials[index].author}
+                        </p>
+                        <p className="text-sm sm:text-base text-blue-200">
+                          {testimonials[index].company}
+                        </p>
+                      </div>
+                    </div>
+                  )
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
           {/* Navigation Buttons */}
-          <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 flex justify-between z-10">
+          <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 flex justify-between z-10 pointer-events-none">
             <Button
               variant="ghost"
               size="icon"
               onClick={prevTestimonial}
-              className="bg-white/10 backdrop-blur-lg hover:bg-white/20 text-white rounded-full p-2"
+              className="bg-white/10 backdrop-blur-lg hover:bg-white/20 text-white rounded-full p-2 shadow-lg pointer-events-auto transition-all duration-300 hover:scale-110"
             >
-              <ChevronLeft className="h-4 w-4 sm:h-6 sm:w-6" />
+              <ChevronLeft className="h-6 w-6 sm:h-8 sm:w-8" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
               onClick={nextTestimonial}
-              className="bg-white/10 backdrop-blur-lg hover:bg-white/20 text-white rounded-full p-2"
+              className="bg-white/10 backdrop-blur-lg hover:bg-white/20 text-white rounded-full p-2 shadow-lg pointer-events-auto transition-all duration-300 hover:scale-110"
             >
-              <ChevronRight className="h-4 w-4 sm:h-6 sm:w-6" />
+              <ChevronRight className="h-6 w-6 sm:h-8 sm:w-8" />
             </Button>
-          </div>
-
-          {/* Testimonials Carousel */}
-          <div className="overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentIndex}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5 }}
-                className="bg-white/10 backdrop-blur-lg rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-12 shadow-xl"
-              >
-                <div className="flex flex-col items-center text-center">
-                  <div className="mb-6 sm:mb-8 h-12 sm:h-16 flex items-center justify-center">
-                    <div className="relative w-[150px] h-[45px] sm:w-[200px] sm:h-[60px]">
-                      <Image
-                        src={
-                          testimonials[currentIndex].logo || "/placeholder.svg"
-                        }
-                        alt={testimonials[currentIndex].company}
-                        fill
-                        className="object-contain"
-                        priority
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex gap-1 mb-4 sm:mb-6">
-                    {[...Array(testimonials[currentIndex].rating)].map(
-                      (_, i) => (
-                        <Star
-                          key={i}
-                          className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 fill-yellow-400"
-                        />
-                      )
-                    )}
-                  </div>
-
-                  <blockquote className="text-base sm:text-xl md:text-2xl text-white mb-6 sm:mb-8 leading-relaxed">
-                    &quot;{testimonials[currentIndex].quote}&quot;
-                  </blockquote>
-
-                  <div className="text-white">
-                    <p className="font-semibold text-base sm:text-lg">
-                      {testimonials[currentIndex].author}
-                    </p>
-                    <p className="text-sm sm:text-base text-blue-200">
-                      {testimonials[currentIndex].company}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
           </div>
 
           {/* Testimonial Indicators */}
           <div className="flex justify-center gap-2 mt-6 sm:mt-8">
-            {testimonials.map((_, index) => (
+            {[...Array(Math.ceil(testimonials.length / 2))].map((_, index) => (
               <button
                 key={index}
-                onClick={() => setCurrentIndex(index)}
+                onClick={() => setCurrentIndex(index * 2)}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === currentIndex
+                  index * 2 === currentIndex
                     ? "bg-white w-6 sm:w-8"
                     : "bg-white/40 hover:bg-white/60"
                 }`}
-                aria-label={`Go to testimonial ${index + 1}`}
+                aria-label={`Go to testimonial pair ${index + 1}`}
               />
             ))}
           </div>

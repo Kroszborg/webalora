@@ -68,19 +68,19 @@ export const AboutSection: React.FC = () => {
             </ul>
           </motion.div>
           <motion.div
-            className="relative h-[200px] sm:h-[300px] w-full order-1 md:order-2"
+            className="relative h-[300px] sm:h-[400px] w-full order-1 md:order-2 rounded-lg overflow-hidden shadow-xl"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
             <Image
-              src="/logos/logo.png"
-              alt="WebAlora Logo"
+              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1000"
+              alt="Our team collaborating"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
-              style={{ objectFit: "contain" }}
-              className="rounded-lg"
+              style={{ objectFit: "cover" }}
+              className="rounded-lg transition-transform duration-300 hover:scale-105"
             />
           </motion.div>
         </div>

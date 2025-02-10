@@ -53,7 +53,7 @@ const LeadMagnetSection: React.FC = () => {
             <CardContent className="relative text-center px-4 md:px-8 space-y-6 md:space-y-8">
               <p className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto">
                 Download our exclusive guide to learn how to avoid common IT
-                pitfalls and maximize your business potential in the digital
+                pitfalls and maximise your business potential in the digital
                 age.
               </p>
 

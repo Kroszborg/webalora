@@ -4,7 +4,6 @@ import type React from "react";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, useAnimation, useInView } from "framer-motion";
-import { SectionTitle } from "@/components/ui/section-title";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { GradientBlob } from "@/components/ui/gradient-blob";
 
@@ -132,11 +131,26 @@ export const TrustSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
+          className="text-center"
         >
-          <SectionTitle
-            title="The IT Partner Trusted by Industry Leaders"
-            subtitle="Empowering businesses with reliable and innovative IT solutions"
-          />
+          <motion.h2
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-3xl sm:text-4xl font-extrabold text-white mb-2"
+          >
+            The IT Partner Trusted by Industry Leaders
+          </motion.h2>
+          <motion.h3
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-lg sm:text-xl text-white"
+          >
+            Empowering businesses with reliable and innovative IT solutions
+          </motion.h3>
         </motion.div>
 
         <motion.div
