@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import "@/styles/advantages.css";
 import { Header } from "@/components/header";
 import type React from "react";
 import Link from "next/link";

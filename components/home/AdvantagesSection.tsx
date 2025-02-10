@@ -3,74 +3,95 @@
 import type React from "react";
 import { motion } from "framer-motion";
 import { SectionTitle } from "@/components/ui/section-title";
-import { CheckCircle, Zap, Users, TrendingUp } from "lucide-react";
-import { GradientBlob } from "@/components/ui/gradient-blob";
+import { CheckCircle, Zap, Users, TrendingUp, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const advantages = [
   {
     icon: Zap,
     title: "Tailored Solutions for Every Business",
     description:
-      "We craft bespoke IT strategies that align perfectly with your unique business needs and goals.",
+      "We customise our services to meet the unique needs of each client, ensuring optimal performance and growth.",
   },
   {
     icon: CheckCircle,
     title: "Proactive IT Management",
     description:
-      "Our team anticipates and resolves potential issues before they impact your operations.",
+      "We identify and resolve potential issues before they impact your business, with an average response time of under 5 minutes.",
   },
   {
     icon: Users,
     title: "Transparent, Predictable Pricing",
     description:
-      "No hidden fees or surprises. Our straightforward pricing ensures you know exactly what you're paying for.",
+      "Our straightforward pricing ensures you know exactly what you're paying for, with no hidden fees or surprises.",
   },
   {
     icon: TrendingUp,
     title: "Scalable IT Solutions",
     description:
-      "Our flexible solutions grow with your business, adapting to your changing needs over time.",
+      "As your business grows, our flexible solutions evolve to meet your changing needs over time.",
   },
 ];
 
 export const AdvantagesSection: React.FC = () => {
   return (
-    <section className="relative py-24 bg-gradient-to-br from-blue-900 to-indigo-900 overflow-hidden">
-      <GradientBlob
-        colors={["#3b82f6", "#2dd4bf"]}
-        className="top-0 left-0 w-96 h-96 -translate-x-1/2 -translate-y-1/2"
-      />
-      <GradientBlob
-        colors={["#8b5cf6", "#ec4899"]}
-        className="bottom-0 right-0 w-96 h-96 translate-x-1/2 translate-y-1/2"
-      />
+    <section className="relative py-16 sm:py-24 overflow-hidden bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900">
+      {/* Glassmorphism background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-20 -left-20 sm:-top-40 sm:-left-40 w-40 h-40 sm:w-80 sm:h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div className="absolute top-0 -right-10 sm:-right-20 w-40 h-40 sm:w-80 sm:h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-20 left-10 sm:-bottom-40 sm:left-20 w-40 h-40 sm:w-80 sm:h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+      </div>
 
-      <div className="container relative mx-auto px-4">
-        <SectionTitle
-          title="Why Industry Leaders Choose WebAlora"
-          subtitle="Experience the WebAlora difference"
-        />
+      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8 z-10 text-white">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <SectionTitle
+            title="The WebAlora Advantage"
+            subtitle="Why Industry Leaders Choose WebAlora"
+          />
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mt-8 sm:mt-12">
           {advantages.map((advantage, index) => (
             <motion.div
               key={index}
-              className="flex items-start bg-white/10 backdrop-blur-lg rounded-xl p-6 hover:bg-white/20 transition-colors duration-300"
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="group relative bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl p-4 sm:p-6 hover:bg-opacity-20 transition-all duration-300 cursor-pointer overflow-hidden"
             >
-              <div className="flex-shrink-0 mr-4">
-                <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center">
-                  <advantage.icon className="w-6 h-6 text-white" />
+              {/* Neumorphism effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+              <div className="relative z-10">
+                <div className="flex items-center mb-3 sm:mb-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center mr-3 sm:mr-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <advantage.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-semibold text-white group-hover:text-blue-300 transition-colors duration-300">
+                    {advantage.title}
+                  </h3>
                 </div>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-2 text-white">
-                  {advantage.title}
-                </h3>
-                <p className="text-blue-100">{advantage.description}</p>
+                <p className="text-sm sm:text-base text-blue-100 mb-3 sm:mb-4">
+                  {advantage.description}
+                </p>
+                <motion.div
+                  className="mt-auto"
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                >
+                  <Button
+                    variant="ghost"
+                    className="text-sm sm:text-base text-blue-300 hover:text-white hover:bg-blue-500/20 transition-colors duration-300"
+                  >
+                    Learn More{" "}
+                    <ArrowRight className="ml-2 w-3 h-3 sm:w-4 sm:h-4" />
+                  </Button>
+                </motion.div>
               </div>
             </motion.div>
           ))}

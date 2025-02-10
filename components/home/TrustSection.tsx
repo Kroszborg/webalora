@@ -1,29 +1,24 @@
 "use client";
 
 import type React from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useAnimation, useInView } from "framer-motion";
 import { SectionTitle } from "@/components/ui/section-title";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { GradientBlob } from "@/components/ui/gradient-blob";
 
 const clientLogos = [
-  {
-    src: "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=400&q=80",
-    alt: "Client Logo 1",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1599305446868-59567a88a8d5?w=400&q=80",
-    alt: "Client Logo 2",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=400&q=80",
-    alt: "Client Logo 3",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1599305446868-59567a88a8d5?w=400&q=80",
-    alt: "Client Logo 4",
-  },
+  { src: "/trust/NHS.png", alt: "Client Logo 1" },
+  { src: "/trust/IBM.png", alt: "Client Logo 2" },
+  { src: "/trust/cisco.png", alt: "Client Logo 3" },
+  { src: "/trust/GRH.png", alt: "Client Logo 4" },
+  { src: "/trust/ROM.png", alt: "Client Logo 5" },
+  { src: "/trust/VOE.png", alt: "Client Logo 6" },
+  { src: "/trust/BTO.png", alt: "Client Logo 7" },
+  { src: "/trust/aws.png", alt: "Client Logo 8" },
+  { src: "/trust/tesco.png", alt: "Client Logo 9" },
+  { src: "/trust/MSP.png", alt: "Client Logo 10" },
 ];
 
 const stats = [
@@ -53,22 +48,61 @@ const stats = [
   },
 ];
 
+const LogoCarousel: React.FC = () => {
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const controls = useAnimation();
+  const inView = useInView(carouselRef);
+
+  useEffect(() => {
+    if (inView) {
+      controls.start({
+        x: [0, -100 * clientLogos.length],
+        transition: {
+          x: {
+            repeat: Number.POSITIVE_INFINITY,
+            repeatType: "loop",
+            duration: 30,
+            ease: "linear",
+          },
+        },
+      });
+    } else {
+      controls.stop();
+    }
+  }, [controls, inView]);
+
+  return (
+    <div className="overflow-hidden w-full mb-8 sm:mb-16" ref={carouselRef}>
+      <motion.div
+        className="flex items-center space-x-4 sm:space-x-8"
+        animate={controls}
+        style={{ width: `${clientLogos.length * 150}px` }}
+      >
+        {[...clientLogos, ...clientLogos].map((logo, index) => (
+          <div
+            key={index}
+            className="relative w-24 h-12 sm:w-40 sm:h-20 flex-shrink-0 transition-all duration-300"
+          >
+            <Image
+              src={logo.src || "/placeholder.svg"}
+              alt={logo.alt}
+              fill
+              sizes="(max-width: 640px) 96px, 160px"
+              style={{ objectFit: "contain" }}
+              className="rounded-lg p-2 sm:p-4"
+            />
+          </div>
+        ))}
+      </motion.div>
+    </div>
+  );
+};
+
 export const TrustSection: React.FC = () => {
   return (
-    <section className="relative py-24 overflow-hidden bg-gradient-to-b from-gray-900 to-blue-900">
-      <GradientBlob
-        colors={["#60a5fa", "#5eead4"]}
-        className="top-0 right-0 translate-x-1/2 -translate-y-1/2"
-        size={400}
-      />
-      <GradientBlob
-        colors={["#a78bfa", "#f472b6"]}
-        className="bottom-0 left-0 -translate-x-1/2 translate-y-1/2"
-        size={400}
-      />
-
+    <section className="relative py-16 sm:py-24 overflow-hidden bg-gradient-to-b from-gray-900 to-blue-900">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-25">
         <Image
           src="https://images.unsplash.com/photo-1520333789090-1afc82db536a?w=1920&q=80"
           alt="Background Pattern"
@@ -79,52 +113,64 @@ export const TrustSection: React.FC = () => {
         />
       </div>
 
-      <div className="container relative mx-auto px-4">
-        <SectionTitle
-          title="The IT Partner Trusted by Industry Leaders"
-          subtitle="Empowering businesses with reliable and innovative IT solutions"
-          className="text-white"
-        />
+      <GradientBlob
+        colors={["#60a5fa", "#5eead4"]}
+        className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 opacity-30"
+        size={200}
+      />
+      <GradientBlob
+        colors={["#a78bfa", "#f472b6"]}
+        className="absolute bottom-0 left-0 -translate-x-1/2 translate-y-1/2 opacity-30"
+        size={200}
+      />
 
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-blue-900/50" />
+
+      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8 text-white">
         <motion.div
-          className="flex flex-wrap justify-center items-center gap-8 mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.6 }}
         >
-          {clientLogos.map((logo, index) => (
-            <motion.div
-              key={index}
-              className="relative w-40 h-20 grayscale hover:grayscale-0 transition-all duration-300"
-              whileHover={{ scale: 1.05 }}
-            >
-              <Image
-                src={logo.src || "/placeholder.svg"}
-                alt={logo.alt}
-                fill
-                sizes="160px"
-                style={{ objectFit: "contain" }}
-                className="backdrop-blur-lg bg-white/10 rounded-lg p-4"
-              />
-            </motion.div>
-          ))}
+          <SectionTitle
+            title="The IT Partner Trusted by Industry Leaders"
+            subtitle="Empowering businesses with reliable and innovative IT solutions"
+          />
         </motion.div>
 
-        <motion.p
-          className="text-center text-lg text-blue-100 max-w-3xl mx-auto mb-16"
+        <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <LogoCarousel />
+        </motion.div>
+
+        <motion.p
+          className="text-center text-base sm:text-lg text-blue-100 max-w-3xl mx-auto mb-8 sm:mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
         >
           Our extensive portfolio includes businesses across multiple sectors,
           all relying on our expertise to maintain seamless operations and
           robust security.
         </motion.p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
-            <AnimatedCounter key={index} {...stat} />
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 * index }}
+            >
+              <AnimatedCounter {...stat} />
+            </motion.div>
           ))}
         </div>
       </div>

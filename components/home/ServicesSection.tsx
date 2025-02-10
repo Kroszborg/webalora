@@ -59,7 +59,10 @@ const services = [
 
 export const ServicesSection: React.FC = () => {
   return (
-    <section className="relative py-24 bg-gray-900 overflow-hidden">
+    <section
+      id="services"
+      className="relative py-16 sm:py-24 bg-gray-900 overflow-hidden"
+    >
       {/* Animated grid background */}
       <div className="absolute inset-0 opacity-10">
         <div
@@ -69,17 +72,17 @@ export const ServicesSection: React.FC = () => {
       </div>
 
       {/* Gradient orbs */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/30 rounded-full filter blur-3xl opacity-20 animate-blob" />
-      <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/30 rounded-full filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
-      <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-pink-500/30 rounded-full filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
+      <div className="absolute top-0 left-0 w-64 h-64 sm:w-96 sm:h-96 bg-blue-500/30 rounded-full filter blur-3xl opacity-20 animate-blob" />
+      <div className="absolute top-0 right-0 w-64 h-64 sm:w-96 sm:h-96 bg-purple-500/30 rounded-full filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
+      <div className="absolute bottom-0 left-1/2 w-64 h-64 sm:w-96 sm:h-96 bg-pink-500/30 rounded-full filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
 
-      <div className="container relative mx-auto px-4 text-white">
+      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8 text-white">
         <SectionTitle
           title="End-to-End IT Solutions Tailored for Your Business"
           subtitle="Comprehensive services designed to meet your unique needs"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {services.map((service, index) => (
             <motion.div
               key={index}
@@ -92,33 +95,33 @@ export const ServicesSection: React.FC = () => {
                 <div className="relative h-full">
                   {/* Gradient background that shows on hover */}
                   <div
-                    className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl blur-xl`}
+                    className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl sm:rounded-2xl blur-xl`}
                   />
 
                   {/* Card content */}
-                  <div className="relative h-full p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 group-hover:border-white/20 transition-all duration-500">
+                  <div className="relative h-full p-6 sm:p-8 rounded-xl sm:rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 group-hover:border-white/30 transition-all duration-500">
                     {/* Icon wrapper */}
                     <div
-                      className={`w-14 h-14 mb-6 rounded-xl bg-gradient-to-br ${service.gradient} p-3 transform group-hover:scale-110 transition-transform duration-500`}
+                      className={`w-12 h-12 sm:w-14 sm:h-14 mb-4 sm:mb-6 rounded-lg sm:rounded-xl bg-gradient-to-br ${service.gradient} p-2 sm:p-3 transform group-hover:scale-110 transition-transform duration-500`}
                     >
                       <service.icon className="w-full h-full text-white" />
                     </div>
 
                     {/* Text content */}
-                    <h3 className="text-2xl font-bold text-white mb-4 group-hover:translate-x-2 transition-transform duration-500">
+                    <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-4 group-hover:translate-x-2 transition-transform duration-500">
                       {service.title}
                     </h3>
-                    <p className="text-gray-300 group-hover:translate-x-2 transition-transform duration-500 delay-75">
+                    <p className="text-sm sm:text-base text-gray-200 group-hover:translate-x-2 transition-transform duration-500 delay-75">
                       {service.description}
                     </p>
 
                     {/* Hover indicator */}
-                    <div className="absolute bottom-8 right-8 opacity-0 transform translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500">
+                    <div className="absolute bottom-6 sm:bottom-8 right-6 sm:right-8 opacity-0 transform translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500">
                       <div
-                        className={`w-8 h-8 rounded-full bg-gradient-to-br ${service.gradient} flex items-center justify-center`}
+                        className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br ${service.gradient} flex items-center justify-center`}
                       >
                         <svg
-                          className="w-4 h-4 text-white"
+                          className="w-3 h-3 sm:w-4 sm:h-4 text-white"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"

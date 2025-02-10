@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
-import { motion } from "framer-motion"
+import * as React from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
 
-import { navigationConfig } from "@/config/navigation"
+import { navigationConfig } from "@/config/navigation";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -12,22 +12,30 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu"
-import { cn } from "@/lib/utils"
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+import { cn } from "@/lib/utils";
+
+// Update the MenuItem type to include the description property
+type MenuItem = {
+  name: string;
+  href?: string;
+  items?: {
+    name: string;
+    href: string;
+    description?: string; // Make description optional
+  }[];
+};
 
 export function MainNav() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        {navigationConfig.map((item) => (
+        {(navigationConfig as MenuItem[]).map((item) => (
           <NavigationMenuItem key={item.name}>
             {item.href ? (
               <Link href={item.href} legacyBehavior passHref>
-                <NavigationMenuLink
-                  className={cn(
-                    "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50",
-                  )}
-                >
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   {item.name}
                 </NavigationMenuLink>
               </Link>
@@ -36,27 +44,29 @@ export function MainNav() {
                 <NavigationMenuTrigger>{item.name}</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <motion.ul
-                    className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]"
+                    className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.2 }}
                   >
                     {item.items?.map((section) => (
-                      <React.Fragment key={section.name}>
-                        {section.subItems &&
-                          Object.entries(section.subItems).map(([category, items]) => (
-                            <li key={category} className="row-span-3">
-                              <h3 className="mb-2 text-sm font-medium text-muted-foreground">{category}</h3>
-                              <ul className="space-y-2">
-                                {items.map((subItem) => (
-                                  <ListItem key={subItem.name} title={subItem.name} href={subItem.href}>
-                                    {subItem.description}
-                                  </ListItem>
-                                ))}
-                              </ul>
-                            </li>
-                          ))}
-                      </React.Fragment>
+                      <li key={section.name} className="row-span-3">
+                        <NavigationMenuLink asChild>
+                          <Link
+                            href={section.href}
+                            className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                          >
+                            <div className="mb-2 mt-4 text-lg font-medium">
+                              {section.name}
+                            </div>
+                            {section.description && (
+                              <p className="text-sm leading-tight text-muted-foreground">
+                                {section.description}
+                              </p>
+                            )}
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
                     ))}
                   </motion.ul>
                 </NavigationMenuContent>
@@ -66,30 +76,31 @@ export function MainNav() {
         ))}
       </NavigationMenuList>
     </NavigationMenu>
-  )
+  );
 }
 
-const ListItem = React.forwardRef<React.ElementRef<"a">, React.ComponentPropsWithoutRef<"a"> & { title: string }>(
-  ({ className, title, children, href, ...props }, ref) => {
-    return (
-      <li>
-        <NavigationMenuLink asChild>
-          <Link
-            ref={ref as any}
-            href={href ?? "#"}
-            className={cn(
-              "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-              className,
-            )}
-            {...props}
-          >
-            <div className="text-sm font-medium leading-none">{title}</div>
-            {children && <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>}
-          </Link>
-        </NavigationMenuLink>
-      </li>
-    )
-  },
-)
-ListItem.displayName = "ListItem"
-
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a"> & { title: string }
+>(({ className, title, children, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  );
+});
+ListItem.displayName = "ListItem";
