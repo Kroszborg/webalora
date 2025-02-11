@@ -1,9 +1,7 @@
 "use client";
 
-import type React from "react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Phone } from "lucide-react";
@@ -12,7 +10,6 @@ import Image from "next/image";
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,65 +20,33 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleSectionClick = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    sectionId: string
-  ) => {
-    e.preventDefault();
-    if (pathname !== "/") {
-      window.location.href = `/#${sectionId}`;
-    } else {
-      const section = document.getElementById(sectionId);
-      if (section) {
-        section.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-    setMobileMenuOpen(false);
-  };
-
   const navItems = [
-    {
-      name: "Home",
-      href: "/",
-      onClick: (e: React.MouseEvent<HTMLAnchorElement>) =>
-        handleSectionClick(e, "top"),
-    },
-    {
-      name: "About",
-      href: "/#about",
-      onClick: (e: React.MouseEvent<HTMLAnchorElement>) =>
-        handleSectionClick(e, "about"),
-    },
-    {
-      name: "Services",
-      href: "/services",
-      onClick: undefined,
-    },
+    { name: "Home", href: "/" },
+    { name: "Services", href: "/services" },
+    { name: "About", href: "/about" },
   ];
 
   return (
     <header
-      className={`fixed w-full z-[90] transition-all duration-300 ${
+      className={`fixed w-full z-50 transition-all duration-300 ${
         scrolled ? "bg-white/80 backdrop-blur-md shadow-md" : "bg-transparent"
       }`}
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center">
-              <Image
-                src="/logos/logo.png"
-                alt="Logo"
-                width={150}
-                height={40}
-                className="transition-opacity duration-300"
-                style={{
-                  opacity: scrolled ? 1 : 0.9,
-                }}
-                priority
-              />
-            </Link>
-          </div>
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/logos/logo.png"
+              alt="WebAlora Logo"
+              width={150}
+              height={40}
+              className="transition-opacity duration-300"
+              style={{
+                opacity: scrolled ? 1 : 0.9,
+              }}
+              priority
+            />
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
@@ -89,7 +54,6 @@ export function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                onClick={item.onClick}
                 className={`text-sm font-semibold ${
                   scrolled
                     ? "text-gray-900 hover:text-blue-600"
@@ -118,12 +82,7 @@ export function Header() {
                   : "bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm"
               } transition-all duration-300 border border-transparent hover:border-white/50`}
             >
-              <Link
-                href="/#contact"
-                onClick={(e) => handleSectionClick(e, "contact")}
-              >
-                Contact Us
-              </Link>
+              <Link href="/contact">Contact Us</Link>
             </Button>
           </div>
 
@@ -173,7 +132,7 @@ export function Header() {
                   >
                     <Image
                       src="/logos/logo.png"
-                      alt="Logo"
+                      alt="WebAlora Logo"
                       width={150}
                       height={40}
                       priority
@@ -193,8 +152,8 @@ export function Header() {
                     <Link
                       key={item.name}
                       href={item.href}
-                      onClick={item.onClick}
                       className="block text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-300"
+                      onClick={() => setMobileMenuOpen(false)}
                     >
                       {item.name}
                     </Link>
@@ -202,6 +161,7 @@ export function Header() {
                   <Link
                     href="tel:03300434953"
                     className="flex items-center justify-center gap-2 text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-300"
+                    onClick={() => setMobileMenuOpen(false)}
                   >
                     <Phone className="h-5 w-5" />
                     0330 043 4953
@@ -209,13 +169,9 @@ export function Header() {
                   <Button
                     asChild
                     className="w-full bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-300"
+                    onClick={() => setMobileMenuOpen(false)}
                   >
-                    <Link
-                      href="/#contact"
-                      onClick={(e) => handleSectionClick(e, "contact")}
-                    >
-                      Contact Us
-                    </Link>
+                    <Link href="/contact">Contact Us</Link>
                   </Button>
                 </div>
               </div>
