@@ -4,6 +4,7 @@ import type React from "react";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, useAnimation, useInView } from "framer-motion";
+import { SectionTitle } from "@/components/ui/section-title";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { GradientBlob } from "@/components/ui/gradient-blob";
 
@@ -71,24 +72,24 @@ const LogoCarousel: React.FC = () => {
   }, [controls, inView]);
 
   return (
-    <div className="overflow-hidden w-full mb-8 sm:mb-16" ref={carouselRef}>
+    <div className="overflow-hidden w-full mb-16" ref={carouselRef}>
       <motion.div
-        className="flex items-center space-x-4 sm:space-x-8"
+        className="flex items-center space-x-8"
         animate={controls}
-        style={{ width: `${clientLogos.length * 150}px` }}
+        style={{ width: `${clientLogos.length * 200}px` }}
       >
         {[...clientLogos, ...clientLogos].map((logo, index) => (
           <div
             key={index}
-            className="relative w-24 h-12 sm:w-40 sm:h-20 flex-shrink-0 transition-all duration-300"
+            className="relative w-40 h-20 flex-shrink-0 transition-all duration-300"
           >
             <Image
               src={logo.src || "/placeholder.svg"}
               alt={logo.alt}
               fill
-              sizes="(max-width: 640px) 96px, 160px"
+              sizes="160px"
               style={{ objectFit: "contain" }}
-              className="rounded-lg p-2 sm:p-4"
+              className="rounded-lg p-4"
             />
           </div>
         ))}
@@ -99,58 +100,31 @@ const LogoCarousel: React.FC = () => {
 
 export const TrustSection: React.FC = () => {
   return (
-    <section className="relative py-16 sm:py-24 overflow-hidden bg-gradient-to-b from-gray-900 to-blue-900">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-25">
-        <Image
-          src="https://images.unsplash.com/photo-1520333789090-1afc82db536a?w=1920&q=80"
-          alt="Background Pattern"
-          fill
-          sizes="100vw"
-          style={{ objectFit: "cover" }}
-          className="filter blur-sm"
-        />
-      </div>
-
+    <section className="relative py-24 overflow-hidden bg-gradient-to-b from-gray-900 to-blue-900">
       <GradientBlob
         colors={["#60a5fa", "#5eead4"]}
         className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 opacity-30"
-        size={200}
+        size={300}
       />
       <GradientBlob
         colors={["#a78bfa", "#f472b6"]}
         className="absolute bottom-0 left-0 -translate-x-1/2 translate-y-1/2 opacity-30"
-        size={200}
+        size={300}
       />
 
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-blue-900/50" />
 
-      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8 text-white">
+      <div className="container relative mx-auto px-4 text-white z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center"
         >
-          <motion.h2
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl sm:text-4xl font-extrabold text-white mb-2"
-          >
-            The IT Partner Trusted by Industry Leaders
-          </motion.h2>
-          <motion.h3
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg sm:text-xl text-white"
-          >
-            Empowering businesses with reliable and innovative IT solutions
-          </motion.h3>
+          <SectionTitle
+            title="The IT Partner Trusted by Industry Leaders"
+            subtitle="Empowering businesses with reliable and innovative IT solutions"
+          />
         </motion.div>
 
         <motion.div
@@ -163,7 +137,7 @@ export const TrustSection: React.FC = () => {
         </motion.div>
 
         <motion.p
-          className="text-center text-base sm:text-lg text-blue-100 max-w-3xl mx-auto mb-8 sm:mb-16"
+          className="text-center text-lg text-blue-100 max-w-3xl mx-auto mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

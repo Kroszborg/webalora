@@ -8,6 +8,9 @@ import {
   Twitter,
   LinkedinIcon as LinkedIn,
   Instagram,
+  Mail,
+  Phone,
+  MapPin,
 } from "lucide-react";
 
 const navigation = {
@@ -44,6 +47,52 @@ export function Footer() {
         Footer
       </h2>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        {/* Contact Information Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 pb-12 border-b border-white/10 text-center md:text-left">
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold text-white">Contact Us</h3>
+            <div className="flex items-center justify-center md:justify-start space-x-3">
+              <Phone className="w-6 h-6 text-blue-400" />
+              <a
+                href="tel:03300434953"
+                className="text-lg text-white hover:text-blue-400 transition-colors"
+              >
+                0330 043 4953
+              </a>
+            </div>
+            <div className="flex items-center justify-center md:justify-start space-x-3">
+              <Mail className="w-6 h-6 text-blue-400" />
+              <a
+                href="mailto:hello@webalora.com"
+                className="text-lg text-white hover:text-blue-400 transition-colors"
+              >
+                hello@webalora.com
+              </a>
+            </div>
+          </div>
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold text-white">Support</h3>
+            <div className="flex items-center justify-center md:justify-start space-x-3">
+              <Phone className="w-6 h-6 text-blue-400" />
+              <a
+                href="tel:03300434954"
+                className="text-lg text-white hover:text-blue-400 transition-colors"
+              >
+                0330 043 4954
+              </a>
+            </div>
+            <div className="flex items-center justify-center md:justify-start space-x-3">
+              <Mail className="w-6 h-6 text-blue-400" />
+              <a
+                href="mailto:support@webalora.com"
+                className="text-lg text-white hover:text-blue-400 transition-colors"
+              >
+                support@webalora.com
+              </a>
+            </div>
+          </div>
+        </div>
+
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8 xl:col-span-1">
             <Link
@@ -56,15 +105,23 @@ export function Footer() {
               Professional IT solutions for finance and legal sectors,
               delivering excellence in technology services.
             </p>
-            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-              <Button variant="outline" asChild className="w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
+              <Button
+                variant="outline"
+                asChild
+                className="w-full sm:w-auto bg-white text-gray-900 hover:bg-gray-100"
+              >
                 <Link href="/contact">Get in Touch</Link>
               </Button>
-              <Button variant="ghost" asChild className="w-full sm:w-auto">
+              <Button
+                variant="ghost"
+                asChild
+                className="w-full sm:w-auto bg-white text-gray-900 hover:bg-gray-100"
+              >
                 <Link href="/services">Our Services</Link>
               </Button>
             </div>
-            <div className="flex space-x-6">
+            <div className="flex justify-center md:justify-start space-x-6">
               {socialLinks.map((item) => (
                 <motion.a
                   key={item.name}
@@ -79,9 +136,9 @@ export function Footer() {
               ))}
             </div>
           </div>
-          <div className="mt-16 grid grid-cols-1 gap-8 xl:col-span-2 xl:mt-0">
+          <div className="mt-16 grid grid-cols-1 gap-8 xl:col-span-2 xl:mt-0 text-center md:text-left">
             <div className="md:grid md:grid-cols-3 md:gap-8">
-              <div>
+              <div className="text-center md:text-left">
                 <h3 className="text-sm font-semibold leading-6 text-white">
                   Solutions
                 </h3>
@@ -98,7 +155,7 @@ export function Footer() {
                   ))}
                 </ul>
               </div>
-              <div className="mt-10 md:mt-0">
+              <div className="mt-10 md:mt-0 text-center md:text-left">
                 <h3 className="text-sm font-semibold leading-6 text-white">
                   Company
                 </h3>
@@ -115,7 +172,7 @@ export function Footer() {
                   ))}
                 </ul>
               </div>
-              <div className="mt-10 md:mt-0">
+              <div className="mt-10 md:mt-0 text-center md:text-left">
                 <h3 className="text-sm font-semibold leading-6 text-white">
                   Legal
                 </h3>
@@ -135,13 +192,32 @@ export function Footer() {
             </div>
           </div>
         </div>
-        <div className="mt-16 border-t border-white/10 pt-8 sm:mt-20 lg:mt-24 flex flex-col sm:flex-row justify-between items-center">
-          <p className="text-xs leading-5 text-gray-400">
-            &copy; {new Date().getFullYear()} WebAlora. All rights reserved.
-          </p>
-          <p className="text-xs leading-5 text-gray-400 mt-4 sm:mt-0">
-            Designed and developed with ❤️ by WebAlora Team
-          </p>
+        <div className="mt-16 border-t border-white/10 pt-8">
+          <div className="flex flex-col items-center gap-8 w-full">
+            <div className="space-y-3 w-full max-w-3xl mx-auto text-center">
+              <p className="text-sm text-gray-400">
+                WebAlora is a trading name of WebAlora Limited.
+              </p>
+              <div className="flex items-center justify-center space-x-2">
+                <MapPin className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                <p className="text-sm text-gray-400">
+                  Head Office: WebAlora Limited, 71-75 Shelton Street, Covent
+                  Garden, London, United Kingdom, WC2H 9JQ
+                </p>
+              </div>
+              <p className="text-sm text-gray-400">
+                Registered in England and Wales with company number: 16200085
+              </p>
+            </div>
+          </div>
+          <div className="mt-8 flex flex-col items-center border-t border-white/10 pt-8 space-y-4">
+            <p className="text-xs leading-5 text-gray-400 text-center">
+              &copy; {new Date().getFullYear()} WebAlora. All rights reserved.
+            </p>
+            <p className="text-xs leading-5 text-gray-400 text-center">
+              Designed and developed with ❤️ by WebAlora Team
+            </p>
+          </div>
         </div>
       </div>
     </footer>

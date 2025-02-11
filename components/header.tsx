@@ -3,6 +3,7 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Phone } from "lucide-react";
@@ -11,6 +12,7 @@ import Image from "next/image";
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,8 +28,8 @@ export function Header() {
     sectionId: string
   ) => {
     e.preventDefault();
-    if (sectionId === "top") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    if (pathname !== "/") {
+      window.location.href = `/#${sectionId}`;
     } else {
       const section = document.getElementById(sectionId);
       if (section) {
@@ -46,15 +48,14 @@ export function Header() {
     },
     {
       name: "About",
-      href: "#about",
+      href: "/#about",
       onClick: (e: React.MouseEvent<HTMLAnchorElement>) =>
         handleSectionClick(e, "about"),
     },
     {
       name: "Services",
-      href: "#services",
-      onClick: (e: React.MouseEvent<HTMLAnchorElement>) =>
-        handleSectionClick(e, "services"),
+      href: "/services",
+      onClick: undefined,
     },
   ];
 
@@ -99,7 +100,7 @@ export function Header() {
               </Link>
             ))}
             <Link
-              href="tel:0345000000"
+              href="tel:03300434953"
               className={`flex items-center gap-2 text-sm font-medium ${
                 scrolled
                   ? "text-gray-900 hover:text-blue-600"
@@ -107,7 +108,7 @@ export function Header() {
               } transition-colors duration-300`}
             >
               <Phone className="h-4 w-4" />
-              0345 000 0000
+              0330 043 4953
             </Link>
             <Button
               asChild
@@ -118,7 +119,7 @@ export function Header() {
               } transition-all duration-300 border border-transparent hover:border-white/50`}
             >
               <Link
-                href="#contact"
+                href="/#contact"
                 onClick={(e) => handleSectionClick(e, "contact")}
               >
                 Contact Us
@@ -199,18 +200,18 @@ export function Header() {
                     </Link>
                   ))}
                   <Link
-                    href="tel:0345000000"
+                    href="tel:03300434953"
                     className="flex items-center justify-center gap-2 text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-300"
                   >
                     <Phone className="h-5 w-5" />
-                    0345 000 0000
+                    0330 043 4953
                   </Link>
                   <Button
                     asChild
                     className="w-full bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-300"
                   >
                     <Link
-                      href="#contact"
+                      href="/#contact"
                       onClick={(e) => handleSectionClick(e, "contact")}
                     >
                       Contact Us
