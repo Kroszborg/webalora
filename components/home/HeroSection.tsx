@@ -83,7 +83,7 @@ export const HeroSection: React.FC = () => {
   ];
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-blue-950 via-blue-900 to-indigo-900">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-blue-950 via-blue-900 to-indigo-900 pb-20 md:pb-0">
       {isMounted && <Particles />}
 
       <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-transparent to-purple-500/10" />
@@ -170,7 +170,7 @@ export const HeroSection: React.FC = () => {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 md:pb-0">
           {services.map((item, index) => (
             <Link href={item.href} key={index} className="block">
               <div

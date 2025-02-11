@@ -5,8 +5,6 @@ import { motion } from "framer-motion";
 import { SectionTitle } from "@/components/ui/section-title";
 import { Server, Shield, Cloud, BarChart, Zap, PhoneCall } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 
 const services = [
   {
@@ -15,7 +13,7 @@ const services = [
     description:
       "Comprehensive management of your IT infrastructure to ensure seamless, secure operations.",
     gradient: "from-blue-500 via-blue-600 to-indigo-500",
-    href: "/services/managed-it",
+    href: "/services",
   },
   {
     icon: Shield,
@@ -23,7 +21,7 @@ const services = [
     description:
       "Advanced protection against cyber threats with proactive monitoring and threat detection.",
     gradient: "from-indigo-500 via-purple-500 to-purple-600",
-    href: "/services/cybersecurity",
+    href: "/cybersecurity-solutions",
   },
   {
     icon: Cloud,
@@ -31,7 +29,7 @@ const services = [
     description:
       "Secure, scalable cloud services that enhance flexibility and efficiency.",
     gradient: "from-purple-500 via-pink-500 to-rose-500",
-    href: "/services/cloud",
+    href: "#",
   },
   {
     icon: BarChart,
@@ -39,7 +37,7 @@ const services = [
     description:
       "Expert guidance to align technology with your business objectives for sustainable growth.",
     gradient: "from-emerald-500 via-teal-500 to-cyan-500",
-    href: "/services/consultancy",
+    href: "#",
   },
   {
     icon: Zap,
@@ -47,7 +45,7 @@ const services = [
     description:
       "Reliable solutions to protect and recover your critical data with minimal downtime.",
     gradient: "from-amber-500 via-orange-500 to-red-500",
-    href: "/services/backup",
+    href: "#",
   },
   {
     icon: PhoneCall,
@@ -55,7 +53,7 @@ const services = [
     description:
       "Building robust, scalable networks to support your business now and into the future.",
     gradient: "from-green-500 via-emerald-500 to-teal-500",
-    href: "/services/network",
+    href: "#",
   },
 ];
 
@@ -84,7 +82,7 @@ export const ServicesSection: React.FC = () => {
           subtitle="Comprehensive services designed to meet your unique needs"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
             <motion.div
               key={index}
@@ -142,18 +140,6 @@ export const ServicesSection: React.FC = () => {
               </Link>
             </motion.div>
           ))}
-        </div>
-        <div className="mt-12 text-center">
-          <Button
-            asChild
-            size="lg"
-            className="bg-blue-600 hover:bg-blue-700 text-white"
-          >
-            <Link href="/cybersecurity-solutions" className="flex items-center">
-              Explore Our Cybersecurity Solutions
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </Button>
         </div>
       </div>
     </section>
