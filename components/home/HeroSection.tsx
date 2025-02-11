@@ -64,18 +64,21 @@ export const HeroSection: React.FC = () => {
       text: "Cyber Security",
       desc: "GDPR & ISO27001 Compliant",
       gradient: "from-blue-400 to-blue-600",
+      href: "/cybersecurity-solutions",
     },
     {
       icon: Server,
       text: "Managed IT",
       desc: "24/7 Expert Support",
       gradient: "from-indigo-400 to-indigo-600",
+      href: "/services",
     },
     {
       icon: Cloud,
       text: "Cloud Solutions",
       desc: "Secure & Scalable",
       gradient: "from-purple-400 to-purple-600",
+      href: "#",
     },
   ];
 
@@ -167,30 +170,31 @@ export const HeroSection: React.FC = () => {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto px-4 pb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {services.map((item, index) => (
-            <div
-              key={index}
-              className="group relative flex flex-col items-center p-6 rounded-xl border border-white/10 backdrop-blur-md hover:border-white/20 transition-all duration-300"
-              style={{
-                background: "rgba(255, 255, 255, 0.1)",
-              }}
-            >
+            <Link href={item.href} key={index} className="block">
               <div
-                className={`mb-4 p-3 rounded-xl bg-gradient-to-br ${item.gradient} shadow-lg group-hover:shadow-2xl transition-all duration-300`}
-              >
-                <item.icon className="h-8 w-8 text-white" />
-              </div>
-              <h3 className="text-lg font-semibold mb-1">{item.text}</h3>
-              <p className="text-sm text-blue-200">{item.desc}</p>
-              <div
-                className="absolute inset-0 rounded-xl bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                className="group relative flex flex-col items-center p-6 rounded-xl border border-white/10 backdrop-blur-md hover:border-white/20 transition-all duration-300"
                 style={{
-                  backgroundImage:
-                    "radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%)",
+                  background: "rgba(255, 255, 255, 0.1)",
                 }}
-              />
-            </div>
+              >
+                <div
+                  className={`mb-4 p-3 rounded-xl bg-gradient-to-br ${item.gradient} shadow-lg group-hover:shadow-2xl transition-all duration-300`}
+                >
+                  <item.icon className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-lg font-semibold mb-1">{item.text}</h3>
+                <p className="text-sm text-blue-200">{item.desc}</p>
+                <div
+                  className="absolute inset-0 rounded-xl bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    backgroundImage:
+                      "radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%)",
+                  }}
+                />
+              </div>
+            </Link>
           ))}
         </div>
       </motion.div>

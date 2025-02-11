@@ -15,7 +15,7 @@ const stats = [
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-blue-950 via-blue-900 to-indigo-900">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-blue-950 via-blue-900 to-indigo-900 pt-24 md:pt-28 pb-16 md:pb-24">
       {/* Background Image with enhanced overlay */}
       <Image
         src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2072"
@@ -31,7 +31,7 @@ export function HeroSection() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]" />
 
       {/* Content */}
-      <div className="container relative mx-auto px-4 z-10">
+      <div className="container relative mx-auto px-4 z-10 mb-8 md:mb-0 py-8 sm:py-12">
         <div className="text-center max-w-5xl mx-auto">
           {/* Enterprise Badge */}
           <motion.div
@@ -73,7 +73,7 @@ export function HeroSection() {
           </motion.p>
 
           {/* Key Statistics */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
@@ -95,7 +95,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="flex flex-col sm:flex-row justify-center gap-4"
+            className="flex flex-col sm:flex-row justify-center gap-4 mb-12"
           >
             <Button
               asChild
@@ -122,7 +122,7 @@ export function HeroSection() {
           </motion.div>
 
           {/* Feature Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 pb-8 md:pb-0">
             {[
               {
                 icon: Shield,

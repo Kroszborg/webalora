@@ -6,12 +6,12 @@ import {
   TrendingUp,
   ShieldCheck,
   ArrowRight,
+  Globe,
+  Clock,
+  Users,
 } from "lucide-react";
-import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-
-const DynamicThreatMap = dynamic(() => import("./ThreatMap"), { ssr: false });
 
 export function ThreatLandscape() {
   const stats = [
@@ -32,6 +32,24 @@ export function ThreatLandscape() {
       title: "Compliance",
       value: "£20M",
       description: "Maximum GDPR fine for non-compliance",
+    },
+    {
+      icon: Globe,
+      title: "Global Impact",
+      value: "£5.5T",
+      description: "Estimated cybercrime costs by 2025",
+    },
+    {
+      icon: Clock,
+      title: "Response Time",
+      value: "287",
+      description: "Average days to identify and contain a breach",
+    },
+    {
+      icon: Users,
+      title: "Human Error",
+      value: "95%",
+      description: "Of cybersecurity breaches caused by human mistakes",
     },
   ];
 
@@ -60,7 +78,7 @@ export function ThreatLandscape() {
         >
           The Growing Threat Landscape
         </motion.h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {stats.map((stat, index) => (
             <motion.div
               key={index}
@@ -86,31 +104,23 @@ export function ThreatLandscape() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="bg-white/5 backdrop-filter backdrop-blur-lg p-6 rounded-xl shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] border border-white/20"
+          className="text-center"
         >
-          <h3 className="text-2xl font-semibold mb-4 text-white">
-            LIVE Threat Map
-          </h3>
-          <p className="text-gray-300 mb-6">
-            Explore a real-time view of cyber-attack origins and targets
-            worldwide. See how frequently attacks occur, which industries are
-            most targeted, and why a layered defence is vital.
+          <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+            The cybersecurity landscape is constantly evolving, with new threats
+            emerging daily. Stay ahead of the curve with our proactive security
+            solutions.
           </p>
-          <div className="mb-6">
-            <DynamicThreatMap />
-          </div>
-          <div className="text-center">
-            <Button
-              asChild
-              size="lg"
-              className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/50 transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)]"
-            >
-              <a href="#contact" className="flex items-center">
-                <span>Get Your Threat Assessment</span>
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
-            </Button>
-          </div>
+          <Button
+            asChild
+            size="lg"
+            className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/50 transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)]"
+          >
+            <a href="#contact" className="flex items-center">
+              <span>Get Your Threat Assessment</span>
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </a>
+          </Button>
         </motion.div>
       </div>
     </section>
