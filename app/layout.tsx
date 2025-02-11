@@ -4,7 +4,7 @@ import "./globals.css";
 import "@/styles/advantages.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import type React from "react"; // Import React
+import type React from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,10 +21,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={inter.className}>
-        <Header />
-        {children}
-        <Footer />
+      <body
+        className={`${inter.className} bg-gray-50 text-gray-900 antialiased`}
+      >
+        <div className="flex flex-col min-h-screen">
+          <Header />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+        </div>
       </body>
     </html>
   );

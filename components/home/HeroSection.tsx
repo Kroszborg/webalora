@@ -160,14 +160,9 @@ export const HeroSection: React.FC = () => {
             variant="outline"
             className="group relative overflow-hidden text-blue-900 border-2 border-white hover:border-blue-200 px-8 py-6 text-base font-semibold backdrop-blur-sm transition-all duration-300"
           >
-            <Link href="#services" className="flex items-center">
-              <span className="relative z-10">View Our Services</span>
-              <motion.div
-                className="absolute inset-0 bg-white/10"
-                initial={{ x: "-100%" }}
-                whileHover={{ x: 0 }}
-                transition={{ duration: 0.3 }}
-              />
+            <Link href="/cybersecurity-solutions" className="flex items-center">
+              Explore Our Cybersecurity Solutions
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>
         </div>
