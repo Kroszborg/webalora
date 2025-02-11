@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { CheckCircle } from "lucide-react";
-import Image from "next/image";
 
 const trustPoints = [
   "100% UK-Based Team: Local experts who respond quickly and understand your market.",
@@ -46,27 +45,6 @@ export function TrustSection() {
               <p className="text-gray-700">{point}</p>
             </motion.div>
           ))}
-        </div>
-        <div className="relative">
-          <Image
-            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=2070"
-            alt="IT professionals collaborating"
-            width={1920}
-            height={1080}
-            className="rounded-2xl shadow-2xl"
-            placeholder="blur"
-            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI8wNPvd7POQAAAABJRU5ErkJggg=="
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-70 rounded-2xl" />
-          <div className="absolute bottom-8 left-8 right-8 text-white">
-            <h3 className="text-2xl font-bold mb-2">
-              Trusted by Industry Leaders
-            </h3>
-            <p className="text-lg">
-              Our commitment to excellence has made us the go-to IT partner for
-              businesses across the UK.
-            </p>
-          </div>
         </div>
       </div>
     </section>

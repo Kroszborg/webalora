@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
@@ -8,33 +8,46 @@ const faqs = [
   {
     question: "How quickly do you respond to emergencies?",
     answer:
-      "Our support is available 24/7, with a typical initial triage within 15 minutes.",
+      "Our support is available 24/7, with a typical initial triage within 15 minutes. We prioritize urgent issues and maintain dedicated emergency response teams to ensure minimal disruption to your business operations.",
   },
   {
     question: "Can you collaborate with our in-house IT team?",
     answer:
-      "Absolutely. We complement your internal resources, filling gaps and bringing specialist expertise.",
+      "Absolutely. We complement your internal resources, filling gaps and bringing specialist expertise. Our flexible partnership model allows seamless integration with your existing IT staff, enhancing capabilities without replacing current team members.",
   },
   {
     question: "Are we locked into a long-term contract?",
     answer:
-      "No. Our rolling, flexible agreements adapt to your changing needs.",
+      "No. Our rolling, flexible agreements adapt to your changing needs. We believe in earning your trust through consistent service quality rather than contractual obligations. You can adjust or terminate services with reasonable notice.",
   },
   {
     question:
       "Do you handle cloud migrations for platforms like Microsoft 365?",
     answer:
-      "Yes. We specialize in secure, seamless migrations and ongoing cloud management.",
+      "Yes. We specialize in secure, seamless migrations and ongoing cloud management. Our certified experts ensure minimal disruption during transition, handling everything from initial assessment to post-migration support and optimization.",
   },
   {
     question: "How do you ensure GDPR and Cyber Essentials compliance?",
     answer:
-      "Through continuous audits, best-practice implementations, and real-time updates on regulatory changes.",
+      "Through continuous audits, best-practice implementations, and real-time updates on regulatory changes. We maintain comprehensive documentation, conduct regular staff training, and implement robust security measures to ensure full compliance.",
+  },
+  {
+    question: "What industries do you specialize in?",
+    answer:
+      "We have extensive experience in finance, legal, healthcare, and manufacturing sectors, but our solutions are adaptable to various industries. Our team understands sector-specific compliance requirements and best practices for each industry we serve.",
   },
 ];
 
 export function FAQSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openStates, setOpenStates] = useState<boolean[]>(
+    new Array(faqs.length).fill(false)
+  );
+
+  const toggleFAQ = (index: number) => {
+    setOpenStates((prev) =>
+      prev.map((state, i) => (i === index ? !state : state))
+    );
+  };
 
   return (
     <section className="py-24 bg-gradient-to-br from-gray-900 to-blue-900 relative overflow-hidden">
@@ -54,66 +67,49 @@ export function FAQSection() {
         >
           Frequently Asked Questions
         </motion.h2>
-        <div className="max-w-3xl mx-auto space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {faqs.map((faq, index) => (
-            <FAQItem
+            <motion.div
               key={index}
-              faq={faq}
-              isOpen={openIndex === index}
-              onToggle={() => setOpenIndex(openIndex === index ? null : index)}
-              index={index}
-            />
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="bg-white/10 backdrop-blur-md rounded-xl overflow-hidden shadow-lg h-full"
+            >
+              <button
+                className="w-full text-left p-6 flex justify-between items-center focus:outline-none"
+                onClick={() => toggleFAQ(index)}
+              >
+                <span className="font-semibold text-white text-lg">
+                  {faq.question}
+                </span>
+                {openStates[index] ? (
+                  <ChevronUp className="w-5 h-5 text-blue-300 flex-shrink-0 ml-4" />
+                ) : (
+                  <ChevronDown className="w-5 h-5 text-blue-300 flex-shrink-0 ml-4" />
+                )}
+              </button>
+              <AnimatePresence initial={false}>
+                {openStates[index] && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                  >
+                    <div className="px-6 pb-6">
+                      <p className="text-blue-100 leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
           ))}
         </div>
       </div>
     </section>
-  );
-}
-
-interface FAQItemProps {
-  faq: { question: string; answer: string };
-  isOpen: boolean;
-  onToggle: () => void;
-  index: number;
-}
-
-function FAQItem({ faq, isOpen, onToggle, index }: FAQItemProps) {
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="bg-white/10 backdrop-blur-md rounded-xl overflow-hidden shadow-lg"
-    >
-      <button
-        className="w-full text-left p-6 flex justify-between items-center focus:outline-none"
-        onClick={onToggle}
-      >
-        <span className="font-semibold text-white">{faq.question}</span>
-        {isOpen ? (
-          <ChevronUp className="w-5 h-5 text-blue-300" />
-        ) : (
-          <ChevronDown className="w-5 h-5 text-blue-300" />
-        )}
-      </button>
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0 }}
-            animate={{ height: "auto" }}
-            exit={{ height: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden"
-          >
-            <div ref={contentRef} className="px-6 pb-6">
-              <p className="text-blue-100">{faq.answer}</p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
   );
 }
