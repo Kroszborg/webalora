@@ -87,7 +87,7 @@ export default async function CaseStudyPage({
         {caseStudy.testimonial && (
           <div className="bg-blue-50 rounded-xl p-6 mb-12">
             <blockquote className="text-lg text-gray-800 italic mb-4">
-              "{caseStudy.testimonial.quote}"
+              &quot;{caseStudy.testimonial.quote}&quot;
             </blockquote>
             <p className="text-gray-600">
               <strong>{caseStudy.testimonial.author}</strong>,{" "}
