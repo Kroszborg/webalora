@@ -1,7 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import type { BlogPost } from "@/lib/blogposts";
+
+interface BlogPost {
+  _sys: {
+    filename: string;
+  };
+  title: string;
+  excerpt: string;
+  featuredImage: string;
+  category: string;
+  publishDate: string;
+}
 
 interface BlogGridProps {
   posts: BlogPost[];
@@ -12,10 +22,10 @@ export function BlogGrid({ posts }: BlogGridProps) {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {posts.map((post) => (
         <div
-          key={post.id}
+          key={post._sys.filename}
           className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200"
         >
-          <Link href={`/blog/${post.slug}`}>
+          <Link href={`/blog/${post._sys.filename}`}>
             <div className="relative h-48 sm:h-56 md:h-64">
               <Image
                 src={post.featuredImage || "/placeholder.svg"}
@@ -35,7 +45,7 @@ export function BlogGrid({ posts }: BlogGridProps) {
               <p className="text-gray-600 mb-4">{post.excerpt}</p>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-500">
-                  {post.publishDate}
+                  {new Date(post.publishDate).toLocaleDateString()}
                 </span>
                 <span className="text-blue-600 hover:text-blue-800 font-semibold flex items-center transition-colors duration-300">
                   Read More

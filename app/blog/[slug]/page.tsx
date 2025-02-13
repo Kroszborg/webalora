@@ -1,8 +1,4 @@
-import {
-  blogPosts,
-  getRelatedPosts,
-  getSerializedContent,
-} from "@/lib/blogposts";
+import { getBlogPost, getBlogPosts } from "@/lib/tina";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { RelatedPosts } from "@/components/blog/RelatedPosts";
@@ -16,79 +12,76 @@ type PageProps = {
 };
 
 export default async function BlogPostPage({ params }: PageProps) {
-  const post = blogPosts.find((p) => p.slug === params.slug);
+  const post = await getBlogPost(params.slug);
 
   if (!post) {
     notFound();
   }
 
-  const serializedContent = await getSerializedContent(post.content);
-  const relatedPosts = await getRelatedPosts(post);
   const postUrl = `https://webalora.com/blog/${params.slug}`;
 
+  const allPosts = await getBlogPosts();
+  const relatedPosts = allPosts
+    .filter(
+      (p) => p.category === post.category && p._sys.filename !== params.slug
+    )
+    .slice(0, 3);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-900 to-blue-900">
-      {/* Hero Section */}
-      <div className="relative h-[70vh] min-h-[600px] w-full">
-        <Image
-          src={post.featuredImage || "/placeholder.svg"}
-          alt={post.title}
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/50 to-purple-900" />
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24">
+      <article className="max-w-4xl mx-auto px-4">
+        {/* Category Badge */}
+        <div className="mb-6">
+          <span className="inline-block bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
+            {post.category}
+          </span>
+        </div>
 
-        <div className="absolute bottom-0 left-0 right-0 px-4 py-12">
-          <div className="max-w-4xl mx-auto">
-            {/* Category Badge */}
-            <div className="mb-6">
-              <span className="inline-block bg-blue-100 text-blue-800 text-sm font-medium px-4 py-1.5 rounded-full">
-                {post.category}
-              </span>
-            </div>
+        {/* Title */}
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+          {post.title}
+        </h1>
 
-            {/* Title */}
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-              {post.title}
-            </h1>
-
-            {/* Meta Information */}
-            <div className="flex flex-wrap items-center gap-6 mb-8 text-white/90">
-              <div className="flex items-center gap-2">
-                <User className="w-5 h-5" />
-                <span className="text-lg">{post.author}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Calendar className="w-5 h-5" />
-                <span className="text-lg">{post.publishDate}</span>
-              </div>
-            </div>
+        {/* Meta Information */}
+        <div className="flex items-center gap-6 mb-8 text-gray-600">
+          <div className="flex items-center gap-2">
+            <User className="w-4 h-4" />
+            <span>{post.author}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Calendar className="w-4 h-4" />
+            <span>{new Date(post.publishDate).toLocaleDateString()}</span>
           </div>
         </div>
-      </div>
 
-      <div className="max-w-6xl mx-auto px-4 lg:px-8 -mt-12 relative z-10">
-        {/* Social Share */}
-        <div className="mb-8">
-          <SocialShare url={postUrl} title={post.title} />
+        {/* Featured Image */}
+        <div className="mb-12">
+          <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-xl">
+            <Image
+              src={post.featuredImage || "/placeholder.svg"}
+              alt={post.title || ""}
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
         </div>
 
+        {/* Social Share */}
+        <SocialShare url={postUrl} title={post.title || ""} />
+
         {/* Content */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 md:p-16 lg:p-20 mb-12">
-          <BlogContent serializedContent={serializedContent} />
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-12">
+          <BlogContent content={post.body} />
         </div>
 
         {/* Tags */}
-        <div className="mb-16">
-          <h3 className="text-white text-lg font-semibold mb-4">
-            Related Topics
-          </h3>
+        <div className="mb-12">
           <div className="flex flex-wrap gap-2">
-            {post.tags.map((tag) => (
+            {post.tags?.map((tag) => (
               <span
                 key={tag}
-                className="inline-block bg-white/10 backdrop-blur-sm text-white text-sm px-4 py-2 rounded-full hover:bg-white/20 transition-colors duration-200"
+                className="inline-block bg-gray-100 text-gray-800 text-sm px-3 py-1 rounded-full hover:bg-gray-200 transition-colors duration-200"
               >
                 #{tag}
               </span>
@@ -97,10 +90,10 @@ export default async function BlogPostPage({ params }: PageProps) {
         </div>
 
         {/* Related Posts */}
-        <div className="border-t border-white/10 pt-16 pb-24">
+        <div className="border-t border-gray-100 pt-12">
           <RelatedPosts posts={relatedPosts} />
         </div>
-      </div>
+      </article>
     </div>
   );
 }
@@ -108,7 +101,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const post = blogPosts.find((p) => p.slug === params.slug);
+  const post = await getBlogPost(params.slug);
   if (!post) {
     return {
       title: "Post Not Found",
@@ -117,10 +110,5 @@ export async function generateMetadata({
   return {
     title: post.title,
     description: post.excerpt,
-    openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      images: [post.featuredImage || "/placeholder.svg"],
-    },
   };
 }

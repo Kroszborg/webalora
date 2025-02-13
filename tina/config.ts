@@ -1,9 +1,12 @@
 import { defineConfig } from "tinacms"
 
+const branch = process.env.NEXT_PUBLIC_TINA_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || process.env.HEAD || "master"
+
 export default defineConfig({
-  branch: "main",
-  clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID!,
-  token: process.env.TINA_TOKEN!,
+  branch,
+  clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID,
+  token: process.env.TINA_TOKEN,
+
   build: {
     outputFolder: "admin",
     publicFolder: "public",
@@ -66,6 +69,9 @@ export default defineConfig({
             isBody: true,
           },
         ],
+        ui: {
+          router: ({ document }) => `/blog/${document._sys.filename}`,
+        },
       },
     ],
   },
