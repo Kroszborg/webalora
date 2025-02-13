@@ -1,40 +1,46 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
-const categories = [
-  "All",
-  "Cloud Computing",
-  "Cybersecurity",
-  "DevOps",
-  "AI & Machine Learning",
-  "Edge Computing",
-];
+interface CategoryFilterProps {
+  categories: string[];
+}
 
-export function CategoryFilter() {
+export function CategoryFilter({ categories }: CategoryFilterProps) {
   const [activeCategory, setActiveCategory] = useState("All");
+  const router = useRouter();
+
+  const handleCategoryChange = (category: string) => {
+    setActiveCategory(category);
+    if (category === "All") {
+      router.push("/blog");
+    } else {
+      router.push(`/blog?category=${encodeURIComponent(category)}`);
+    }
+  };
 
   return (
     <div className="mb-8">
       <h2 className="text-2xl font-bold text-gray-900 mb-4">Categories</h2>
       <div className="flex flex-wrap gap-2">
-        {categories.map((category, index) => (
-          <motion.div
+        <Button
+          variant={activeCategory === "All" ? "default" : "outline"}
+          onClick={() => handleCategoryChange("All")}
+          className="rounded-full"
+        >
+          All
+        </Button>
+        {categories.map((category) => (
+          <Button
             key={category}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.1 }}
+            variant={activeCategory === category ? "default" : "outline"}
+            onClick={() => handleCategoryChange(category)}
+            className="rounded-full"
           >
-            <Button
-              variant={activeCategory === category ? "default" : "outline"}
-              onClick={() => setActiveCategory(category)}
-              className="rounded-full"
-            >
-              {category}
-            </Button>
-          </motion.div>
+            {category}
+          </Button>
         ))}
       </div>
     </div>

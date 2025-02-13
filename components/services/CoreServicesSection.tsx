@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import {
@@ -64,18 +64,32 @@ export function CoreServicesSection() {
     triggerOnce: true,
     threshold: 0.1,
   });
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (inView) {
       controls.start("visible");
+      setIsLoaded(true);
     }
   }, [controls, inView]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!isLoaded) {
+        controls.start("visible");
+        setIsLoaded(true);
+      }
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [controls, isLoaded]);
+
   const containerVariants = {
-    hidden: {},
+    hidden: { opacity: 0 },
     visible: {
+      opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        delayChildren: 0.3,
       },
     },
   };
@@ -85,11 +99,6 @@ export function CoreServicesSection() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        type: "spring",
-        damping: 15,
-        stiffness: 100,
-      },
     },
   };
 

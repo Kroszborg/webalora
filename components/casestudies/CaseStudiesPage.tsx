@@ -3,14 +3,18 @@ import { FeaturedCaseStudy } from "./FeaturedCaseStudy";
 import { CaseStudyGrid } from "./CaseStudyGrid";
 import { ClientTestimonials } from "./ClientTestimonials";
 import { CTASection } from "./CTASection";
+import { caseStudies } from "@/lib/casestudies";
 
 export function CaseStudiesPage() {
+  const featuredCaseStudy = caseStudies[0];
+  const otherCaseStudies = caseStudies.slice(1);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <CaseStudiesHero />
       <div className="container mx-auto px-4 py-16">
-        <FeaturedCaseStudy />
-        <CaseStudyGrid />
+        <FeaturedCaseStudy caseStudy={featuredCaseStudy} />
+        <CaseStudyGrid caseStudies={otherCaseStudies} />
       </div>
       <ClientTestimonials />
       <CTASection />

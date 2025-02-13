@@ -3,20 +3,16 @@
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 
-const tags = [
-  "Cloud",
-  "Security",
-  "DevOps",
-  "AI",
-  "Machine Learning",
-  "Edge Computing",
-  "Data Analytics",
-  "IoT",
-  "Blockchain",
-  "5G",
-];
+interface Tag {
+  id: string;
+  name: string;
+}
 
-export function PopularTags() {
+interface PopularTagsProps {
+  tags: Tag[];
+}
+
+export function PopularTags({ tags }: PopularTagsProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -28,7 +24,7 @@ export function PopularTags() {
       <div className="flex flex-wrap gap-2">
         {tags.map((tag, index) => (
           <motion.div
-            key={tag}
+            key={tag.id}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3, delay: index * 0.05 }}
@@ -37,7 +33,7 @@ export function PopularTags() {
               variant="secondary"
               className="cursor-pointer hover:bg-blue-100 transition-colors duration-300"
             >
-              {tag}
+              {tag.name}
             </Badge>
           </motion.div>
         ))}
