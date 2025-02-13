@@ -1,21 +1,11 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { Check, ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import { Check, ArrowRight, ChevronDown, ChevronUp } from "lucide-react"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 const tiers = [
   {
@@ -77,7 +67,7 @@ const tiers = [
     ],
     highlighted: false,
   },
-];
+]
 
 const featureComparison = [
   {
@@ -131,28 +121,25 @@ const featureComparison = [
       "DMARC Management",
     ],
   },
-];
+]
 
 export function PricingSection() {
-  const [openCategory, setOpenCategory] = useState<string | null>(null);
+  const [openCategory, setOpenCategory] = useState<string | null>(null)
 
   const toggleCategory = (category: string) => {
-    setOpenCategory(openCategory === category ? null : category);
-  };
+    setOpenCategory(openCategory === category ? null : category)
+  }
 
   const isFeatureIncluded = (feature: string, tierIndex: number) => {
     if (tierIndex === 2) {
-      return true; // Enterprise tier includes all features
+      return true // Enterprise tier includes all features
     }
     if (tierIndex === 1) {
       // Advanced tier includes all Professional features and its own features
-      return (
-        tiers[0].features.includes(feature) ||
-        tiers[1].features.includes(feature)
-      );
+      return tiers[0].features.includes(feature) || tiers[1].features.includes(feature)
     }
-    return tiers[tierIndex].features.includes(feature);
-  };
+    return tiers[tierIndex].features.includes(feature)
+  }
 
   return (
     <section className="py-24 bg-gradient-to-br from-gray-50 to-blue-50">
@@ -270,10 +257,12 @@ export function PricingSection() {
                 className="bg-white rounded-lg shadow-md overflow-hidden"
               >
                 <button
-                  className="w-full px-6 py-4 text-left font-semibold text-blue-900 flex justify-between items-center hover:bg-blue-50 transition-colors duration-200"
+                  className="w-full px-4 sm:px-6 py-4 text-left font-semibold text-blue-900 flex justify-between items-center hover:bg-blue-50 transition-colors duration-200"
                   onClick={() => toggleCategory(category.category)}
                 >
-                  {category.category}
+                  <span className="text-sm sm:text-base">
+                    {category.category}
+                  </span>
                   {openCategory === category.category ? (
                     <ChevronUp className="h-5 w-5 text-blue-500" />
                   ) : (
@@ -288,20 +277,20 @@ export function PricingSection() {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <div className="px-6 py-4 bg-blue-50">
-                        <table className="w-full">
+                      <div className="px-4 sm:px-6 py-4 bg-blue-50 overflow-x-auto">
+                        <table className="w-full table-auto">
                           <thead>
                             <tr>
-                              <th className="text-left font-semibold text-blue-900 pb-2">
+                              <th className="text-left font-semibold text-blue-900 pb-2 pr-4 text-xs sm:text-sm">
                                 Feature
                               </th>
-                              <th className="text-center font-semibold text-blue-900 pb-2">
-                                Professional
+                              <th className="text-center font-semibold text-blue-900 pb-2 px-2 text-xs sm:text-sm">
+                                Pro
                               </th>
-                              <th className="text-center font-semibold text-blue-900 pb-2">
+                              <th className="text-center font-semibold text-blue-900 pb-2 px-2 text-xs sm:text-sm">
                                 Advanced
                               </th>
-                              <th className="text-center font-semibold text-blue-900 pb-2">
+                              <th className="text-center font-semibold text-blue-900 pb-2 pl-2 text-xs sm:text-sm">
                                 Enterprise
                               </th>
                             </tr>
@@ -312,18 +301,20 @@ export function PricingSection() {
                                 key={index}
                                 className="border-t border-blue-100"
                               >
-                                <td className="py-2 text-blue-800">
+                                <td className="py-2 text-blue-800 pr-2 text-xs sm:text-sm">
                                   {feature}
                                 </td>
                                 {tiers.map((tier, tierIndex) => (
                                   <td
                                     key={tierIndex}
-                                    className="text-center py-2"
+                                    className="text-center py-2 px-2"
                                   >
                                     {isFeatureIncluded(feature, tierIndex) ? (
-                                      <Check className="h-5 w-5 text-green-500 mx-auto" />
+                                      <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 mx-auto" />
                                     ) : (
-                                      <span className="text-red-500">-</span>
+                                      <span className="text-red-500 text-xs sm:text-sm">
+                                        -
+                                      </span>
                                     )}
                                   </td>
                                 ))}
@@ -343,3 +334,4 @@ export function PricingSection() {
     </section>
   );
 }
+

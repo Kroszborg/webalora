@@ -1,0 +1,73 @@
+import { defineConfig } from "tinacms"
+
+export default defineConfig({
+  branch: "main",
+  clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID!,
+  token: process.env.TINA_TOKEN!,
+  build: {
+    outputFolder: "admin",
+    publicFolder: "public",
+  },
+  media: {
+    tina: {
+      mediaRoot: "images",
+      publicFolder: "public",
+    },
+  },
+  schema: {
+    collections: [
+      {
+        name: "post",
+        label: "Posts",
+        path: "content/posts",
+        fields: [
+          {
+            type: "string",
+            name: "title",
+            label: "Title",
+            isTitle: true,
+            required: true,
+          },
+          {
+            type: "string",
+            name: "excerpt",
+            label: "Excerpt",
+          },
+          {
+            type: "datetime",
+            name: "publishDate",
+            label: "Publish Date",
+          },
+          {
+            type: "string",
+            name: "author",
+            label: "Author",
+          },
+          {
+            type: "string",
+            name: "category",
+            label: "Category",
+          },
+          {
+            type: "string",
+            name: "tags",
+            label: "Tags",
+            list: true,
+          },
+          {
+            type: "image",
+            name: "featuredImage",
+            label: "Featured Image",
+          },
+          {
+            type: "rich-text",
+            name: "body",
+            label: "Body",
+            isBody: true,
+          },
+        ],
+      },
+    ],
+  },
+})
+
