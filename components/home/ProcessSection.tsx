@@ -42,7 +42,7 @@ const process = [
     icon: BarChart,
     title: "Performance Analysis",
     description:
-      "We regularly analyze system performance and user feedback to identify areas for improvement and optimization.",
+      "We regularly analyse system performance and user feedback to identify areas for improvement and optimisation.",
   },
   {
     icon: RefreshCw,

@@ -8,127 +8,153 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { Check, Info, Plus, ArrowRight } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Check, ArrowRight } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import React from "react"; // Import React
 
 const tiers = [
   {
-    name: "Professional",
-    description: "Perfect for small businesses getting started with managed IT",
-    basePrice: "£1,500",
-    userPrice: "£60",
+    name: "WebAlora Go",
+    description: "Essential cybersecurity for small businesses",
     features: [
-      "8×5 business hours support",
-      "Unlimited remote & phone support",
-      "Basic hardware health checks",
-      "Standard AV + firewall policies",
-      "Basic cloud support",
-      "24/7 monitoring & alerts",
-      "Daily cloud backups",
-      "VoIP-ready configuration",
+      "Monthly Simulated Phishing Testing",
+      "Comprehensive Premium Cybersecurity Training",
+      "M365 Monitoring",
+      "M365 Best Practices Configuration",
+      "DNS Protection",
+      "Next-gen AV",
+      "Endpoint Detection Response (EDR)",
+      "Ransomware Encryption Protection",
+      "Managed eXtended Detection Response (MXDR)",
+      "24/7 Hands-on SOC that Remediates for You",
+      "ShadowIT Discovery",
     ],
     highlighted: false,
   },
   {
-    name: "Advanced",
-    description: "Ideal for growing businesses needing enhanced security",
-    basePrice: "£2,250",
-    userPrice: "£80",
+    name: "WebAlora Go +",
+    description: "Advanced protection for growing businesses",
     features: [
-      "Priority queue support",
-      "Dedicated Service Coordinator",
-      "Full patch management",
-      "Next-gen endpoint security",
-      "Seamless cloud migrations",
-      "Advanced network monitoring",
-      "Semi-annual DR tests",
-      "Hosted VoIP solutions",
+      "All WebAlora Go features",
+      "Secure all email - incoming, outgoing and internal",
+      "Advanced AI-based anti-phishing",
+      "Anti-spam filtering",
+      "Email Based Malware Prevention",
+      "Protection from zero-day malware (File Sandboxing)",
+      "File sanitization (CDR)",
+      "Malicious URL protection (URL Reputation)",
+      "URL click-time protection (URL Rewriting)",
+      "Protection from zero-day malicious URLs (URL Sandboxing)",
+      "Account takeover prevention (Anomalies)",
+      "Unauthorised applications detections (Shadow IT)",
+      "Privilege Access Management",
+      "Zero-Trust Application Control",
+      "1st Party Patch Management",
+      "3rd Party Patch Management",
+      "Vulnerability Scanning",
+      "Firewall Integration",
     ],
     highlighted: true,
   },
   {
-    name: "Enterprise",
-    description: "Comprehensive solution for larger organizations",
-    basePrice: "£3,000",
-    userPrice: "£100",
+    name: "WebAlora Go Compliance",
+    description: "Comprehensive solution for compliance-focused organizations",
     features: [
-      "24/7 support with fastest SLAs",
-      "Assigned Account Manager",
-      "Real-time performance reporting",
-      "AI-driven threat detection",
-      "Advanced cloud architecture",
-      "Quarterly network optimization",
-      "Full DR orchestration",
-      "Enterprise Unified Comms",
+      "All WebAlora Go + features",
+      "Data loss prevention (DLP)",
+      "Email Encryption",
+      "DMARC Management",
+      "Compliance Remediation Reporting",
+      "Asset Inventory & Attack Surface Visibility",
+      "SIEM & Log Aggregation",
+      "Employee Training and Support",
+      "GDPR/PDA Compliance",
     ],
     highlighted: false,
   },
 ];
 
-const addOns = [
+const featureComparison = [
   {
-    name: "ISO 27001 Implementation",
-    price: "£500",
-    period: "month",
-    description: "Full documentation suite and compliance management",
-    note: "Minimum 6-month engagement",
+    category: "Email Security",
+    features: [
+      "Secure all email - incoming, outgoing and internal",
+      "Advanced AI-based anti-phishing",
+      "Anti-spam filtering",
+      "Email Based Malware Prevention",
+      "Protection from zero-day malware (File Sandboxing)",
+      "File sanitization (CDR)",
+      "Malicious URL protection (URL Reputation)",
+      "URL click-time protection (URL Rewriting)",
+      "Protection from zero-day malicious URLs (URL Sandboxing)",
+      "Account takeover prevention (Anomalies)",
+      "Unauthorised applications detections (Shadow IT)",
+      "Data loss prevention (DLP)",
+      "Email Encryption",
+      "DMARC Management",
+    ],
   },
   {
-    name: "Advanced Security Suite",
-    price: "£15-25",
-    period: "user/month",
-    description: "SIEM/SOC integration and threat hunting",
+    category: "Endpoints",
+    features: [
+      "DNS Protection",
+      "Next-gen AV",
+      "Endpoint Detection Response (EDR)",
+      "Ransomware Encryption Protection",
+      "Managed eXtended Detection Response (MXDR)",
+      "24/7 Hands-on SOC that Remediates for You",
+      "ShadowIT Discovery",
+      "Privilege Access Management",
+      "Zero-Trust Application Control",
+      "1st Party Patch Management",
+      "3rd Party Patch Management",
+      "Vulnerability Scanning",
+      "Compliance Remediation Reporting",
+      "Firewall Integration",
+      "Asset Inventory & Attack Surface Visibility",
+      "SIEM & Log Aggregation",
+    ],
   },
   {
-    name: "Microsoft 365 Management",
-    price: "£3-5",
-    period: "user/month",
-    description: "Admin fee for fully managed M365 services",
-  },
-  {
-    name: "VoIP / Unified Communications",
-    price: "£20",
-    period: "user/month",
-    description: "Hosted PBX and team messaging",
+    category: "Compliance & Training",
+    features: [
+      "Monthly Simulated Phishing Testing",
+      "Comprehensive Premium Cybersecurity Training",
+      "M365 Monitoring",
+      "M365 Best Practices Configuration",
+      "Employee Training and Support",
+      "GDPR/PDA Compliance",
+    ],
   },
 ];
 
 const faqs = [
   {
-    question: "What if we have fewer than 15 users?",
+    question: "What is included in the Monthly Simulated Phishing Testing?",
     answer:
-      "The base retainer still applies, ensuring we cover core overheads like tool licensing, monitoring, and dedicated support staff.",
+      "Our Monthly Simulated Phishing Testing includes crafted phishing emails sent to your employees to test their awareness and response. We provide detailed reports and recommendations for improvement.",
   },
   {
-    question: "Can we upgrade or downgrade tiers later?",
+    question: "Can we upgrade or downgrade between WebAlora Go tiers?",
     answer:
-      "Absolutely. We offer flexible agreements allowing you to switch tiers as your business grows or needs change.",
-  },
-  {
-    question: "How quickly do you respond to critical issues?",
-    answer:
-      "Response times depend on your SLA. Our Enterprise Tier guarantees a 1-hour or better response, while Professional and Advanced also have rigorous SLAs for business hours.",
-  },
-  {
-    question: "Are there discounts for large enterprises (100+ users)?",
-    answer:
-      "Volume-based discounts or custom bundles can be discussed if you have a significantly larger user base or specialized needs.",
+      "Yes, you can upgrade or downgrade between WebAlora Go tiers as your business needs change. We recommend reviewing your cybersecurity needs quarterly to ensure you have the right level of protection.",
   },
 ];
 
 export function PricingSection() {
-
   return (
     <section className="py-24 bg-gradient-to-br from-gray-50 to-blue-50">
       <div className="container mx-auto px-4">
@@ -139,7 +165,7 @@ export function PricingSection() {
             viewport={{ once: true }}
             className="text-3xl md:text-4xl font-bold mb-4"
           >
-            Tiered Subscription Model
+            Comprehensive Cybersecurity Solutions
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -148,9 +174,9 @@ export function PricingSection() {
             transition={{ delay: 0.1 }}
             className="text-lg text-gray-600 max-w-3xl mx-auto"
           >
-            We combine a base monthly retainer (covering up to 15 users) with an
-            additional per-user cost for those above 15 users. This flexible
-            model ensures predictable spending.
+            Choose the right level of protection for your business with our
+            tiered cybersecurity services. From essential protection to
+            comprehensive compliance solutions, we&apos;ve got you covered.
           </motion.p>
         </div>
 
@@ -180,23 +206,6 @@ export function PricingSection() {
                 <CardHeader className="text-center pt-8">
                   <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
                   <p className="text-gray-600 mb-4">{tier.description}</p>
-                  <div className="mb-4">
-                    <span className="text-4xl font-bold">{tier.basePrice}</span>
-                    <span className="text-gray-600">/month</span>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <Info className="inline-block ml-2 h-4 w-4 text-gray-400" />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Base retainer covers up to 15 users</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    +{tier.userPrice}/user/month beyond 15 users
-                  </div>
                 </CardHeader>
                 <CardContent className="pt-4">
                   <ul className="space-y-3">
@@ -225,35 +234,59 @@ export function PricingSection() {
           ))}
         </div>
 
-        <div className="max-w-4xl mx-auto mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-white rounded-xl shadow-lg p-8"
-          >
-            <h3 className="text-2xl font-bold mb-6">Optional Add-Ons</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {addOns.map((addon, index) => (
-                <div key={index} className="flex items-start space-x-4">
-                  <div className="rounded-lg bg-blue-100 p-2">
-                    <Plus className="h-5 w-5 text-blue-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">{addon.name}</h4>
-                    <p className="text-sm text-gray-600 mb-1">
-                      From {addon.price}/{addon.period}
-                    </p>
-                    <p className="text-sm text-gray-500">{addon.description}</p>
-                    {addon.note && (
-                      <p className="text-xs text-blue-600 mt-1">{addon.note}</p>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-16"
+        >
+          <h3 className="text-2xl font-bold mb-6 text-center">
+            Feature Comparison
+          </h3>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[300px]">Feature</TableHead>
+                  <TableHead>WebAlora Go</TableHead>
+                  <TableHead>WebAlora Go +</TableHead>
+                  <TableHead>WebAlora Go Compliance</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {featureComparison.map((category) => (
+                  <React.Fragment key={category.category}>
+                    <TableRow>
+                      <TableCell colSpan={4} className="font-bold bg-gray-100">
+                        {category.category}
+                      </TableCell>
+                    </TableRow>
+                    {category.features.map((feature, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{feature}</TableCell>
+                        <TableCell>
+                          {tiers[0].features.includes(feature) && (
+                            <Check className="h-5 w-5 text-green-500" />
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {tiers[1].features.includes(feature) && (
+                            <Check className="h-5 w-5 text-green-500" />
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {tiers[2].features.includes(feature) && (
+                            <Check className="h-5 w-5 text-green-500" />
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </React.Fragment>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -280,19 +313,6 @@ export function PricingSection() {
               </AccordionItem>
             ))}
           </Accordion>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mt-16"
-        >
-          <p className="text-sm text-gray-500 max-w-2xl mx-auto">
-            * All prices exclude VAT. Pricing and tiers are subject to change
-            based on the complexity of your environment and specific project
-            requirements.
-          </p>
         </motion.div>
       </div>
     </section>

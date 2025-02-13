@@ -11,7 +11,7 @@ const stats = [
   },
   {
     icon: Users,
-    value: "<10min",
+    value: "<15min",
     label: "Support Response Time",
     gradient: "from-indigo-500 to-purple-600",
   },

@@ -39,14 +39,10 @@ const faqs = [
 ];
 
 export function FAQSection() {
-  const [openStates, setOpenStates] = useState<boolean[]>(
-    new Array(faqs.length).fill(false)
-  );
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const toggleFAQ = (index: number) => {
-    setOpenStates((prev) =>
-      prev.map((state, i) => (i === index ? !state : state))
-    );
+    setActiveIndex(activeIndex === index ? null : index);
   };
 
   return (
@@ -67,7 +63,7 @@ export function FAQSection() {
         >
           Frequently Asked Questions
         </motion.h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div className="max-w-3xl mx-auto space-y-6">
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
@@ -75,23 +71,28 @@ export function FAQSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white/10 backdrop-blur-md rounded-xl overflow-hidden shadow-lg h-full"
+              className="bg-white/10 backdrop-blur-md rounded-xl overflow-hidden shadow-lg"
             >
               <button
-                className="w-full text-left p-6 flex justify-between items-center focus:outline-none"
+                className="w-full text-left p-6 flex justify-between items-center focus:outline-none transition-colors duration-300 hover:bg-white/20"
                 onClick={() => toggleFAQ(index)}
               >
-                <span className="font-semibold text-white text-lg">
+                <span className="font-semibold text-white text-lg pr-8">
                   {faq.question}
                 </span>
-                {openStates[index] ? (
-                  <ChevronUp className="w-5 h-5 text-blue-300 flex-shrink-0 ml-4" />
-                ) : (
-                  <ChevronDown className="w-5 h-5 text-blue-300 flex-shrink-0 ml-4" />
-                )}
+                <motion.div
+                  animate={{ rotate: activeIndex === index ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {activeIndex === index ? (
+                    <ChevronUp className="w-6 h-6 text-blue-300 flex-shrink-0" />
+                  ) : (
+                    <ChevronDown className="w-6 h-6 text-blue-300 flex-shrink-0" />
+                  )}
+                </motion.div>
               </button>
               <AnimatePresence initial={false}>
-                {openStates[index] && (
+                {activeIndex === index && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}

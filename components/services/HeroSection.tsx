@@ -7,8 +7,9 @@ import Image from "next/image";
 import { ArrowRight, Shield, Lock, Server, Cloud } from "lucide-react";
 
 const stats = [
-  { value: "£2.5M", label: "Average Cost of IT Downtime" },
-  { value: "60%", label: "Of Breaches Due to Unpatched Systems" },
+  { value: "99.9%", label: "Guaranteed Uptime for Your Systems" },
+  { value: "50%", label: "Average Reduction in IT Costs with Managed Services",
+  },
   { value: "24/7", label: "Enterprise Support Coverage" },
   { value: "15min", label: "Average Response Time" },
 ];

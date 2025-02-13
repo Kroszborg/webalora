@@ -7,6 +7,7 @@ import {
   useTransform,
   useSpring,
   useReducedMotion,
+  AnimatePresence,
 } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,11 +16,13 @@ import { ArrowRight, Server, Shield, Cloud } from "lucide-react";
 import { Particles } from "@/components/ui/particles";
 import { FloatingElement } from "@/components/ui/floating-element";
 import { throttle } from "lodash";
+import { ITHealthCheckForm } from "@/components/ITHealthCheckForm";
 
 export const HeroSection: React.FC = () => {
   const prefersReducedMotion = useReducedMotion();
   const { scrollY } = useScroll();
   const [isMounted, setIsMounted] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -142,20 +145,18 @@ export const HeroSection: React.FC = () => {
 
         <div className="flex flex-col sm:flex-row justify-center gap-4 mb-20">
           <Button
-            asChild
             size="lg"
             className="group relative overflow-hidden bg-white text-blue-900 hover:bg-blue-50 border-2 border-transparent px-8 py-6 text-base font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+            onClick={() => setShowForm(true)}
           >
-            <Link href="#contact" className="flex items-center">
-              <span className="relative z-10">Get a Free IT Health Check</span>
-              <ArrowRight className="relative z-10 ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-blue-100 to-white"
-                initial={{ x: "100%" }}
-                whileHover={{ x: 0 }}
-                transition={{ duration: 0.3 }}
-              />
-            </Link>
+            <span className="relative z-10">Get a Free IT Health Check</span>
+            <ArrowRight className="relative z-10 ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-blue-100 to-white"
+              initial={{ x: "100%" }}
+              whileHover={{ x: 0 }}
+              transition={{ duration: 0.3 }}
+            />
           </Button>
           <Button
             asChild
@@ -200,6 +201,34 @@ export const HeroSection: React.FC = () => {
       </motion.div>
 
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-blue-950/50 pointer-events-none" />
+
+      <AnimatePresence>
+        {showForm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 z-50 overflow-y-auto"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setShowForm(false);
+              }
+            }}
+          >
+            <div className="min-h-screen w-full flex items-start justify-center py-4">
+              <motion.div
+                initial={{ scale: 0.95, y: 20 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.95, y: 20 }}
+                className="w-full mx-4 my-auto"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <ITHealthCheckForm onClose={() => setShowForm(false)} />
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
