@@ -9,12 +9,13 @@ import { RelatedPosts } from "@/components/blog/RelatedPosts";
 import { SocialShare } from "@/components/blog/SocialShare";
 import BlogContent from "@/components/blog/BlogContent";
 import { Calendar, User } from "lucide-react";
+import type { Metadata } from "next";
 
-export default async function BlogPostPage({
-  params,
-}: {
+type PageProps = {
   params: { slug: string };
-}) {
+};
+
+export default async function BlogPostPage({ params }: PageProps) {
   const post = blogPosts.find((p) => p.slug === params.slug);
 
   if (!post) {
@@ -26,7 +27,7 @@ export default async function BlogPostPage({
   const postUrl = `https://webalora.com/blog/${params.slug}`;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-900 to-blue-900 pt-24">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24">
       <article className="max-w-4xl mx-auto px-4">
         {/* Category Badge */}
         <div className="mb-6">
@@ -36,12 +37,12 @@ export default async function BlogPostPage({
         </div>
 
         {/* Title */}
-        <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
           {post.title}
         </h1>
 
         {/* Meta Information */}
-        <div className="flex items-center gap-6 mb-8 text-white">
+        <div className="flex items-center gap-6 mb-8 text-gray-600">
           <div className="flex items-center gap-2">
             <User className="w-4 h-4" />
             <span>{post.author}</span>
@@ -94,4 +95,19 @@ export default async function BlogPostPage({
       </article>
     </div>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const post = blogPosts.find((p) => p.slug === params.slug);
+  if (!post) {
+    return {
+      title: "Post Not Found",
+    };
+  }
+  return {
+    title: post.title,
+    description: post.excerpt,
+  };
 }
