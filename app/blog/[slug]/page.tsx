@@ -27,7 +27,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   const postUrl = `https://webalora.com/blog/${params.slug}`;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24">
+    <div className="min-h-screen bg-gradient-to-b from-purple-900 to-blue-900 pt-24">
       <article className="max-w-4xl mx-auto px-4">
         {/* Category Badge */}
         <div className="mb-6">
@@ -37,12 +37,12 @@ export default async function BlogPostPage({ params }: PageProps) {
         </div>
 
         {/* Title */}
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+        <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
           {post.title}
         </h1>
 
         {/* Meta Information */}
-        <div className="flex items-center gap-6 mb-8 text-gray-600">
+        <div className="flex items-center gap-6 mb-8 text-white">
           <div className="flex items-center gap-2">
             <User className="w-4 h-4" />
             <span>{post.author}</span>
