@@ -54,7 +54,7 @@ export function BlogHero() {
           </p>
           <form
             onSubmit={handleSearch}
-            className="flex items-center max-w-md mx-auto bg-white/10 backdrop-filter backdrop-blur-md rounded-full p-1 mb-8"
+            className="flex items-center max-w-md mx-auto bg-white backdrop-filter backdrop-blur-md rounded-full p-1 mb-8"
           >
             <Input
               type="text"

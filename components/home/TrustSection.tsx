@@ -17,7 +17,7 @@ const clientLogos = [
   { src: "/trust/VOE.png", alt: "Client Logo 6" },
   { src: "/trust/BTO.png", alt: "Client Logo 7" },
   { src: "/trust/aws.png", alt: "Client Logo 8" },
-  { src: "/trust/tesco.png", alt: "Client Logo 9" },
+  { src: "/trust/Tesco.png", alt: "Client Logo 9" },
   { src: "/trust/MSP.png", alt: "Client Logo 10" },
   { src: "/trust/DELL.png", alt: "Client Logo 10" },
 ];

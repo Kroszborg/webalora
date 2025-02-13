@@ -81,26 +81,7 @@ const tiers = [
 
 const featureComparison = [
   {
-    category: "Email Security",
-    features: [
-      "Secure all email - incoming, outgoing and internal",
-      "Advanced AI-based anti-phishing",
-      "Anti-spam filtering",
-      "Email Based Malware Prevention",
-      "Protection from zero-day malware (File Sandboxing)",
-      "File sanitization (CDR)",
-      "Malicious URL protection (URL Reputation)",
-      "URL click-time protection (URL Rewriting)",
-      "Protection from zero-day malicious URLs (URL Sandboxing)",
-      "Account takeover prevention (Anomalies)",
-      "Unauthorised applications detections (Shadow IT)",
-      "Data loss prevention (DLP)",
-      "Email Encryption",
-      "DMARC Management",
-    ],
-  },
-  {
-    category: "Endpoints",
+    category: "Devices (Endpoints)",
     features: [
       "DNS Protection",
       "Next-gen AV",
@@ -131,23 +112,24 @@ const featureComparison = [
       "GDPR/PDA Compliance",
     ],
   },
-];
-
-const faqs = [
   {
-    question: "What is included in the Monthly Simulated Phishing Testing?",
-    answer:
-      "Our Monthly Simulated Phishing Testing includes crafted phishing emails sent to your employees to test their awareness and response. We provide detailed reports and recommendations for improvement.",
-  },
-  {
-    question: "Can we upgrade or downgrade between tiers?",
-    answer:
-      "Yes, you can upgrade or downgrade between tiers as your business needs change. We recommend reviewing your cybersecurity needs quarterly to ensure you have the right level of protection.",
-  },
-  {
-    question: "What industries do you specialize in?",
-    answer:
-      "We have extensive experience in finance, legal, healthcare, and manufacturing sectors, but our solutions are adaptable to various industries. Our team understands sector-specific compliance requirements and best practices for each industry we serve.",
+    category: "Email Security",
+    features: [
+      "Secure all email - incoming, outgoing and internal",
+      "Advanced AI-based anti-phishing",
+      "Anti-spam filtering",
+      "Email Based Malware Prevention",
+      "Protection from zero-day malware (File Sandboxing)",
+      "File sanitization (CDR)",
+      "Malicious URL protection (URL Reputation)",
+      "URL click-time protection (URL Rewriting)",
+      "Protection from zero-day malicious URLs (URL Sandboxing)",
+      "Account takeover prevention (Anomalies)",
+      "Unauthorised applications detections (Shadow IT)",
+      "Data loss prevention (DLP)",
+      "Email Encryption",
+      "DMARC Management",
+    ],
   },
 ];
 
@@ -156,6 +138,20 @@ export function PricingSection() {
 
   const toggleCategory = (category: string) => {
     setOpenCategory(openCategory === category ? null : category);
+  };
+
+  const isFeatureIncluded = (feature: string, tierIndex: number) => {
+    if (tierIndex === 2) {
+      return true; // Enterprise tier includes all features
+    }
+    if (tierIndex === 1) {
+      // Advanced tier includes all Professional features and its own features
+      return (
+        tiers[0].features.includes(feature) ||
+        tiers[1].features.includes(feature)
+      );
+    }
+    return tiers[tierIndex].features.includes(feature);
   };
 
   return (
@@ -265,7 +261,7 @@ export function PricingSection() {
           className="mb-16"
         >
           <h3 className="text-2xl font-bold mb-6 text-center text-blue-900">
-            Feature Comparison
+            Multi-Solution Comparison
           </h3>
           <div className="space-y-4">
             {featureComparison.map((category) => (
@@ -324,7 +320,7 @@ export function PricingSection() {
                                     key={tierIndex}
                                     className="text-center py-2"
                                   >
-                                    {tier.features.includes(feature) ? (
+                                    {isFeatureIncluded(feature, tierIndex) ? (
                                       <Check className="h-5 w-5 text-green-500 mx-auto" />
                                     ) : (
                                       <span className="text-red-500">-</span>
@@ -342,33 +338,6 @@ export function PricingSection() {
               </div>
             ))}
           </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="max-w-3xl mx-auto"
-        >
-          <h3 className="text-2xl font-bold mb-6 text-center text-blue-900">
-            Frequently Asked Questions
-          </h3>
-          <Accordion
-            type="single"
-            collapsible
-            className="bg-white rounded-xl shadow-lg"
-          >
-            {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="px-6 text-left text-blue-900">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="px-6 text-blue-700">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
         </motion.div>
       </div>
     </section>
