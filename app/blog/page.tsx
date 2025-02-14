@@ -1,14 +1,19 @@
 import BlogPage from "@/components/blog/BlogPage";
 import { getBlogPosts, type BlogPost } from "@/lib/tina";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function Blog({ searchParams }: { searchParams: any }) {
-  const params = await searchParams;
+  const params = searchParams;
   const page = params.page ? Number.parseInt(params.page as string, 10) : 1;
   const search = (params.search as string) || "";
   const category = (params.category as string) || "";
   const postsPerPage = 9;
 
+  console.log("Fetching blog posts in page.tsx...");
   let posts: BlogPost[] = await getBlogPosts();
+  console.log("Retrieved posts:", posts);
 
   if (search) {
     posts = posts.filter(

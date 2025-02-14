@@ -44,10 +44,19 @@ type PostNode = {
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
   try {
+    console.log("Fetching blog posts...")
     const postsResponse = await client.queries.postConnection()
-    return (
-      postsResponse.data.postConnection.edges?.map((edge) => {
-        const node = edge?.node as PostNode
+    console.log("Posts response:", postsResponse)
+
+    if (!postsResponse.data?.postConnection?.edges) {
+      console.error("No posts found in response")
+      return []
+    }
+
+    return postsResponse.data.postConnection.edges
+      .filter((edge): edge is NonNullable<typeof edge> => Boolean(edge?.node))
+      .map((edge) => {
+        const node = edge.node as PostNode
         return {
           _sys: { filename: node._sys.filename },
           id: node._sys.filename,
@@ -62,8 +71,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
           tags: node.tags ?? [],
           content: node.body ?? "",
         } as BlogPost
-      }) ?? []
-    )
+      })
   } catch (error) {
     console.error("Error fetching blog posts:", error)
     return []
@@ -72,11 +80,15 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
 
 export async function getBlogPost(relativePath: string): Promise<BlogPost | null> {
   try {
+    console.log("Fetching blog post:", relativePath)
     const postResponse = await client.queries.post({
       relativePath: `${relativePath}.md`,
     })
+    console.log("Post response:", postResponse)
+
     const post = postResponse.data.post as PostNode | null
     if (!post) {
+      console.error("Post not found:", relativePath)
       return null
     }
 
