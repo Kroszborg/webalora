@@ -1,20 +1,16 @@
 import { defineConfig } from "tinacms"
 
-// Use the correct branch name from your repository
-const branch = process.env.NEXT_PUBLIC_TINA_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || process.env.HEAD || "main"
-
 export default defineConfig({
-  branch,
-  clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID,
-  token: process.env.TINA_TOKEN,
-
+  branch: process.env.NEXT_PUBLIC_TINA_BRANCH || "",
+  clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID || "",
+  token: process.env.TINA_TOKEN || "",
   build: {
     outputFolder: "admin",
     publicFolder: "public",
   },
   media: {
     tina: {
-      mediaRoot: "images",
+      mediaRoot: "uploads",
       publicFolder: "public",
     },
   },
@@ -24,6 +20,7 @@ export default defineConfig({
         name: "post",
         label: "Posts",
         path: "content/posts",
+        format: "md",
         fields: [
           {
             type: "string",
@@ -36,32 +33,24 @@ export default defineConfig({
             type: "string",
             name: "excerpt",
             label: "Excerpt",
-          },
-          {
-            type: "datetime",
-            name: "publishDate",
-            label: "Publish Date",
+            required: true,
           },
           {
             type: "string",
-            name: "author",
-            label: "Author",
+            name: "featuredImage",
+            label: "Featured Image",
           },
           {
             type: "string",
             name: "category",
             label: "Category",
+            required: true,
           },
           {
-            type: "string",
-            name: "tags",
-            label: "Tags",
-            list: true,
-          },
-          {
-            type: "image",
-            name: "featuredImage",
-            label: "Featured Image",
+            type: "datetime",
+            name: "publishDate",
+            label: "Publish Date",
+            required: true,
           },
           {
             type: "rich-text",
@@ -69,10 +58,19 @@ export default defineConfig({
             label: "Body",
             isBody: true,
           },
+          {
+            type: "string",
+            name: "author",
+            label: "Author",
+            required: true,
+          },
+          {
+            type: "string",
+            name: "tags",
+            label: "Tags",
+            list: true,
+          },
         ],
-        ui: {
-          router: ({ document }) => `/blog/${document._sys.filename}`,
-        },
       },
     ],
   },

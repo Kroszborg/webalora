@@ -1,7 +1,6 @@
 import { createClient } from "tinacms/dist/client"
 import { queries } from "../tina/__generated__/types"
 
-// Create the client with authentication
 export const client = createClient({
   url:
     process.env.NODE_ENV === "production"
@@ -28,38 +27,49 @@ export interface BlogPost {
   content: string
 }
 
-type PostNode = {
-  _sys: {
-    filename: string
-  }
-  title?: string
-  excerpt?: string
-  featuredImage?: string
-  category?: string
-  publishDate?: string
-  body?: string
-  author?: string
-  tags?: string[]
+// Updated type to exactly match TinaCMS generated type
+type PostConnectionEdge = {
+  __typename?: "PostConnectionEdges"
+  cursor: string
+  node?: {
+    __typename: "Post"
+    _sys: {
+      filename: string
+    }
+    id: string
+    title: string
+    excerpt: string
+    featuredImage?: string | null
+    category: string
+    publishDate: string
+    body?: string | null
+    author: string
+    tags?: (string | null)[] | null
+  } | null
 }
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
   try {
     console.log("Fetching blog posts...")
     const postsResponse = await client.queries.postConnection()
-    console.log("Posts response:", postsResponse)
+    console.log("Raw posts response:", postsResponse)
 
     if (!postsResponse.data?.postConnection?.edges) {
       console.error("No posts found in response")
       return []
     }
 
-    return postsResponse.data.postConnection.edges
-      .filter((edge): edge is NonNullable<typeof edge> => Boolean(edge?.node))
+    const edges = postsResponse.data.postConnection.edges as PostConnectionEdge[]
+    
+    return edges
+      .filter((edge): edge is PostConnectionEdge => 
+        Boolean(edge?.node)
+      )
       .map((edge) => {
-        const node = edge.node as PostNode
+        const node = edge.node!
         return {
           _sys: { filename: node._sys.filename },
-          id: node._sys.filename,
+          id: node.id,
           title: node.title ?? "",
           slug: node._sys.filename,
           excerpt: node.excerpt ?? "",
@@ -68,9 +78,11 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
           publishDate: node.publishDate ?? "",
           body: node.body ?? "",
           author: node.author ?? "",
-          tags: node.tags ?? [],
+          tags: node.tags?.filter((tag): tag is string => 
+            typeof tag === 'string'
+          ) ?? [],
           content: node.body ?? "",
-        } as BlogPost
+        }
       })
   } catch (error) {
     console.error("Error fetching blog posts:", error)
@@ -84,9 +96,9 @@ export async function getBlogPost(relativePath: string): Promise<BlogPost | null
     const postResponse = await client.queries.post({
       relativePath: `${relativePath}.md`,
     })
-    console.log("Post response:", postResponse)
+    console.log("Raw post response:", postResponse)
 
-    const post = postResponse.data.post as PostNode | null
+    const post = postResponse.data?.post
     if (!post) {
       console.error("Post not found:", relativePath)
       return null
@@ -94,7 +106,7 @@ export async function getBlogPost(relativePath: string): Promise<BlogPost | null
 
     return {
       _sys: { filename: post._sys.filename },
-      id: post._sys.filename,
+      id: post.id,
       title: post.title ?? "",
       slug: post._sys.filename,
       excerpt: post.excerpt ?? "",
@@ -103,12 +115,13 @@ export async function getBlogPost(relativePath: string): Promise<BlogPost | null
       publishDate: post.publishDate ?? "",
       body: post.body ?? "",
       author: post.author ?? "",
-      tags: post.tags ?? [],
+      tags: post.tags?.filter((tag): tag is string => 
+        typeof tag === 'string'
+      ) ?? [],
       content: post.body ?? "",
-    } as BlogPost
+    }
   } catch (error) {
     console.error("Error fetching blog post:", error)
     return null
   }
 }
-
