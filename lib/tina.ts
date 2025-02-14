@@ -28,22 +28,26 @@ export interface BlogPost {
   content: string
 }
 
-type PostNode = {
+interface TinaPost {
+  __typename?: "Post"
   _sys: {
     filename: string
   }
-  title?: string
-  excerpt?: string
-  featuredImage?: string
-  category?: string
-  publishDate?: string
-  body?: string
-  author?: string
-  tags?: string[]
+  id: string
+  title: string
+  excerpt: string
+  featuredImage?: string | null
+  category: string
+  publishDate: string
+  body?: any
+  author: string
+  tags?: (string | null)[] | null
 }
 
-interface PostEdge {
-  node: PostNode
+interface TinaEdge {
+  __typename?: "PostConnectionEdges"
+  cursor: string
+  node?: TinaPost | null
 }
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
@@ -56,12 +60,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
 
     console.log("Fetching blog posts...")
 
-    // Use the generated query with explicit error handling
-    const postsResponse = await client.queries.postConnection({
-      clientConfig: {
-        timeout: 30000, // Increase timeout for production
-      },
-    })
+    const postsResponse = await client.queries.postConnection()
 
     console.log(
       "Raw posts response structure:",
@@ -83,29 +82,29 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
     }
 
     const posts = postsResponse.data.postConnection.edges
-      .filter((edge: PostEdge | null): edge is PostEdge => {
+      .filter((edge): edge is NonNullable<typeof edge> => {
         if (!edge?.node) {
           console.warn("Found an edge without a node")
           return false
         }
         return true
       })
-      .map((edge: PostEdge) => {
-        const node = edge.node
+      .map((edge) => {
+        const node = edge.node!
         console.log("Processing post:", node.title)
 
         return {
           _sys: { filename: node._sys.filename },
-          id: node._sys.filename,
-          title: node.title ?? "",
+          id: node.id,
+          title: node.title,
           slug: node._sys.filename,
-          excerpt: node.excerpt ?? "",
+          excerpt: node.excerpt,
           featuredImage: node.featuredImage ?? "",
-          category: node.category ?? "",
-          publishDate: node.publishDate ?? "",
+          category: node.category,
+          publishDate: node.publishDate,
           body: node.body ?? "",
-          author: node.author ?? "",
-          tags: node.tags ?? [],
+          author: node.author,
+          tags: node.tags?.filter((tag): tag is string => tag !== null) ?? [],
           content: node.body ?? "",
         } as BlogPost
       })
@@ -128,9 +127,6 @@ export async function getBlogPost(relativePath: string): Promise<BlogPost | null
 
     const postResponse = await client.queries.post({
       relativePath: `${relativePath}.md`,
-      clientConfig: {
-        timeout: 30000, // Increase timeout for production
-      },
     })
 
     console.log(
@@ -145,7 +141,7 @@ export async function getBlogPost(relativePath: string): Promise<BlogPost | null
       ),
     )
 
-    const post = postResponse.data.post as PostNode | null
+    const post = postResponse.data.post
     if (!post) {
       console.error("Post not found:", relativePath)
       return null
@@ -153,16 +149,16 @@ export async function getBlogPost(relativePath: string): Promise<BlogPost | null
 
     return {
       _sys: { filename: post._sys.filename },
-      id: post._sys.filename,
-      title: post.title ?? "",
+      id: post.id,
+      title: post.title,
       slug: post._sys.filename,
-      excerpt: post.excerpt ?? "",
+      excerpt: post.excerpt,
       featuredImage: post.featuredImage ?? "",
-      category: post.category ?? "",
-      publishDate: post.publishDate ?? "",
+      category: post.category,
+      publishDate: post.publishDate,
       body: post.body ?? "",
-      author: post.author ?? "",
-      tags: post.tags ?? [],
+      author: post.author,
+      tags: post.tags?.filter((tag): tag is string => tag !== null) ?? [],
       content: post.body ?? "",
     } as BlogPost
   } catch (error) {
