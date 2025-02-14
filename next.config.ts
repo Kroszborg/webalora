@@ -2,7 +2,6 @@
 const nextConfig = {
   images: {
     remotePatterns: [
-      // Use remotePatterns
       {
         protocol: "https",
         hostname: "images.unsplash.com",
@@ -14,6 +13,14 @@ const nextConfig = {
   },
   eslint: {
     ignoreDuringBuilds: true,
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/admin",
+        destination: "/admin/index.html",
+      },
+    ]
   },
 }
 

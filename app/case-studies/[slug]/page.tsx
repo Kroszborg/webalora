@@ -11,12 +11,13 @@ import { CTASection } from "@/components/casestudies/CTASection";
 import { Building, Briefcase } from "lucide-react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import type { Metadata } from "next";
 
-export default async function CaseStudyPage({
-  params,
-}: {
+type PageProps = {
   params: { slug: string };
-}) {
+};
+
+export default async function CaseStudyPage({ params }: PageProps) {
   const caseStudy = caseStudies.find((s) => s.slug === params.slug);
 
   if (!caseStudy) {
@@ -87,7 +88,7 @@ export default async function CaseStudyPage({
         {caseStudy.testimonial && (
           <div className="bg-blue-50 rounded-xl p-6 mb-12">
             <blockquote className="text-lg text-gray-800 italic mb-4">
-              &quot;{caseStudy.testimonial.quote}&quot;
+              "{caseStudy.testimonial.quote}"
             </blockquote>
             <p className="text-gray-600">
               <strong>{caseStudy.testimonial.author}</strong>,{" "}
@@ -132,4 +133,18 @@ export default async function CaseStudyPage({
       <CTASection />
     </div>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const caseStudy = caseStudies.find((s) => s.slug === params.slug);
+
+  if (!caseStudy) {
+    return { title: "Case Study Not Found" };
+  }
+
+  return {
+    title: caseStudy.title,
+  };
 }

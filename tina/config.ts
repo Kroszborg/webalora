@@ -1,6 +1,6 @@
 import { defineConfig } from "tinacms"
 
-const branch = process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || process.env.HEAD || "master"
+const branch = process.env.NEXT_PUBLIC_TINA_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || process.env.HEAD || "master"
 
 export default defineConfig({
   branch,

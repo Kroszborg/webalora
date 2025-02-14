@@ -35,8 +35,7 @@
     "sonner": "^1.7.4",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
-    "tinacms": "^2.1.1",
-    "webalora": "file:"
+    "tinacms": "^1.5.28"
   },
   "devDependencies": {
     "@types/is-hotkey": "^0.1.10",

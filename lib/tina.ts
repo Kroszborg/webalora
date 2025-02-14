@@ -2,7 +2,10 @@ import { createClient } from "tinacms/dist/client"
 import { queries } from "../tina/__generated__/types"
 
 export const client = createClient({
-  url: process.env.NEXT_PUBLIC_TINA_CMS_URL || "http://localhost:4001/graphql", // Updated URL
+  url:
+    process.env.NODE_ENV === "production"
+      ? `https://content.tinajs.io/content/${process.env.NEXT_PUBLIC_TINA_CLIENT_ID}/github/${process.env.NEXT_PUBLIC_TINA_BRANCH}`
+      : "http://localhost:4001/graphql",
   token: process.env.TINA_TOKEN!,
   queries,
 })
