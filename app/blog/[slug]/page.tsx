@@ -8,27 +8,27 @@ import { Calendar, User } from "lucide-react";
 import type { Metadata } from "next";
 
 type PageProps = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 export default async function BlogPostPage({ params }: PageProps) {
-  const post = await getBlogPost(params.slug);
+  // Await the params
+  const { slug } = await params;
+  const post = await getBlogPost(slug);
 
   if (!post) {
     notFound();
   }
 
-  const postUrl = `https://webalora.com/blog/${params.slug}`;
+  const postUrl = `https://webalora.com/blog/${slug}`;
 
   const allPosts = await getBlogPosts();
   const relatedPosts = allPosts
-    .filter(
-      (p) => p.category === post.category && p._sys.filename !== params.slug
-    )
+    .filter((p) => p.category === post.category && p._sys.filename !== slug)
     .slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24">
+    <div className="min-h-screen bg-gradient-to-b from-purple-900 to-blue-900 pt-24">
       <article className="max-w-4xl mx-auto px-4">
         {/* Category Badge */}
         <div className="mb-6">
@@ -38,12 +38,12 @@ export default async function BlogPostPage({ params }: PageProps) {
         </div>
 
         {/* Title */}
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+        <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
           {post.title}
         </h1>
 
         {/* Meta Information */}
-        <div className="flex items-center gap-6 mb-8 text-gray-600">
+        <div className="flex items-center gap-6 mb-8 text-white">
           <div className="flex items-center gap-2">
             <User className="w-4 h-4" />
             <span>{post.author}</span>
@@ -59,16 +59,16 @@ export default async function BlogPostPage({ params }: PageProps) {
           <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-xl">
             <Image
               src={post.featuredImage || "/placeholder.svg"}
-              alt={post.title || ""}
+              alt={post.title}
               fill
-              className="object-cover"
+              style={{ objectFit: "cover" }}
               priority
             />
           </div>
         </div>
 
         {/* Social Share */}
-        <SocialShare url={postUrl} title={post.title || ""} />
+        <SocialShare url={postUrl} title={post.title} />
 
         {/* Content */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-12">
@@ -101,12 +101,16 @@ export default async function BlogPostPage({ params }: PageProps) {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const post = await getBlogPost(params.slug);
+  // Await the params
+  const { slug } = await params;
+  const post = await getBlogPost(slug);
+
   if (!post) {
     return {
       title: "Post Not Found",
     };
   }
+
   return {
     title: post.title,
     description: post.excerpt,

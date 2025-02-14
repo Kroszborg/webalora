@@ -1,16 +1,11 @@
 import BlogPage from "@/components/blog/BlogPage";
 import { getBlogPosts, type BlogPost } from "@/lib/tina";
 
-export default async function Blog({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  const page = searchParams.page
-    ? Number.parseInt(searchParams.page as string, 10)
-    : 1;
-  const search = (searchParams.search as string) || "";
-  const category = (searchParams.category as string) || "";
+export default async function Blog({ searchParams }: { searchParams: any }) {
+  const params = await searchParams;
+  const page = params.page ? Number.parseInt(params.page as string, 10) : 1;
+  const search = (params.search as string) || "";
+  const category = (params.category as string) || "";
   const postsPerPage = 9;
 
   let posts: BlogPost[] = await getBlogPosts();

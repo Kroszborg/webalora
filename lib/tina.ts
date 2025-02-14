@@ -1,11 +1,11 @@
-import { createClient, type TinaClient } from "tinacms/dist/client"
+import { createClient } from "tinacms/dist/client"
 import { queries } from "../tina/__generated__/types"
 
 export const client = createClient({
-  url: process.env.NEXT_PUBLIC_TINA_BRANCH || "master",
+  url: process.env.NEXT_PUBLIC_TINA_CMS_URL || "http://localhost:4001/graphql", // Updated URL
   token: process.env.TINA_TOKEN!,
   queries,
-}) as TinaClient<typeof queries>
+})
 
 export interface BlogPost {
   _sys: {
@@ -24,24 +24,38 @@ export interface BlogPost {
   content: string
 }
 
+type PostNode = {
+  _sys: {
+    filename: string
+  }
+  title?: string
+  excerpt?: string
+  featuredImage?: string
+  category?: string
+  publishDate?: string
+  body?: string
+  author?: string
+  tags?: string[]
+}
+
 export async function getBlogPosts(): Promise<BlogPost[]> {
   const postsResponse = await client.queries.postConnection()
   return (
-    postsResponse.data.postConnection.edges?.map((edge: any) => {
-      const node = edge?.node
+    postsResponse.data.postConnection.edges?.map((edge) => {
+      const node = edge?.node as PostNode
       return {
-        _sys: { filename: node?._sys.filename },
-        id: node?._sys.filename,
-        title: node?.title ?? "",
-        slug: node?._sys.filename,
-        excerpt: node?.excerpt ?? "",
-        featuredImage: node?.featuredImage ?? "",
-        category: node?.category ?? "",
-        publishDate: node?.publishDate ?? "",
-        body: node?.body ?? "",
-        author: node?.author ?? "",
-        tags: node?.tags ?? [],
-        content: node?.body ?? "",
+        _sys: { filename: node._sys.filename },
+        id: node._sys.filename,
+        title: node.title ?? "",
+        slug: node._sys.filename,
+        excerpt: node.excerpt ?? "",
+        featuredImage: node.featuredImage ?? "",
+        category: node.category ?? "",
+        publishDate: node.publishDate ?? "",
+        body: node.body ?? "",
+        author: node.author ?? "",
+        tags: node.tags ?? [],
+        content: node.body ?? "",
       } as BlogPost
     }) ?? []
   )
@@ -51,7 +65,7 @@ export async function getBlogPost(relativePath: string): Promise<BlogPost | null
   const postResponse = await client.queries.post({
     relativePath: `${relativePath}.md`,
   })
-  const post = postResponse.data.post
+  const post = postResponse.data.post as PostNode | null
   if (!post) {
     return null
   }
