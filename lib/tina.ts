@@ -1,6 +1,7 @@
 import { createClient } from "tinacms/dist/client"
 import { queries } from "../tina/__generated__/types"
 
+// Create the client with authentication
 export const client = createClient({
   url:
     process.env.NODE_ENV === "production"
@@ -27,49 +28,75 @@ export interface BlogPost {
   content: string
 }
 
-// Updated type to exactly match TinaCMS generated type
-type PostConnectionEdge = {
-  __typename?: "PostConnectionEdges"
-  cursor: string
-  node?: {
-    __typename: "Post"
-    _sys: {
-      filename: string
-    }
-    id: string
-    title: string
-    excerpt: string
-    featuredImage?: string | null
-    category: string
-    publishDate: string
-    body?: string | null
-    author: string
-    tags?: (string | null)[] | null
-  } | null
+type PostNode = {
+  _sys: {
+    filename: string
+  }
+  title?: string
+  excerpt?: string
+  featuredImage?: string
+  category?: string
+  publishDate?: string
+  body?: string
+  author?: string
+  tags?: string[]
+}
+
+interface PostEdge {
+  node: PostNode
 }
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
   try {
+    // Log environment information
+    console.log("Environment:", process.env.NODE_ENV)
+    console.log("Tina Client ID:", process.env.NEXT_PUBLIC_TINA_CLIENT_ID)
+    console.log("Tina Branch:", process.env.NEXT_PUBLIC_TINA_BRANCH)
+    console.log("Has Token:", !!process.env.TINA_TOKEN)
+
     console.log("Fetching blog posts...")
-    const postsResponse = await client.queries.postConnection()
-    console.log("Raw posts response:", postsResponse)
+
+    // Use the generated query with explicit error handling
+    const postsResponse = await client.queries.postConnection({
+      clientConfig: {
+        timeout: 30000, // Increase timeout for production
+      },
+    })
+
+    console.log(
+      "Raw posts response structure:",
+      JSON.stringify(
+        {
+          hasData: !!postsResponse.data,
+          hasConnection: !!postsResponse.data?.postConnection,
+          hasEdges: !!postsResponse.data?.postConnection?.edges,
+          edgeCount: postsResponse.data?.postConnection?.edges?.length,
+        },
+        null,
+        2,
+      ),
+    )
 
     if (!postsResponse.data?.postConnection?.edges) {
       console.error("No posts found in response")
       return []
     }
 
-    const edges = postsResponse.data.postConnection.edges as PostConnectionEdge[]
-    
-    return edges
-      .filter((edge): edge is PostConnectionEdge => 
-        Boolean(edge?.node)
-      )
-      .map((edge) => {
-        const node = edge.node!
+    const posts = postsResponse.data.postConnection.edges
+      .filter((edge: PostEdge | null): edge is PostEdge => {
+        if (!edge?.node) {
+          console.warn("Found an edge without a node")
+          return false
+        }
+        return true
+      })
+      .map((edge: PostEdge) => {
+        const node = edge.node
+        console.log("Processing post:", node.title)
+
         return {
           _sys: { filename: node._sys.filename },
-          id: node.id,
+          id: node._sys.filename,
           title: node.title ?? "",
           slug: node._sys.filename,
           excerpt: node.excerpt ?? "",
@@ -78,14 +105,19 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
           publishDate: node.publishDate ?? "",
           body: node.body ?? "",
           author: node.author ?? "",
-          tags: node.tags?.filter((tag): tag is string => 
-            typeof tag === 'string'
-          ) ?? [],
+          tags: node.tags ?? [],
           content: node.body ?? "",
-        }
+        } as BlogPost
       })
+
+    console.log(`Successfully processed ${posts.length} posts`)
+    return posts
   } catch (error) {
-    console.error("Error fetching blog posts:", error)
+    console.error("Error fetching blog posts:", {
+      error,
+      message: error instanceof Error ? error.message : "Unknown error",
+      stack: error instanceof Error ? error.stack : undefined,
+    })
     return []
   }
 }
@@ -93,12 +125,27 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
 export async function getBlogPost(relativePath: string): Promise<BlogPost | null> {
   try {
     console.log("Fetching blog post:", relativePath)
+
     const postResponse = await client.queries.post({
       relativePath: `${relativePath}.md`,
+      clientConfig: {
+        timeout: 30000, // Increase timeout for production
+      },
     })
-    console.log("Raw post response:", postResponse)
 
-    const post = postResponse.data?.post
+    console.log(
+      "Raw post response structure:",
+      JSON.stringify(
+        {
+          hasData: !!postResponse.data,
+          hasPost: !!postResponse.data?.post,
+        },
+        null,
+        2,
+      ),
+    )
+
+    const post = postResponse.data.post as PostNode | null
     if (!post) {
       console.error("Post not found:", relativePath)
       return null
@@ -106,7 +153,7 @@ export async function getBlogPost(relativePath: string): Promise<BlogPost | null
 
     return {
       _sys: { filename: post._sys.filename },
-      id: post.id,
+      id: post._sys.filename,
       title: post.title ?? "",
       slug: post._sys.filename,
       excerpt: post.excerpt ?? "",
@@ -115,13 +162,17 @@ export async function getBlogPost(relativePath: string): Promise<BlogPost | null
       publishDate: post.publishDate ?? "",
       body: post.body ?? "",
       author: post.author ?? "",
-      tags: post.tags?.filter((tag): tag is string => 
-        typeof tag === 'string'
-      ) ?? [],
+      tags: post.tags ?? [],
       content: post.body ?? "",
-    }
+    } as BlogPost
   } catch (error) {
-    console.error("Error fetching blog post:", error)
+    console.error("Error fetching blog post:", {
+      relativePath,
+      error,
+      message: error instanceof Error ? error.message : "Unknown error",
+      stack: error instanceof Error ? error.stack : undefined,
+    })
     return null
   }
 }
+
