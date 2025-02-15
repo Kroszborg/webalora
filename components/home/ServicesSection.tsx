@@ -29,7 +29,7 @@ const services = [
     description:
       "Secure, scalable cloud services that enhance flexibility and efficiency.",
     gradient: "from-purple-500 via-pink-500 to-rose-500",
-    href: "#",
+    href: "/cloud-solutions",
   },
   {
     icon: BarChart,
@@ -37,7 +37,7 @@ const services = [
     description:
       "Expert guidance to align technology with your business objectives for sustainable growth.",
     gradient: "from-emerald-500 via-teal-500 to-cyan-500",
-    href: "#",
+    href: "/consultancy",
   },
   {
     icon: Zap,

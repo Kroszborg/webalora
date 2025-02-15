@@ -81,7 +81,7 @@ export const HeroSection: React.FC = () => {
       text: "Cloud Solutions",
       desc: "Secure & Scalable",
       gradient: "from-purple-400 to-purple-600",
-      href: "#",
+      href: "/cloud-solutions",
     },
   ];
 
@@ -130,14 +130,16 @@ export const HeroSection: React.FC = () => {
           </div>
         </FloatingElement>
 
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight sm:leading-tight md:leading-tight lg:leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-white">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-white">
           Trusted IT Expertise
-          <br className="hidden sm:inline" />
-          <span className="sm:inline">That Fuels Growth</span>
+          <br />
+          <span className="sm:inline bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text">
+            That Fuels Growth
+          </span>
         </h1>
 
         <FloatingElement yOffset={10} duration={5} delay={0.2}>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 sm:mb-12 text-white max-w-3xl mx-auto">
+          <p className="text-xl sm:text-2xl lg:text-3xl mb-8 text-white max-w-4xl mx-auto font-light">
             Delivering secure, compliant, and reliable IT services that drive
             growth and protect your business.
           </p>

@@ -66,7 +66,6 @@ export function WhyPartnerSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white/30 backdrop-blur-md p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/50"
             >
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4 shadow-inner">

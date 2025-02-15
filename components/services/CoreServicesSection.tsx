@@ -130,7 +130,7 @@ export function CoreServicesSection() {
             <motion.div
               key={index}
               variants={itemVariants}
-              className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg hover:shadow-xl"
             >
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mr-4">
