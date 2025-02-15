@@ -1,20 +1,22 @@
-import Link from "next/link"
-import Image from "next/legacy/image"
-import { ArrowRight } from "lucide-react"
-import type { BlogPost } from "@/lib/blogposts"
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowRight } from "lucide-react";
+import type { BlogPost } from "@/lib/blogposts";
 
 interface RelatedPostsProps {
-  posts: BlogPost[]
+  posts: BlogPost[];
 }
 
 export function RelatedPosts({ posts }: RelatedPostsProps) {
   if (!posts || posts.length === 0) {
-    return null
+    return null;
   }
 
   return (
     <section className="mb-16">
-      <h2 className="text-3xl font-bold text-gray-900 mb-8">Related Articles</h2>
+      <h2 className="text-3xl font-bold text-gray-900 mb-8">
+        Related Articles
+      </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {posts.map((post) => (
           <Link
@@ -40,9 +42,13 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
               <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300 line-clamp-2">
                 {post.title}
               </h3>
-              <p className="text-sm text-gray-600 mb-4 line-clamp-2">{post.excerpt}</p>
+              <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                {post.excerpt}
+              </p>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500">{post.publishDate}</span>
+                <span className="text-sm text-gray-500">
+                  {post.publishDate}
+                </span>
                 <span className="text-blue-600 flex items-center text-sm font-medium">
                   Read More
                   <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -53,6 +59,5 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
         ))}
       </div>
     </section>
-  )
+  );
 }
-

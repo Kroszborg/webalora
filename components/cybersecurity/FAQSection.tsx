@@ -10,7 +10,7 @@ import {
   FileCheck,
   HelpCircle,
 } from "lucide-react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 const faqs = [
   {

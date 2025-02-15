@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { Target, Zap, Users } from "lucide-react";
 
 export function OurMission() {
@@ -56,7 +56,8 @@ export function OurMission() {
                 <p className="text-lg text-gray-700 leading-relaxed">
                   We strive to be more than just an IT service provider—we aim
                   to be your trusted technology partner, empowering your
-                  business to thrive in today&apos;s fast-evolving digital landscape.
+                  business to thrive in today&apos;s fast-evolving digital
+                  landscape.
                 </p>
               </div>
             </motion.div>

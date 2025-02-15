@@ -2,7 +2,7 @@
 
 import type React from "react";
 import { useEffect, useRef } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { SectionTitle } from "@/components/ui/section-title";
 import { AnimatedCounter } from "@/components/ui/animated-counter";

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Shield, Search, Users, FileCheck, Database, Lock } from "lucide-react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 export function ServicesOverview() {
   const services = [

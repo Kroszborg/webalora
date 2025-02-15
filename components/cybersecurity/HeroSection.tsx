@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Shield, Lock, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 export function HeroSection() {
   return (

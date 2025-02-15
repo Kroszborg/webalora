@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { Quote } from "lucide-react";
 
 export function ClientSuccessStory() {
@@ -37,9 +37,10 @@ export function ClientSuccessStory() {
             <div className="md:w-2/3">
               <Quote className="w-12 h-12 text-blue-300 mb-4" />
               <blockquote className="text-xl italic mb-6 text-blue-100">
-                &quot;Before working with WebAlora, server crashes and IT headaches
-                were our norm. Now, we&apos;ve cut IT spend by 30% and reduced
-                downtime by 60%. Their support is worth every penny.&quot;
+                &quot;Before working with WebAlora, server crashes and IT
+                headaches were our norm. Now, we&apos;ve cut IT spend by 30% and
+                reduced downtime by 60%. Their support is worth every
+                penny.&quot;
               </blockquote>
               <p className="font-semibold text-white mb-6">
                 — Sarah Robertson, Operations Manager at Brighton Financial

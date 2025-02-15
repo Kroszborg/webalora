@@ -1,6 +1,6 @@
 import { getBlogPost, getBlogPosts } from "@/lib/tina";
 import { notFound } from "next/navigation";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { RelatedPosts } from "@/components/blog/RelatedPosts";
 import { SocialShare } from "@/components/blog/SocialShare";
 import BlogContent from "@/components/blog/BlogContent";
@@ -54,7 +54,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             <Image
               src={post.featuredImage || "/placeholder.svg"}
               alt={post.title}
-              fill
+              layout="fill"
               style={{ objectFit: "cover" }}
               priority
             />

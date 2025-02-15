@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { SectionTitle } from "@/components/ui/section-title";
 import { GradientBlob } from "@/components/ui/gradient-blob";
 import { CheckCircle } from "lucide-react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 export const AboutSection: React.FC = () => {
   const features = [
@@ -48,8 +48,8 @@ export const AboutSection: React.FC = () => {
             <p className="text-base sm:text-lg text-gray-700 mb-4 sm:mb-6">
               WebAlora is a leading IT service provider, delivering tailored,
               high-performance solutions to businesses across the UK. Our
-              commitment to excellence and innovation drives our clients
-              success in an ever-evolving digital landscape.
+              commitment to excellence and innovation drives our clients success
+              in an ever-evolving digital landscape.
             </p>
             <ul className="space-y-2 sm:space-y-3">
               {features.map((feature, index) => (
