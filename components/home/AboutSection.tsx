@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { SectionTitle } from "@/components/ui/section-title";
 import { GradientBlob } from "@/components/ui/gradient-blob";
 import { CheckCircle } from "lucide-react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 export const AboutSection: React.FC = () => {
   const features = [

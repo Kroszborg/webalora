@@ -9,7 +9,7 @@ import {
   useReducedMotion,
   AnimatePresence,
 } from "framer-motion";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Server, Shield, Cloud } from "lucide-react";

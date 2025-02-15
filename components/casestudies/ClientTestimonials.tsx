@@ -2,7 +2,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { Quote } from "lucide-react";
 
 const testimonials = [

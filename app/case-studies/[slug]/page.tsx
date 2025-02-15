@@ -4,7 +4,7 @@ import {
   getSerializedContent,
 } from "@/lib/casestudies";
 import { notFound } from "next/navigation";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import CaseStudyContent from "@/components/casestudies/CaseStudyContent";
 import { ClientTestimonials } from "@/components/casestudies/ClientTestimonials";
 import { CTASection } from "@/components/casestudies/CTASection";

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ClipboardList, Cog, Bell, ShieldAlert, RefreshCw } from "lucide-react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 export function CybersecurityFramework() {
   const steps = [
