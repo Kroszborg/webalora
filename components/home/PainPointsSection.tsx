@@ -122,7 +122,7 @@ export const PainPointsSection: React.FC = () => {
             size="lg"
             className="relative px-6 md:px-8 py-3 md:py-6 text-base md:text-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white group overflow-hidden shadow-xl hover:shadow-2xl "
           >
-            <Link href="#contact" className="flex items-center gap-2">
+            <Link href="/contact" className="flex items-center gap-2">
               <span className="relative z-10">Book a Free Consultation</span>
               <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

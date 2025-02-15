@@ -51,7 +51,7 @@ export function CTASection() {
               size="lg"
               className="bg-white text-blue-900 hover:bg-blue-50 shadow-lg hover:shadow-xl "
             >
-              <Link href="#contact" className="flex items-center">
+              <Link href="/contact" className="flex items-center">
                 Book Your Free Consultation
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>

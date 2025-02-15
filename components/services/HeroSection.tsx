@@ -105,7 +105,7 @@ export function HeroSection() {
               size="lg"
               className="group relative overflow-hidden bg-white text-blue-900 hover:bg-blue-50 px-8 py-6 text-lg font-semibold"
             >
-              <Link href="#contact" className="flex items-center">
+              <Link href="/contact" className="flex items-center">
                 <Lock className="mr-2 h-5 w-5" />
                 <span>Get Your Free Security Assessment</span>
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />

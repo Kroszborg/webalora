@@ -53,7 +53,7 @@ export function HeroSection() {
               size="lg"
               className="bg-white text-blue-900 hover:bg-blue-50 group"
             >
-              <Link href="#contact">
+              <Link href="/contact">
                 Book Your Free Consultation
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Link>

@@ -116,7 +116,7 @@ export function ThreatLandscape() {
             size="lg"
             className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/50  shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)]"
           >
-            <a href="#contact" className="flex items-center">
+            <a href="/contact" className="flex items-center">
               <span>Get Your Threat Assessment</span>
               <ArrowRight className="ml-2 h-5 w-5" />
             </a>

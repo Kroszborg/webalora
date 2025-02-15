@@ -80,7 +80,7 @@ export function CTASection() {
                 size="lg"
                 className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-8 py-6 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl "
               >
-                <Link href="#contact" className="flex items-center">
+                <Link href="/contact" className="flex items-center">
                   <Lock className="mr-2 h-5 w-5" />
                   <span>Book My Free Security Assessment</span>
                   <ArrowRight className="ml-2 h-5 w-5" />

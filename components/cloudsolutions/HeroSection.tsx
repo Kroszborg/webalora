@@ -26,8 +26,7 @@ export function HeroSection() {
           className="text-center"
         >
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 text-white leading-tight">
-            Accelerate Your Business with{" "}
-            <br />
+            Accelerate Your Business with <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
               WebAlora&apos;s Cloud Solutions
             </span>
@@ -41,7 +40,7 @@ export function HeroSection() {
               size="lg"
               className="bg-white text-blue-900 hover:bg-blue-50"
             >
-              <Link href="#contact">
+              <Link href="/contact">
                 Book Your Free Consultation
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>

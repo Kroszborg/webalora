@@ -271,7 +271,7 @@ export function AssessmentQuiz() {
             )}
             {showResults && (
               <Button asChild className="w-full">
-                <a href="#contact">Book Free Consultation</a>
+                <a href="/contact">Book Free Consultation</a>
               </Button>
             )}
           </CardFooter>

@@ -48,7 +48,7 @@ export function HeroSection() {
               size="lg"
               className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/50  shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)]"
             >
-              <Link href="#contact" className="flex items-center">
+              <Link href="/contact" className="flex items-center">
                 <Shield className="mr-2 h-5 w-5" />
                 <span>Schedule Security Assessment</span>
               </Link>

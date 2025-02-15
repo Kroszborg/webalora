@@ -240,7 +240,7 @@ export function SecurityReadinessQuiz() {
                   size="lg"
                   className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-xl font-semibold rounded-full  shadow-lg hover:shadow-xl"
                 >
-                  <Link href="#contact" className="flex items-center">
+                  <Link href="/contact" className="flex items-center">
                     Book a Consultation
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
