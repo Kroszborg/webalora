@@ -37,10 +37,9 @@ export function WhyChooseUs() {
       <Image
         src="https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?auto=format&fit=crop&q=80&w=2070"
         alt="Technology Background"
-        layout="fill"
-        objectFit="cover"
+        fill
         quality={100}
-        className="absolute inset-0 opacity-10"
+        className="absolute inset-0 opacity-10 object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-white to-blue-50" />
 

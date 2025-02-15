@@ -13,8 +13,8 @@ export function HeroSection() {
         src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2072"
         alt="Cloud Technology Background"
         fill
-        objectFit="cover"
-        className="absolute inset-0 z-0 opacity-50"
+        className="opacity-50 object-cover"
+        sizes="100vw"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-blue-900/80 via-blue-900/70 to-indigo-900/80 z-10" />
 

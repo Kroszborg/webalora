@@ -12,11 +12,10 @@ export function HeroSection() {
       <Image
         src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&q=80&w=2070"
         alt="Data Center"
-        layout="fill"
-        objectFit="cover"
-        quality={100}
+        fill
+        className="absolute inset-0 opacity-90 object-cover"
+        sizes="100vw"
         priority
-        className="absolute inset-0 opacity-90"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-blue-900/90 to-indigo-900/90 backdrop-blur-sm" />
 
@@ -29,6 +28,7 @@ export function HeroSection() {
         >
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 text-white leading-tight">
             Secure Your Future with{" "}
+            <br />
             <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               WebAlora&apos;s Backup Solutions
             </span>
@@ -84,7 +84,7 @@ export function HeroSection() {
               key={index}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-white/10 backdrop-blur-sm rounded-lg p-6 flex flex-col items-center hover:bg-white/20 "
+              className="bg-white/10 backdrop-blur-sm rounded-lg p-6 flex flex-col items-center hover:bg-white/20 transition-colors"
             >
               <item.icon className="h-12 w-12 text-blue-300 mb-4" />
               <p className="text-white text-lg font-semibold text-center">

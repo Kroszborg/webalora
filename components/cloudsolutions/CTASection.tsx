@@ -13,8 +13,9 @@ export function CTASection() {
         <Image
           src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2072"
           alt="Cloud Technology Background"
-          layout="fill"
-          className="opacity-50"
+          fill
+          className="opacity-50 object-cover"
+          sizes="100vw"
         />
       </div>
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/80 to-indigo-900/80 backdrop-blur-sm" />

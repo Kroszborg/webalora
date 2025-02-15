@@ -60,8 +60,8 @@ export function CaseStudiesSection() {
                 <Image
                   src={study.image || "/placeholder.svg"}
                   alt={study.title}
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  className="object-cover"
                 />
               </div>
               <div className="p-6">

@@ -23,9 +23,8 @@ export function HeroSection() {
       <Image
         src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2072"
         alt="Digital Globe"
-        layout="fill"
-        objectFit="cover"
-        className="opacity-30"
+        fill
+        className="opacity-30 object-cover"
         priority
       />
 

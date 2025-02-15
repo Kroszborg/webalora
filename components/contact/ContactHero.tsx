@@ -11,11 +11,10 @@ export function ContactHero() {
       <Image
         src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2072"
         alt="Digital Network Background"
-        layout="fill"
-        objectFit="cover"
+        fill
         quality={100}
         priority
-        className="z-0"
+        className="z-0 object-cover"
       />
 
       {/* Overlay */}

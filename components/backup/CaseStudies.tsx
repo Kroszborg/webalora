@@ -51,10 +51,9 @@ export function CaseStudies() {
       <Image
         src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&q=80&w=2070"
         alt="Data Center"
-        layout="fill"
-        objectFit="cover"
-        quality={100}
-        className="absolute inset-0 opacity-10"
+        fill
+        className="absolute inset-0 opacity-10 object-cover"
+        sizes="100vw"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-white to-blue-50" />
 
@@ -77,14 +76,15 @@ export function CaseStudies() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl "
+              className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
             >
               <div className="relative h-48">
                 <Image
                   src={study.image || "/placeholder.svg"}
                   alt={study.title}
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
               <div className="p-6">

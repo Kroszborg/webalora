@@ -5,6 +5,7 @@ import { CaseStudies } from "./CaseStudies";
 import { FAQSection } from "./FAQSection";
 import { CTASection } from "./CTASection";
 import { WhyChooseUs } from "./WhyChooseUs";
+import { HiddenCosts } from "./hidden-costs";
 
 export default function BackupPage() {
   return (
@@ -12,6 +13,7 @@ export default function BackupPage() {
       <HeroSection />
       <WhyEssential />
       <ServicesOverview />
+      <HiddenCosts />
       <CaseStudies />
       <FAQSection />
       <WhyChooseUs />
