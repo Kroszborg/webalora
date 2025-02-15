@@ -4,12 +4,13 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, ChevronDown, ChevronRight } from "lucide-react";
 import Image from "next/image";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,17 +21,39 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const services = [
+    { name: "IT Services", href: "/services" },
+    { name: "Cybersecurity Solutions", href: "/cybersecurity-solutions" },
+    { name: "Cloud Solutions & Migration", href: "/cloud-solutions" },
+    { name: "IT Consultancy", href: "/consultancy" },
+    { name: "Network Infrastructure", href: "/networking" },
+    { name: "Backup & Disaster Recovery", href: "/backup" },
+    { name: "VOIP Solutions", href: "/voip-solutions" },
+  ];
+
+  const resources = [
+    { name: "Blog", href: "/blog" },
+    { name: "Case Studies", href: "/case-studies" },
+  ];
+
   const navItems = [
     { name: "Home", href: "/" },
-    { name: "Services", href: "/services" },
-    { name: "About", href: "/about" },
-    { name: "Blogs", href: "/blog" },
-    { name: "Consultancy", href: "/consultancy" },
+    {
+      name: "Services",
+      href: "#",
+      dropdown: services,
+    },
+    { name: "About Us", href: "/about" },
+    {
+      name: "Resources",
+      href: "#",
+      dropdown: resources,
+    },
   ];
 
   return (
     <header
-      className={`fixed w-full z-50  ${
+      className={`fixed w-full z-50 transition-all duration-300 ${
         scrolled ? "bg-white/80 backdrop-blur-md shadow-md" : "bg-transparent"
       }`}
     >
@@ -53,18 +76,55 @@ export function Header() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <Link
+              <div
                 key={item.name}
-                href={item.href}
-                className={`text-sm font-semibold ${
-                  scrolled
-                    ? "text-gray-900 hover:text-blue-600"
-                    : "text-white hover:text-blue-200"
-                } transition-colors duration-300`}
+                className="relative"
+                onMouseEnter={() => setActiveDropdown(item.name)}
+                onMouseLeave={() => setActiveDropdown(null)}
               >
-                {item.name}
-              </Link>
+                <Link
+                  href={item.href}
+                  className={`flex items-center text-sm font-semibold ${
+                    scrolled
+                      ? "text-gray-900 hover:text-blue-600"
+                      : "text-white hover:text-blue-200"
+                  } transition-colors duration-300`}
+                >
+                  {item.name}
+                  {item.dropdown && (
+                    <ChevronDown className="ml-1 h-4 w-4 transition-transform duration-200" />
+                  )}
+                </Link>
+
+                {/* Dropdown Menu */}
+                {item.dropdown && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{
+                      opacity: activeDropdown === item.name ? 1 : 0,
+                      y: activeDropdown === item.name ? 0 : 10,
+                    }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+                  >
+                    <div className="py-2">
+                      {item.dropdown.map((dropdownItem) => (
+                        <Link
+                          key={dropdownItem.name}
+                          href={dropdownItem.href}
+                          className="group flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-150"
+                          onClick={() => setActiveDropdown(null)}
+                        >
+                          <ChevronRight className="mr-2 h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity duration-150" />
+                          {dropdownItem.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </div>
             ))}
+
             <Link
               href="tel:03300434953"
               className={`flex items-center gap-2 text-sm font-medium ${
@@ -76,13 +136,14 @@ export function Header() {
               <Phone className="h-4 w-4" />
               0330 043 4953
             </Link>
+
             <Button
               asChild
               className={`${
                 scrolled
                   ? "bg-blue-600 text-white hover:bg-blue-700"
                   : "bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm"
-              }  border border-transparent hover:border-white/50`}
+              } border border-transparent hover:border-white/50 transition-all duration-300`}
             >
               <Link href="/contact">Contact Us</Link>
             </Button>
@@ -96,8 +157,8 @@ export function Header() {
                 scrolled ? "text-gray-900" : "text-white"
               } hover:bg-gray-100 hover:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white`}
               onClick={() => setMobileMenuOpen(true)}
+              aria-label="Open main menu"
             >
-              <span className="sr-only">Open main menu</span>
               <Menu className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
@@ -119,10 +180,10 @@ export function Header() {
 
             {/* Menu Panel */}
             <motion.div
-              className="absolute top-0 left-0 right-0 z-[100] bg-white shadow-lg"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              className="absolute top-0 left-0 right-0 z-[100] bg-white shadow-lg overflow-hidden"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
               <div className="container mx-auto px-4">
@@ -144,37 +205,58 @@ export function Header() {
                     type="button"
                     className="rounded-md p-2 text-gray-400 hover:text-gray-500"
                     onClick={() => setMobileMenuOpen(false)}
+                    aria-label="Close menu"
                   >
-                    <span className="sr-only">Close menu</span>
                     <X className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
-                <div className="py-6 space-y-4 text-center">
+                <div className="py-6 space-y-6">
                   {navItems.map((item) => (
+                    <div key={item.name} className="space-y-4">
+                      <Link
+                        href={item.href}
+                        className="block text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-300"
+                        onClick={() => {
+                          if (!item.dropdown) {
+                            setMobileMenuOpen(false);
+                          }
+                        }}
+                      >
+                        {item.name}
+                      </Link>
+                      {item.dropdown && (
+                        <div className="pl-4 space-y-3 border-l-2 border-gray-100">
+                          {item.dropdown.map((dropdownItem) => (
+                            <Link
+                              key={dropdownItem.name}
+                              href={dropdownItem.href}
+                              className="block text-base text-gray-600 hover:text-blue-600 transition-colors duration-300"
+                              onClick={() => setMobileMenuOpen(false)}
+                            >
+                              {dropdownItem.name}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  <div className="pt-4 border-t border-gray-100">
                     <Link
-                      key={item.name}
-                      href={item.href}
-                      className="block text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-300"
+                      href="tel:03300434953"
+                      className="flex items-center justify-center gap-2 text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-300 mb-4"
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      {item.name}
+                      <Phone className="h-5 w-5" />
+                      0330 043 4953
                     </Link>
-                  ))}
-                  <Link
-                    href="tel:03300434953"
-                    className="flex items-center justify-center gap-2 text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-300"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <Phone className="h-5 w-5" />
-                    0330 043 4953
-                  </Link>
-                  <Button
-                    asChild
-                    className="w-full bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-300"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <Link href="/contact">Contact Us</Link>
-                  </Button>
+                    <Button
+                      asChild
+                      className="w-full bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-300"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <Link href="/contact">Contact Us</Link>
+                    </Button>
+                  </div>
                 </div>
               </div>
             </motion.div>
