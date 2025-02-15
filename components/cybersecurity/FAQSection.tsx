@@ -84,7 +84,7 @@ export function FAQSection() {
               className="mb-6"
             >
               <motion.button
-                className="flex justify-between items-center w-full p-6 bg-white/10 backdrop-filter backdrop-blur-lg rounded-xl text-left focus:outline-none border border-white/20 hover:border-white/40 transition-all duration-300"
+                className="flex justify-between items-center w-full p-6 bg-white/10 backdrop-filter backdrop-blur-lg rounded-xl text-left focus:outline-none border border-white/20 hover:border-white/40 "
                 onClick={() => toggleFAQ(index)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}

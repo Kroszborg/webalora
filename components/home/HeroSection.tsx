@@ -148,7 +148,7 @@ export const HeroSection: React.FC = () => {
         <div className="flex flex-col sm:flex-row justify-center gap-4 mb-20">
           <Button
             size="lg"
-            className="group relative overflow-hidden bg-white text-blue-900 hover:bg-blue-50 border-2 border-transparent px-8 py-6 text-base font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+            className="group relative overflow-hidden bg-white text-blue-900 hover:bg-blue-50 border-2 border-transparent px-8 py-6 text-base font-semibold  shadow-lg hover:shadow-xl"
             onClick={() => setShowForm(true)}
           >
             <span className="relative z-10">Get a Free IT Health Check</span>
@@ -164,7 +164,7 @@ export const HeroSection: React.FC = () => {
             asChild
             size="lg"
             variant="outline"
-            className="group relative overflow-hidden text-blue-900 border-2 border-white hover:border-blue-200 px-8 py-6 text-base font-semibold backdrop-blur-sm transition-all duration-300"
+            className="group relative overflow-hidden text-blue-900 border-2 border-white hover:border-blue-200 px-8 py-6 text-base font-semibold backdrop-blur-sm "
           >
             <Link href="/cybersecurity-solutions" className="flex items-center">
               Explore Our Cybersecurity Solutions
@@ -177,13 +177,13 @@ export const HeroSection: React.FC = () => {
           {services.map((item, index) => (
             <Link href={item.href} key={index} className="block">
               <div
-                className="group relative flex flex-col items-center p-6 rounded-xl border border-white/10 backdrop-blur-md hover:border-white/20 transition-all duration-300"
+                className="group relative flex flex-col items-center p-6 rounded-xl border border-white/10 backdrop-blur-md hover:border-white/20 "
                 style={{
                   background: "rgba(255, 255, 255, 0.1)",
                 }}
               >
                 <div
-                  className={`mb-4 p-3 rounded-xl bg-gradient-to-br ${item.gradient} shadow-lg group-hover:shadow-2xl transition-all duration-300`}
+                  className={`mb-4 p-3 rounded-xl bg-gradient-to-br ${item.gradient} shadow-lg group-hover:shadow-2xl `}
                 >
                   <item.icon className="h-8 w-8 text-white" />
                 </div>

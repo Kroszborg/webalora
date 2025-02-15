@@ -69,7 +69,7 @@ export function AboutHero() {
             <Button
               asChild
               size="lg"
-              className="bg-white text-blue-900 hover:bg-blue-50 shadow-lg hover:shadow-xl transition-all duration-300"
+              className="bg-white text-blue-900 hover:bg-blue-50 shadow-lg hover:shadow-xl "
             >
               <Link href="/services" className="flex items-center">
                 Get Started
@@ -80,7 +80,7 @@ export function AboutHero() {
               asChild
               size="lg"
               variant="outline"
-              className="border-2 border-white/50 text-blue-900 hover:bg-white/10 backdrop-blur-sm transition-all duration-300"
+              className="border-2 border-white/50 text-blue-900 hover:bg-white/10 backdrop-blur-sm "
             >
               <Link href="#our-mission">Learn More</Link>
             </Button>

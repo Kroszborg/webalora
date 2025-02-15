@@ -88,7 +88,7 @@ export function ROICalculator() {
             <p className="text-2xl font-bold mb-4 text-blue-600">
               Estimated Monthly ROI: {calculateROI()}%
             </p>
-            <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all duration-300">
+            <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-lg hover:shadow-xl ">
               Book a Consultation
             </Button>
           </div>

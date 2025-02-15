@@ -75,7 +75,7 @@ export function CybersecurityFramework() {
               >
                 <motion.div
                   whileHover={{ scale: 1.05 }}
-                  className="bg-white/10 backdrop-filter backdrop-blur-lg p-6 rounded-xl shadow-xl border border-white/20 hover:border-white/40 transition-all duration-300"
+                  className="bg-white/10 backdrop-filter backdrop-blur-lg p-6 rounded-xl shadow-xl border border-white/20 hover:border-white/40 "
                 >
                   <div className="flex items-center mb-4">
                     <div className="p-3 rounded-full bg-blue-500/20 mr-4">

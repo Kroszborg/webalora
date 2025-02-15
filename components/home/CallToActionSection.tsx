@@ -76,7 +76,7 @@ export const CallToActionSection: React.FC = () => {
             <Button
               asChild
               size="lg"
-              className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50 hover:text-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-sm sm:text-base"
+              className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50 hover:text-blue-700  transform hover:scale-105 shadow-lg hover:shadow-xl text-sm sm:text-base"
             >
               <Link
                 href="/contact"

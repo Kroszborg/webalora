@@ -198,7 +198,7 @@ export function InteractiveInfographic() {
                 setSelectedThreat(selectedThreat === index ? null : index)
               }
             >
-              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl cursor-pointer transition-all duration-300 hover:bg-white/20">
+              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl cursor-pointer  hover:bg-white/20">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="p-3 rounded-lg bg-blue-600">
                     <threat.icon className="w-6 h-6" />

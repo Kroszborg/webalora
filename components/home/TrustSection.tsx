@@ -31,7 +31,7 @@ const stats = [
   },
   {
     value: 1000,
-    suffix: "s",
+    suffix: "'s",
     label: "Devices Managed",
     description: "Seamless device management & support  to 1,000s",
   },
@@ -80,10 +80,7 @@ const LogoCarousel: React.FC = () => {
         style={{ width: `${clientLogos.length * 200}px` }}
       >
         {[...clientLogos, ...clientLogos].map((logo, index) => (
-          <div
-            key={index}
-            className="relative w-40 h-20 flex-shrink-0 transition-all duration-300"
-          >
+          <div key={index} className="relative w-40 h-20 flex-shrink-0 ">
             <Image
               src={logo.src || "/placeholder.svg"}
               alt={logo.alt}

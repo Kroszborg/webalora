@@ -27,16 +27,16 @@ export function ContactCTA() {
             </h2>
             <p className="text-xl text-blue-200 mb-8 max-w-2xl mx-auto">
               Partner with WebAlora and experience the difference of having a
-              dedicated, expert IT team by your side. Whether you&apos;re looking to
-              enhance your IT infrastructure, strengthen your cyber security
-              posture, drive digital transformation, or improve operational
-              efficiency, we have the expertise and solutions to support your
-              journey.
+              dedicated, expert IT team by your side. Whether you&apos;re
+              looking to enhance your IT infrastructure, strengthen your cyber
+              security posture, drive digital transformation, or improve
+              operational efficiency, we have the expertise and solutions to
+              support your journey.
             </p>
             <Button
               asChild
               size="lg"
-              className="bg-white text-blue-900 hover:bg-blue-50 shadow-lg hover:shadow-xl transition-all duration-300"
+              className="bg-white text-blue-900 hover:bg-blue-50 shadow-lg hover:shadow-xl "
             >
               <Link href="/" className="flex items-center">
                 Get Started Today

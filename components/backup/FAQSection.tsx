@@ -3,32 +3,35 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import Image from "next/image";
 
 const faqs = [
   {
-    question: "What are the benefits of migrating to the cloud?",
+    question:
+      "Why is a robust backup and disaster recovery plan essential for my business?",
     answer:
-      "Migrating to the cloud offers significant cost savings, improved scalability, enhanced security, and greater agility. It also enables remote work, simplifies disaster recovery, and future-proofs your IT infrastructure.",
+      "It's not a matter of if something goes wrong, but when. A comprehensive plan ensures that you can quickly recover from any disruption, protecting your data, revenue, and reputation.",
   },
   {
-    question: "How does WebAlora ensure a smooth migration?",
+    question:
+      "What distinguishes WebAlora's solution from other backup services?",
     answer:
-      "Our comprehensive migration process includes a detailed assessment, strategic planning, seamless data transfer, and integration with existing systems—all managed by our expert team to minimise downtime and disruption.",
+      "We offer an end-to-end, bespoke solution that integrates customised backup strategies, detailed disaster recovery planning, continuous monitoring, and employee training. Our approach is tailored specifically to the unique challenges faced by UK businesses.",
   },
   {
-    question: "What is a hybrid cloud, and why might my business need one?",
+    question: "How often are disaster recovery plans tested?",
     answer:
-      "A hybrid cloud combines on-premises, private, and public cloud services to provide a flexible and optimised IT environment. This approach allows you to maintain control over sensitive data while taking advantage of the scalability and cost benefits of the public cloud.",
+      "We recommend regular testing—at least bi-annually—to ensure that your recovery process remains current and effective. Our team conducts these tests and provides detailed reports and recommendations.",
   },
   {
-    question: "How do you address security concerns in cloud environments?",
+    question: "How can I be certain my data is secure with WebAlora?",
     answer:
-      "We implement advanced encryption, access controls, regular security audits, and compliance management to ensure that your cloud environment is secure and meets all regulatory requirements.",
+      "Our solutions incorporate advanced encryption, secure offsite storage, state-of-the-art cloud technologies, and round-the-clock expert monitoring, ensuring your data is protected at every stage.",
   },
   {
-    question: "What ongoing support does WebAlora provide after migration?",
+    question: "What is DRaaS and how can it benefit my business?",
     answer:
-      "We offer 24/7 managed cloud services, continuous monitoring, regular system updates, and proactive maintenance to ensure your cloud environment remains secure, efficient, and scalable.",
+      "Disaster Recovery as a Service (DRaaS) is a fully managed service that takes the complexity out of recovery planning. It offers scalable, cost-effective solutions that enable you to quickly restore operations after a disruption.",
   },
 ];
 
@@ -40,8 +43,18 @@ export function FAQSection() {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-b from-blue-50 to-white">
-      <div className="container mx-auto px-4">
+    <section className="py-20 relative overflow-hidden">
+      <Image
+        src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=2070"
+        alt="FAQ Background"
+        layout="fill"
+        objectFit="cover"
+        quality={100}
+        className="absolute inset-0 opacity-10"
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-white" />
+
+      <div className="container mx-auto px-4 relative z-10">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

@@ -27,7 +27,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
         className="absolute inset-0 rounded-2xl bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-300"
         style={{ background: gradient }}
       />
-      <div className="relative p-6 backdrop-blur-lg bg-white/5 rounded-2xl border border-white/10 group-hover:border-white/20 transition-all duration-300">
+      <div className="relative p-6 backdrop-blur-lg bg-white/5 rounded-2xl border border-white/10 group-hover:border-white/20 ">
         <div className="mb-4 p-3 rounded-xl bg-white/10 w-fit">
           <Icon className="h-6 w-6 text-white" />
         </div>

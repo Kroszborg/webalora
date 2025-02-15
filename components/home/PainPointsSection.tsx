@@ -120,7 +120,7 @@ export const PainPointsSection: React.FC = () => {
           <Button
             asChild
             size="lg"
-            className="relative px-6 md:px-8 py-3 md:py-6 text-base md:text-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white group overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300"
+            className="relative px-6 md:px-8 py-3 md:py-6 text-base md:text-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white group overflow-hidden shadow-xl hover:shadow-2xl "
           >
             <Link href="#contact" className="flex items-center gap-2">
               <span className="relative z-10">Book a Free Consultation</span>

@@ -54,7 +54,7 @@ export function CaseStudiesSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+              className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl "
             >
               <div className="relative h-48">
                 <Image

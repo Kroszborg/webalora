@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { ArrowRight, Download } from "lucide-react"
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { ArrowRight, Download } from "lucide-react";
 
 export function CTASection() {
   return (
@@ -22,16 +22,19 @@ export function CTASection() {
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Ready to Transform Your IT?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+            Ready to Transform Your IT?
+          </h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto text-blue-100">
-            Technology should power your success—not be an obstacle. Partner with WebAlora and enjoy reduced downtime,
-            fortified security, predictable budgets, and a strategic partnership.
+            Technology should power your success—not be an obstacle. Partner
+            with WebAlora and enjoy reduced downtime, fortified security,
+            predictable budgets, and a strategic partnership.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Button
               asChild
               size="lg"
-              className="bg-white text-blue-900 hover:bg-blue-100 shadow-lg hover:shadow-xl transition-all duration-300"
+              className="bg-white text-blue-900 hover:bg-blue-100 shadow-lg hover:shadow-xl "
             >
               <Link href="/contact" className="flex items-center">
                 Book a Free IT Consultation
@@ -42,7 +45,7 @@ export function CTASection() {
               asChild
               size="lg"
               variant="outline"
-              className="border-white text-blue-900 hover:bg-white/10 transition-all duration-300"
+              className="border-white text-blue-900 hover:bg-white/10 "
             >
               <Link href="/download-checklist" className="flex items-center">
                 Download IT Best Practices Checklist
@@ -53,6 +56,5 @@ export function CTASection() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }
-

@@ -30,7 +30,7 @@ export function Header() {
 
   return (
     <header
-      className={`fixed w-full z-50 transition-all duration-300 ${
+      className={`fixed w-full z-50  ${
         scrolled ? "bg-white/80 backdrop-blur-md shadow-md" : "bg-transparent"
       }`}
     >
@@ -82,7 +82,7 @@ export function Header() {
                 scrolled
                   ? "bg-blue-600 text-white hover:bg-blue-700"
                   : "bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm"
-              } transition-all duration-300 border border-transparent hover:border-white/50`}
+              }  border border-transparent hover:border-white/50`}
             >
               <Link href="/contact">Contact Us</Link>
             </Button>

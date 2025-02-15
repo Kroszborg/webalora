@@ -66,7 +66,7 @@ export function WhyChooseUs() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
+              className="group bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-lg hover:shadow-xl  border border-gray-100"
             >
               <div className="flex items-start gap-4">
                 <div className="bg-blue-100 p-3 rounded-lg group-hover:scale-110 transition-transform duration-300">

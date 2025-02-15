@@ -88,7 +88,7 @@ export function WhyItMatters() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="h-full hover:shadow-lg transition-all duration-300 bg-white/50 backdrop-filter backdrop-blur-sm border border-white/50">
+              <Card className="h-full hover:shadow-lg  bg-white/50 backdrop-filter backdrop-blur-sm border border-white/50">
                 <CardHeader>
                   <CardTitle className="flex items-center text-xl">
                     <div className="p-2 rounded-lg bg-blue-500/10 mr-3">

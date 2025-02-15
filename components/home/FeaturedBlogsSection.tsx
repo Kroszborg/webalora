@@ -99,14 +99,14 @@ export function FeaturedBlogsSection() {
           <button
             title="Previous Blog"
             onClick={prevBlog}
-            className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md transition-all duration-300"
+            className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md "
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
           <button
             title="Next Blog"
             onClick={nextBlog}
-            className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md transition-all duration-300"
+            className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md "
           >
             <ChevronRight className="h-6 w-6" />
           </button>

@@ -68,7 +68,7 @@ export function FAQSection() {
               className="mb-6"
             >
               <button
-                className="flex justify-between items-center w-full text-left p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+                className="flex justify-between items-center w-full text-left p-4 bg-white rounded-lg shadow-md hover:shadow-lg "
                 onClick={() => toggleFAQ(index)}
               >
                 <span className="text-lg font-semibold text-gray-900">

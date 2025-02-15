@@ -75,7 +75,7 @@ export const AdvantagesSection: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group relative bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl p-4 sm:p-6 hover:bg-opacity-20 transition-all duration-300 cursor-pointer overflow-hidden"
+              className="group relative bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl p-4 sm:p-6 hover:bg-opacity-20  cursor-pointer overflow-hidden"
             >
               {/* Neumorphism effect */}
               <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

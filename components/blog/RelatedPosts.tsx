@@ -22,7 +22,7 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
           <Link
             key={post.id}
             href={`/blog/${post.slug}`}
-            className="group bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300"
+            className="group bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg "
           >
             <div className="relative h-48 overflow-hidden">
               <Image

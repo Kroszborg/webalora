@@ -46,7 +46,7 @@ export function HeroSection() {
             <Button
               asChild
               size="lg"
-              className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/50 transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)]"
+              className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/50  shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)]"
             >
               <Link href="#contact" className="flex items-center">
                 <Shield className="mr-2 h-5 w-5" />
@@ -57,7 +57,7 @@ export function HeroSection() {
               asChild
               size="lg"
               variant="outline"
-              className="bg-white/5 backdrop-blur-md text-white border border-white/50 hover:bg-white/10 transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)]"
+              className="bg-white/5 backdrop-blur-md text-white border border-white/50 hover:bg-white/10  shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)]"
             >
               <Link href="#services" className="flex items-center">
                 <Lock className="mr-2 h-5 w-5" />

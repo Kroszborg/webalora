@@ -49,7 +49,7 @@ export function CTASection() {
             <Button
               asChild
               size="lg"
-              className="bg-white text-blue-900 hover:bg-blue-50 shadow-lg hover:shadow-xl transition-all duration-300"
+              className="bg-white text-blue-900 hover:bg-blue-50 shadow-lg hover:shadow-xl "
             >
               <Link href="#contact" className="flex items-center">
                 Book Your Free Consultation

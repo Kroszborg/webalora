@@ -164,7 +164,7 @@ export function SecurityReadinessQuiz() {
                   </h3>
                   <div className="w-32 h-2 bg-blue-200 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-blue-500 transition-all duration-300 ease-out"
+                      className="h-full bg-blue-500  ease-out"
                       style={{
                         width: `${
                           ((currentQuestion + 1) / questions.length) * 100
@@ -190,7 +190,7 @@ export function SecurityReadinessQuiz() {
                           <Button
                             key={index}
                             onClick={() => handleAnswer(index)}
-                            className="w-full text-left justify-start bg-white/10 hover:bg-white/20 text-white py-4 px-6 rounded-lg transition-all duration-300 text-lg"
+                            className="w-full text-left justify-start bg-white/10 hover:bg-white/20 text-white py-4 px-6 rounded-lg  text-lg"
                           >
                             {option}
                           </Button>
@@ -238,7 +238,7 @@ export function SecurityReadinessQuiz() {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-xl font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-xl font-semibold rounded-full  shadow-lg hover:shadow-xl"
                 >
                   <Link href="#contact" className="flex items-center">
                     Book a Consultation

@@ -83,7 +83,7 @@ const LeadMagnetSection: React.FC = () => {
             <CardFooter className="relative flex flex-col items-center gap-4 md:gap-6 py-6 md:py-8">
               <Button
                 size="lg"
-                className="relative group w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg transition-all duration-300 hover:shadow-blue-500/50"
+                className="relative group w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg  hover:shadow-blue-500/50"
               >
                 <span className="flex items-center justify-center gap-2">
                   Access the Free Guide

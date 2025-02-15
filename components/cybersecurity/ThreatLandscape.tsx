@@ -86,7 +86,7 @@ export function ThreatLandscape() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: index * 0.2 }}
-              className="bg-white/10 backdrop-filter backdrop-blur-lg p-6 rounded-xl shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] border border-white/20 hover:shadow-[0_8px_32px_0_rgba(31,38,135,0.6)] transition-all duration-300"
+              className="bg-white/10 backdrop-filter backdrop-blur-lg p-6 rounded-xl shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] border border-white/20 hover:shadow-[0_8px_32px_0_rgba(31,38,135,0.6)] "
             >
               <stat.icon className="w-12 h-12 text-blue-400 mb-4" />
               <h3 className="text-xl font-semibold mb-2 text-white">
@@ -114,7 +114,7 @@ export function ThreatLandscape() {
           <Button
             asChild
             size="lg"
-            className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/50 transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)]"
+            className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/50  shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)]"
           >
             <a href="#contact" className="flex items-center">
               <span>Get Your Threat Assessment</span>

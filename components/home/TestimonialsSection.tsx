@@ -158,7 +158,7 @@ export const TestimonialsSection: React.FC = () => {
               variant="ghost"
               size="icon"
               onClick={prevTestimonial}
-              className="bg-white/10 backdrop-blur-lg hover:bg-white/20 text-white rounded-full p-2 shadow-lg pointer-events-auto transition-all duration-300 hover:scale-110"
+              className="bg-white/10 backdrop-blur-lg hover:bg-white/20 text-white rounded-full p-2 shadow-lg pointer-events-auto  hover:scale-110"
             >
               <ChevronLeft className="h-6 w-6 sm:h-8 sm:w-8" />
             </Button>
@@ -166,7 +166,7 @@ export const TestimonialsSection: React.FC = () => {
               variant="ghost"
               size="icon"
               onClick={nextTestimonial}
-              className="bg-white/10 backdrop-blur-lg hover:bg-white/20 text-white rounded-full p-2 shadow-lg pointer-events-auto transition-all duration-300 hover:scale-110"
+              className="bg-white/10 backdrop-blur-lg hover:bg-white/20 text-white rounded-full p-2 shadow-lg pointer-events-auto  hover:scale-110"
             >
               <ChevronRight className="h-6 w-6 sm:h-8 sm:w-8" />
             </Button>
@@ -178,7 +178,7 @@ export const TestimonialsSection: React.FC = () => {
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index * 2)}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                className={`w-2 h-2 rounded-full  ${
                   index * 2 === currentIndex
                     ? "bg-white w-6 sm:w-8"
                     : "bg-white/40 hover:bg-white/60"
@@ -198,7 +198,7 @@ export const TestimonialsSection: React.FC = () => {
             <Button
               asChild
               size="lg"
-              className="bg-white/10 backdrop-blur-lg hover:bg-white/20 text-white border border-white/50 transition-all duration-300 text-sm sm:text-base"
+              className="bg-white/10 backdrop-blur-lg hover:bg-white/20 text-white border border-white/50  text-sm sm:text-base"
             >
               <Link
                 href="/case-studies"

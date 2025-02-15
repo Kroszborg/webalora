@@ -113,7 +113,7 @@ export function OurServices() {
                   }, ${service.gradient.split(" ")[3]})`,
                 }}
               />
-              <div className="relative bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20 group-hover:border-white/30 transition-all duration-300">
+              <div className="relative bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20 group-hover:border-white/30 ">
                 <div
                   className={`w-12 h-12 rounded-lg bg-gradient-to-br ${service.gradient} p-2.5 mb-4 transform group-hover:scale-110 transition-transform duration-300`}
                 >
@@ -140,7 +140,7 @@ export function OurServices() {
           <Button
             asChild
             size="lg"
-            className="bg-white text-blue-900 hover:bg-blue-50 shadow-lg hover:shadow-xl transition-all duration-300"
+            className="bg-white text-blue-900 hover:bg-blue-50 shadow-lg hover:shadow-xl "
           >
             <Link href="/services">View All Services</Link>
           </Button>

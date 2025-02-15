@@ -78,7 +78,7 @@ export function OurImpact() {
                   }, ${stat.gradient.split(" ")[3]})`,
                 }}
               />
-              <div className="relative bg-white/10 backdrop-blur-sm p-6 rounded-xl text-center border border-white/20 group-hover:border-white/30 transition-all duration-300">
+              <div className="relative bg-white/10 backdrop-blur-sm p-6 rounded-xl text-center border border-white/20 group-hover:border-white/30 ">
                 <div
                   className={`w-12 h-12 mx-auto rounded-lg bg-gradient-to-br ${stat.gradient} p-2.5 mb-4 transform group-hover:scale-110 transition-transform duration-300`}
                 >

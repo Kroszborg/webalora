@@ -1,12 +1,20 @@
-"use client"
-import { motion } from "framer-motion"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { BarChart, Network, Shield, Cloud, Database, Users } from "lucide-react"
+"use client";
+import { motion } from "framer-motion";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  BarChart,
+  Network,
+  Shield,
+  Cloud,
+  Database,
+  Users,
+} from "lucide-react";
 
 const services = [
   {
     title: "IT Strategy & Roadmap Development",
-    description: "Create tailored IT strategies aligned with your business objectives.",
+    description:
+      "Create tailored IT strategies aligned with your business objectives.",
     icon: BarChart,
   },
   {
@@ -16,25 +24,29 @@ const services = [
   },
   {
     title: "Cybersecurity & Compliance Consultancy",
-    description: "Secure your business against cyber threats and ensure regulatory compliance.",
+    description:
+      "Secure your business against cyber threats and ensure regulatory compliance.",
     icon: Shield,
   },
   {
     title: "Cloud & Digital Transformation Strategy",
-    description: "Build a roadmap for seamless cloud integration and digital transformation.",
+    description:
+      "Build a roadmap for seamless cloud integration and digital transformation.",
     icon: Cloud,
   },
   {
     title: "IT Cost Optimisation & Vendor Management",
-    description: "Reduce unnecessary IT expenses and optimise resource allocation.",
+    description:
+      "Reduce unnecessary IT expenses and optimise resource allocation.",
     icon: Database,
   },
   {
     title: "IT Team Augmentation & Training",
-    description: "Enhance your IT capabilities with expert resources and knowledge transfer.",
+    description:
+      "Enhance your IT capabilities with expert resources and knowledge transfer.",
     icon: Users,
   },
-]
+];
 
 export function OurServices() {
   return (
@@ -63,7 +75,7 @@ export function OurServices() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="h-full hover:shadow-lg transition-all duration-300 bg-white/70 backdrop-filter backdrop-blur-sm border border-white/50">
+              <Card className="h-full hover:shadow-lg  bg-white/70 backdrop-filter backdrop-blur-sm border border-white/50">
                 <CardHeader>
                   <CardTitle className="flex items-center text-xl">
                     <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 mr-3">
@@ -81,6 +93,5 @@ export function OurServices() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-
