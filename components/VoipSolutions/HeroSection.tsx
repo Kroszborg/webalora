@@ -10,7 +10,7 @@ export function HeroSection() {
   return (
     <section className="relative pt-16 md:pt-0 min-h-[100dvh] flex items-center justify-center overflow-hidden">
       <Image
-        src="https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3"
+        src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&q=80&w=2069&ixlib=rb-4.0.3"
         alt="VOIP Background"
         fill
         className="object-cover object-center"
