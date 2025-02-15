@@ -53,7 +53,7 @@ const services = [
     description:
       "Building robust, scalable networks to support your business now and into the future.",
     gradient: "from-green-500 via-emerald-500 to-teal-500",
-    href: "#",
+    href: "/networking",
   },
 ];
 
