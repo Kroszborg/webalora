@@ -1,5 +1,8 @@
 "use client";
 
+import type React from "react";
+
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   AlertTriangle,
@@ -12,8 +15,38 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Script from "next/script";
+
+declare global {
+  interface Window {
+    Calendly: {
+      initPopupWidget: (options: { url: string }) => void;
+    };
+  }
+}
 
 export function ThreatLandscape() {
+  useEffect(() => {
+    // Load Calendly CSS
+    const link = document.createElement("link");
+    link.href = "https://assets.calendly.com/assets/external/widget.css";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, []);
+
+  const openCalendly = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({
+        url: "https://calendly.com/behzad-webalora/30min",
+      });
+    }
+  };
+
   const stats = [
     {
       icon: AlertTriangle,
@@ -55,13 +88,18 @@ export function ThreatLandscape() {
 
   return (
     <section className="py-20 relative overflow-hidden">
+      <Script
+        src="https://assets.calendly.com/assets/external/widget.js"
+        strategy="lazyOnload"
+      />
+
       {/* Background Image */}
       <Image
         src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2072&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         alt="Digital Network Background"
         fill
         quality={100}
-        className="opacity-10  object-cover"
+        className="opacity-10 object-cover"
       />
 
       {/* Gradient Overlay */}
@@ -113,9 +151,9 @@ export function ThreatLandscape() {
           <Button
             asChild
             size="lg"
-            className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/50  shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)]"
+            className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/50 shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)]"
           >
-            <a href="/contact" className="flex items-center">
+            <a href="#" onClick={openCalendly} className="flex items-center">
               <span>Get Your Threat Assessment</span>
               <ArrowRight className="ml-2 h-5 w-5" />
             </a>

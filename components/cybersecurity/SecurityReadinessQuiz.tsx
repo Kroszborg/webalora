@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import type React from "react";
+
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import {
   ArrowRight,
   CheckCircle,
@@ -11,6 +12,15 @@ import {
   ShieldAlert,
 } from "lucide-react";
 import Image from "next/image";
+import Script from "next/script";
+
+declare global {
+  interface Window {
+    Calendly: {
+      initPopupWidget: (options: { url: string }) => void;
+    };
+  }
+}
 
 const questions = [
   {
@@ -91,6 +101,18 @@ export function SecurityReadinessQuiz() {
   const [answers, setAnswers] = useState<number[]>([]);
   const [showResult, setShowResult] = useState(false);
 
+  useEffect(() => {
+    // Load Calendly CSS
+    const link = document.createElement("link");
+    link.href = "https://assets.calendly.com/assets/external/widget.css";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, []);
+
   const handleAnswer = (answerIndex: number) => {
     const newAnswers = [...answers, answerIndex];
     setAnswers(newAnswers);
@@ -129,8 +151,21 @@ export function SecurityReadinessQuiz() {
     };
   };
 
+  const openCalendly = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({
+        url: "https://calendly.com/behzad-webalora/30min",
+      });
+    }
+  };
+
   return (
     <section className="py-20 relative overflow-hidden bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900">
+      <Script
+        src="https://assets.calendly.com/assets/external/widget.js"
+        strategy="lazyOnload"
+      />
       <Image
         src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2070"
         alt="Cybersecurity Background"
@@ -164,7 +199,7 @@ export function SecurityReadinessQuiz() {
                   </h3>
                   <div className="w-32 h-2 bg-blue-200 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-blue-500  ease-out"
+                      className="h-full bg-blue-500 ease-out"
                       style={{
                         width: `${
                           ((currentQuestion + 1) / questions.length) * 100
@@ -190,7 +225,7 @@ export function SecurityReadinessQuiz() {
                           <Button
                             key={index}
                             onClick={() => handleAnswer(index)}
-                            className="w-full text-left justify-start bg-white/10 hover:bg-white/20 text-white py-4 px-6 rounded-lg  text-lg"
+                            className="w-full text-left justify-start bg-white/10 hover:bg-white/20 text-white py-4 px-6 rounded-lg text-lg"
                           >
                             {option}
                           </Button>
@@ -238,12 +273,16 @@ export function SecurityReadinessQuiz() {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-xl font-semibold rounded-full  shadow-lg hover:shadow-xl"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-xl font-semibold rounded-full shadow-lg hover:shadow-xl"
                 >
-                  <Link href="/contact" className="flex items-center">
+                  <a
+                    href="#"
+                    onClick={openCalendly}
+                    className="flex items-center"
+                  >
                     Book a Consultation
                     <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
+                  </a>
                 </Button>
               </motion.div>
             )}

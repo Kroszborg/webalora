@@ -1,11 +1,12 @@
 "use client";
 
 import type React from "react";
-import Link from "next/link";
+import { useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, ArrowRight } from "lucide-react";
+import Script from "next/script";
 
 const painPoints = [
   {
@@ -38,9 +39,45 @@ const painPoints = [
   },
 ];
 
+declare global {
+  interface Window {
+    Calendly: {
+      initPopupWidget: (options: { url: string }) => void;
+    };
+  }
+}
+
 export const PainPointsSection: React.FC = () => {
+  useEffect(() => {
+    // Ensure Calendly is loaded before trying to use it
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({
+        url: "https://calendly.com/behzad-webalora/30min",
+      });
+    }
+  }, []);
+
+  const handleCalendlyClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({
+        url: "https://calendly.com/behzad-webalora/30min",
+      });
+    }
+  };
+
   return (
     <section className="relative py-16 md:py-24 lg:py-32 bg-gradient-to-br from-slate-50 via-white to-blue-50">
+      {/* Calendly Script */}
+      <Script
+        src="https://assets.calendly.com/assets/external/widget.js"
+        strategy="lazyOnload"
+      />
+      <link
+        href="https://assets.calendly.com/assets/external/widget.css"
+        rel="stylesheet"
+      />
+
       {/* Decorative Elements */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800A_1px,transparent_1px),linear-gradient(to_bottom,#8080800A_1px,transparent_1px)] bg-[size:24px_24px]" />
       <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-white to-transparent" />
@@ -120,13 +157,17 @@ export const PainPointsSection: React.FC = () => {
           <Button
             asChild
             size="lg"
-            className="relative px-6 md:px-8 py-3 md:py-6 text-base md:text-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white group overflow-hidden shadow-xl hover:shadow-2xl "
+            className="relative px-6 md:px-8 py-3 md:py-6 text-base md:text-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white group overflow-hidden shadow-xl hover:shadow-2xl"
           >
-            <Link href="/contact" className="flex items-center gap-2">
+            <a
+              href="#"
+              onClick={handleCalendlyClick}
+              className="flex items-center gap-2"
+            >
               <span className="relative z-10">Book a Free Consultation</span>
               <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </Link>
+            </a>
           </Button>
         </motion.div>
       </div>

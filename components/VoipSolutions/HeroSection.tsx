@@ -1,14 +1,51 @@
 "use client";
 
+import type React from "react";
+
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Phone, Globe, Zap } from "lucide-react";
+import Script from "next/script";
+
+declare global {
+  interface Window {
+    Calendly: {
+      initPopupWidget: (options: { url: string }) => void;
+    };
+  }
+}
 
 export function HeroSection() {
+  useEffect(() => {
+    // Load Calendly CSS
+    const link = document.createElement("link");
+    link.href = "https://assets.calendly.com/assets/external/widget.css";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, []);
+
+  const openCalendly = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({
+        url: "https://calendly.com/behzad-webalora/30min",
+      });
+    }
+  };
+
   return (
     <section className="relative pt-16 md:pt-0 min-h-[100dvh] flex items-center justify-center overflow-hidden">
+      <Script
+        src="https://assets.calendly.com/assets/external/widget.js"
+        strategy="lazyOnload"
+      />
       <Image
         src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&q=80&w=2069&ixlib=rb-4.0.3"
         alt="VOIP Background"
@@ -56,10 +93,10 @@ export function HeroSection() {
               size="lg"
               className="bg-white text-blue-900 hover:bg-blue-50 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg"
             >
-              <Link href="/contact">
+              <a href="#" onClick={openCalendly}>
                 Book Your Free Consultation
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
+              </a>
             </Button>
             <Button
               asChild

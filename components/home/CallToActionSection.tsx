@@ -1,16 +1,36 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
-import Link from "next/link";
+import { useState, useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { GradientBlob } from "@/components/ui/gradient-blob";
 import { ArrowRight, Sparkles } from "lucide-react";
+import Script from "next/script";
+
+declare global {
+  interface Window {
+    Calendly: {
+      initPopupWidget: (options: { url: string }) => void;
+    };
+  }
+}
 
 export const CallToActionSection: React.FC = () => {
   const [isHovered, setIsHovered] = useState(false);
   const controls = useAnimation();
+
+  useEffect(() => {
+    // Load Calendly CSS
+    const link = document.createElement("link");
+    link.href = "https://assets.calendly.com/assets/external/widget.css";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, []);
 
   const handleHover = () => {
     setIsHovered(true);
@@ -28,11 +48,25 @@ export const CallToActionSection: React.FC = () => {
     });
   };
 
+  const openCalendly = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({
+        url: "https://calendly.com/behzad-webalora/30min",
+      });
+    }
+  };
+
   return (
     <section
       id="contact"
       className="relative py-16 sm:py-24 bg-gradient-to-br from-blue-600 to-indigo-800 overflow-hidden"
     >
+      <Script
+        src="https://assets.calendly.com/assets/external/widget.js"
+        strategy="lazyOnload"
+      />
+
       <GradientBlob
         colors={["#3b82f6", "#2dd4bf"]}
         className="top-0 left-0 w-64 h-64 sm:w-96 sm:h-96 -translate-x-1/2 -translate-y-1/2 animate-pulse"
@@ -76,10 +110,11 @@ export const CallToActionSection: React.FC = () => {
             <Button
               asChild
               size="lg"
-              className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50 hover:text-blue-700  transform hover:scale-105 shadow-lg hover:shadow-xl text-sm sm:text-base"
+              className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50 hover:text-blue-700 transform hover:scale-105 shadow-lg hover:shadow-xl text-sm sm:text-base"
             >
-              <Link
-                href="/contact"
+              <a
+                href="#"
+                onClick={openCalendly}
                 className="flex items-center justify-center space-x-2 px-4 py-2 sm:px-6 sm:py-3"
               >
                 <span>Book a Free Consultation</span>
@@ -89,7 +124,7 @@ export const CallToActionSection: React.FC = () => {
                 >
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </motion.div>
-              </Link>
+              </a>
             </Button>
           </motion.div>
           <motion.div
