@@ -126,7 +126,7 @@ export const ITHealthCheckForm: React.FC<{ onClose: () => void }> = ({
       const result = await emailjs.send(
         "service_nndam4k", // Your Gmail service ID
         "template_iobjdlo", // Your EmailJS template ID
-        formData
+        formData as unknown as Record<string, unknown>
       );
 
       console.log(result.text);
@@ -147,7 +147,7 @@ export const ITHealthCheckForm: React.FC<{ onClose: () => void }> = ({
         <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
         <h2 className="text-2xl font-bold mb-4">Thank You!</h2>
         <p className="text-gray-600 mb-6">
-          Your IT Health Check request has been submitted successfully. We'll be
+          Your IT Health Check request has been submitted successfully. We&apos;ll be
           in touch with you soon.
         </p>
         <Button onClick={onClose}>Close</Button>
