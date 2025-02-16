@@ -166,8 +166,8 @@ export const HeroSection: React.FC = () => {
             variant="outline"
             className="group relative overflow-hidden text-blue-900 border-2 border-white hover:border-blue-200 px-8 py-6 text-base font-semibold backdrop-blur-sm "
           >
-            <Link href="/cybersecurity-solutions" className="flex items-center">
-              Explore Our Cybersecurity Solutions
+            <Link href="/services" className="flex items-center">
+              Explore Our IT Services
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>

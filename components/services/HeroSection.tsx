@@ -1,5 +1,7 @@
 "use client";
 
+import type React from "react";
+
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -10,13 +12,21 @@ const stats = [
   { value: "99.9%", label: "Guaranteed Uptime for Your Systems" },
   {
     value: "50%",
-    label: "Average Reduction in IT Costs with Managed Services",
+    label: "Average Reduction in IT Costs with Managed Services",
   },
   { value: "24/7", label: "Enterprise Support Coverage" },
   { value: "15min", label: "Average Response Time" },
 ];
 
 export function HeroSection() {
+  const scrollToPricing = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const pricingSection = document.getElementById("pricing-section");
+    if (pricingSection) {
+      pricingSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-blue-950 via-blue-900 to-indigo-900 pt-24 md:pt-28 pb-16 md:pb-24">
       {/* Background Image with enhanced overlay */}
@@ -116,10 +126,14 @@ export function HeroSection() {
               variant="outline"
               className="group relative overflow-hidden text-blue-900 border-2 border-white hover:border-blue-200 px-8 py-6 text-lg font-semibold backdrop-blur-sm"
             >
-              <Link href="#pricing" className="flex items-center">
+              <a
+                href="#pricing-section"
+                onClick={scrollToPricing}
+                className="flex items-center"
+              >
                 <Server className="mr-2 h-5 w-5" />
                 <span>View Enterprise Solutions</span>
-              </Link>
+              </a>
             </Button>
           </motion.div>
 
