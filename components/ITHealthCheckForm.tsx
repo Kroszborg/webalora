@@ -1,4 +1,7 @@
+"use client";
+
 import type React from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,17 +13,147 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { X } from "lucide-react";
+import { X, CheckCircle } from "lucide-react";
+import emailjs from "@emailjs/browser";
+
+emailjs.init("90tht713qoeJPf180"); // Public Key
+
+interface FormData {
+  fullName: string;
+  email: string;
+  phone: string;
+  company: string;
+  industry: string;
+  devices: string;
+  challenges: string;
+}
+
+interface FormErrors {
+  fullName?: string;
+  email?: string;
+  phone?: string;
+  company?: string;
+  industry?: string;
+  devices?: string;
+  challenges?: string;
+}
 
 export const ITHealthCheckForm: React.FC<{ onClose: () => void }> = ({
   onClose,
 }) => {
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    // Handle form submission logic here
-    console.log("Form submitted");
-    onClose();
+  const [formData, setFormData] = useState<FormData>({
+    fullName: "",
+    email: "",
+    phone: "",
+    company: "",
+    industry: "",
+    devices: "",
+    challenges: "",
+  });
+
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = "Full name is required";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email is invalid";
+    }
+
+    if (formData.phone && !/^\+?[\d\s-]{10,}$/.test(formData.phone)) {
+      newErrors.phone = "Phone number is invalid";
+    }
+
+    if (!formData.company.trim()) {
+      newErrors.company = "Company name is required";
+    }
+
+    if (!formData.industry) {
+      newErrors.industry = "Please select an industry";
+    }
+
+    if (!formData.devices.trim()) {
+      newErrors.devices = "Number of devices/employees is required";
+    } else if (isNaN(Number(formData.devices))) {
+      newErrors.devices = "Please enter a valid number";
+    }
+
+    if (!formData.challenges.trim()) {
+      newErrors.challenges = "Please describe your IT challenges or concerns";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
+
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    // Clear the error for this field as the user types
+    if (errors[name as keyof FormErrors]) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: undefined,
+      }));
+    }
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const result = await emailjs.send(
+        "service_nndam4k", // Your Gmail service ID
+        "template_iobjdlo", // Your EmailJS template ID
+        formData
+      );
+
+      console.log(result.text);
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Failed to send email:", error);
+      alert(
+        "Sorry, there was an error submitting your form. Please try again later."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (isSubmitted) {
+    return (
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden w-full max-w-4xl mx-auto p-8 text-center">
+        <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+        <h2 className="text-2xl font-bold mb-4">Thank You!</h2>
+        <p className="text-gray-600 mb-6">
+          Your IT Health Check request has been submitted successfully. We'll be
+          in touch with you soon.
+        </p>
+        <Button onClick={onClose}>Close</Button>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden w-full max-w-4xl mx-auto">
@@ -55,10 +188,18 @@ export const ITHealthCheckForm: React.FC<{ onClose: () => void }> = ({
                 </Label>
                 <Input
                   id="fullName"
+                  name="fullName"
                   placeholder="Enter your full name"
                   required
-                  className="w-full h-11"
+                  className={`w-full h-11 ${
+                    errors.fullName ? "border-red-500" : ""
+                  }`}
+                  value={formData.fullName}
+                  onChange={handleChange}
                 />
+                {errors.fullName && (
+                  <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -70,11 +211,19 @@ export const ITHealthCheckForm: React.FC<{ onClose: () => void }> = ({
                 </Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="We'll use this to contact you"
                   required
-                  className="w-full h-11"
+                  className={`w-full h-11 ${
+                    errors.email ? "border-red-500" : ""
+                  }`}
+                  value={formData.email}
+                  onChange={handleChange}
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                )}
               </div>
             </div>
 
@@ -88,10 +237,18 @@ export const ITHealthCheckForm: React.FC<{ onClose: () => void }> = ({
                 </Label>
                 <Input
                   id="phone"
+                  name="phone"
                   type="tel"
                   placeholder="If you prefer a call"
-                  className="w-full h-11"
+                  className={`w-full h-11 ${
+                    errors.phone ? "border-red-500" : ""
+                  }`}
+                  value={formData.phone}
+                  onChange={handleChange}
                 />
+                {errors.phone && (
+                  <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -103,10 +260,18 @@ export const ITHealthCheckForm: React.FC<{ onClose: () => void }> = ({
                 </Label>
                 <Input
                   id="company"
+                  name="company"
                   placeholder="Enter your company name"
                   required
-                  className="w-full h-11"
+                  className={`w-full h-11 ${
+                    errors.company ? "border-red-500" : ""
+                  }`}
+                  value={formData.company}
+                  onChange={handleChange}
                 />
+                {errors.company && (
+                  <p className="text-red-500 text-xs mt-1">{errors.company}</p>
+                )}
               </div>
             </div>
 
@@ -118,8 +283,20 @@ export const ITHealthCheckForm: React.FC<{ onClose: () => void }> = ({
                 >
                   Industry
                 </Label>
-                <Select>
-                  <SelectTrigger id="industry" className="w-full h-11">
+                <Select
+                  name="industry"
+                  onValueChange={(value) =>
+                    handleChange({
+                      target: { name: "industry", value },
+                    } as React.ChangeEvent<HTMLSelectElement>)
+                  }
+                >
+                  <SelectTrigger
+                    id="industry"
+                    className={`w-full h-11 ${
+                      errors.industry ? "border-red-500" : ""
+                    }`}
+                  >
                     <SelectValue placeholder="Select your industry" />
                   </SelectTrigger>
                   <SelectContent>
@@ -132,6 +309,9 @@ export const ITHealthCheckForm: React.FC<{ onClose: () => void }> = ({
                     <SelectItem value="other">Other</SelectItem>
                   </SelectContent>
                 </Select>
+                {errors.industry && (
+                  <p className="text-red-500 text-xs mt-1">{errors.industry}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -143,10 +323,18 @@ export const ITHealthCheckForm: React.FC<{ onClose: () => void }> = ({
                 </Label>
                 <Input
                   id="devices"
+                  name="devices"
                   placeholder="Size of your operation"
                   required
-                  className="w-full h-11"
+                  className={`w-full h-11 ${
+                    errors.devices ? "border-red-500" : ""
+                  }`}
+                  value={formData.devices}
+                  onChange={handleChange}
                 />
+                {errors.devices && (
+                  <p className="text-red-500 text-xs mt-1">{errors.devices}</p>
+                )}
               </div>
             </div>
 
@@ -159,9 +347,17 @@ export const ITHealthCheckForm: React.FC<{ onClose: () => void }> = ({
               </Label>
               <Textarea
                 id="challenges"
+                name="challenges"
                 placeholder="Share any issues or areas you'd like us to focus on"
-                className="w-full min-h-[100px] resize-none"
+                className={`w-full min-h-[100px] resize-none ${
+                  errors.challenges ? "border-red-500" : ""
+                }`}
+                value={formData.challenges}
+                onChange={handleChange}
               />
+              {errors.challenges && (
+                <p className="text-red-500 text-xs mt-1">{errors.challenges}</p>
+              )}
             </div>
           </div>
 
@@ -177,8 +373,9 @@ export const ITHealthCheckForm: React.FC<{ onClose: () => void }> = ({
             <Button
               type="submit"
               className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700"
+              disabled={isSubmitting}
             >
-              Get My Free IT Health Check
+              {isSubmitting ? "Submitting..." : "Get My Free IT Health Check"}
             </Button>
           </div>
         </form>
