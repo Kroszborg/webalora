@@ -1,65 +1,109 @@
 "use client";
 
+import type React from "react";
+
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import Image from "next/image";
+import { ArrowRight, Download } from "lucide-react";
+import Script from "next/script";
+
+declare global {
+  interface Window {
+    Calendly: {
+      initPopupWidget: (options: { url: string }) => void;
+    };
+  }
+}
 
 export function CTASection() {
+  useEffect(() => {
+    // Load Calendly CSS
+    const link = document.createElement("link");
+    link.href = "https://assets.calendly.com/assets/external/widget.css";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+
+    return () => {
+      // Remove Calendly CSS
+      document.head.removeChild(link);
+
+      // Clean up Calendly widget
+      const calendlyEmbed = document.querySelector(".calendly-overlay");
+      if (calendlyEmbed) {
+        calendlyEmbed.remove();
+      }
+      const calendlyInlineWidget = document.querySelector(
+        ".calendly-inline-widget"
+      );
+      if (calendlyInlineWidget) {
+        calendlyInlineWidget.remove();
+      }
+    };
+  }, []);
+
+  const openCalendly = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({
+        url: "https://calendly.com/behzad-webalora/30min",
+      });
+    }
+  };
+
   return (
-    <section className="py-20 relative overflow-hidden">
-      <Image
-        src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2070"
-        alt="Data Center Background"
-        fill
-        objectFit="cover"
-        quality={100}
-        className="absolute inset-0 opacity-20"
+    <section className="py-24 bg-gradient-to-br from-blue-900 to-indigo-900 relative overflow-hidden">
+      <Script
+        src="https://assets.calendly.com/assets/external/widget.js"
+        strategy="lazyOnload"
       />
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/80 to-indigo-900/80 backdrop-blur-sm" />
+      {/* Glassmorphism background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-blue-500/20 rounded-full filter blur-3xl" />
+        <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-purple-500/20 rounded-full filter blur-3xl" />
+      </div>
+
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center max-w-3xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl md:text-4xl font-bold mb-6 text-white"
-          >
-            Ready to Safeguard Your Business?
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-xl text-blue-100 mb-8"
-          >
-            Don&apos;t wait until a crisis forces you into reactive measures.
-            With WebAlora&apos;s comprehensive Backup & Disaster Recovery
-            solutions, you can ensure your business remains resilient, your data
-            secure, and your operations uninterrupted—even in the face of
-            adversity.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+            Ready to Transform Your IT?
+          </h2>
+          <p className="text-xl mb-8 max-w-2xl mx-auto text-blue-100">
+            Technology should power your success—not be an obstacle. Partner
+            with WebAlora and enjoy reduced downtime, fortified security,
+            predictable budgets, and a strategic partnership.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Button
               asChild
               size="lg"
-              className="bg-white text-blue-900 hover:bg-blue-50 shadow-lg hover:shadow-xl "
+              className="bg-white text-blue-900 hover:bg-blue-100 shadow-lg hover:shadow-xl"
             >
-              <Link href="/contact" className="flex items-center">
-                Book Your Free Consultation
+              <a href="#" onClick={openCalendly} className="flex items-center">
+                Book a Free IT Consultation
                 <ArrowRight className="ml-2 h-5 w-5" />
+              </a>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="border-white text-blue-900 hover:bg-white/10"
+            >
+              <Link href="/download-checklist" className="flex items-center">
+                Download IT Best Practices Checklist
+                <Download className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

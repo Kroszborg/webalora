@@ -1,12 +1,11 @@
 "use client";
 
 import type React from "react";
-
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Shield, Lock, Server, Cloud } from "lucide-react";
+import Script from "next/script";
 
 const stats = [
   { value: "99.9%", label: "Guaranteed Uptime for Your Systems" },
@@ -110,26 +109,30 @@ export function HeroSection() {
             className="flex flex-col sm:flex-row justify-center gap-4 mb-12"
           >
             <Button
-              asChild
               size="lg"
-              className="group relative overflow-hidden bg-white text-blue-900 hover:bg-blue-50 px-8 py-6 text-lg font-semibold"
+              className="group relative overflow-hidden bg-white text-blue-900 hover:bg-blue-50 h-14 px-6 text-lg font-semibold min-w-[280px]"
+              onClick={() => {
+                if (typeof window !== "undefined" && (window as { Calendly?: { initPopupWidget: (options: { url: string }) => void } }).Calendly) {
+                  (window as { Calendly: { initPopupWidget: (options: { url: string }) => void } }).Calendly.initPopupWidget({
+                    url: "https://calendly.com/behzad-webalora/30min",
+                  });
+                }
+              }}
             >
-              <Link href="/contact" className="flex items-center">
-                <Lock className="mr-2 h-5 w-5" />
-                <span>Get Your Free Security Assessment</span>
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </Link>
+              <Lock className="mr-2 h-5 w-5" />
+              <span>Get Your Free Security Assessment</span>
+              <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Button>
             <Button
               asChild
               size="lg"
               variant="outline"
-              className="group relative overflow-hidden text-blue-900 border-2 border-white hover:border-blue-200 px-8 py-6 text-lg font-semibold backdrop-blur-sm"
+              className="group relative overflow-hidden text-blue-900 border-2 border-white hover:border-blue-200 h-14 px-6 text-lg font-semibold backdrop-blur-sm min-w-[280px]"
             >
               <a
                 href="#pricing-section"
                 onClick={scrollToPricing}
-                className="flex items-center"
+                className="flex items-center justify-center"
               >
                 <Server className="mr-2 h-5 w-5" />
                 <span>View Enterprise Solutions</span>
@@ -173,6 +176,10 @@ export function HeroSection() {
           </div>
         </div>
       </div>
+      <Script
+        src="https://assets.calendly.com/assets/external/widget.js"
+        strategy="lazyOnload"
+      />
     </section>
   );
 }

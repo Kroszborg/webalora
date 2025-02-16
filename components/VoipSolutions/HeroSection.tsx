@@ -104,7 +104,7 @@ export function HeroSection() {
               variant="outline"
               className="border-white text-blue-900 hover:bg-white/10 transition-all duration-300 ease-in-out transform hover:scale-105"
             >
-              <Link href="#quote">Get Your Custom Quote</Link>
+              <Link href="/contact">Get Your Custom Quote</Link>
             </Button>
           </motion.div>
         </div>

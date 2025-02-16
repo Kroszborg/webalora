@@ -11,6 +11,7 @@ import {
   Mail,
   Phone,
   MapPin,
+  Youtube 
 } from "lucide-react";
 
 const navigation = {
@@ -34,10 +35,11 @@ const navigation = {
 };
 
 const socialLinks = [
-  { name: "Facebook", icon: Facebook, href: "#" },
-  { name: "Twitter", icon: Twitter, href: "#" },
-  { name: "LinkedIn", icon: LinkedIn, href: "#" },
-  { name: "Instagram", icon: Instagram, href: "#" },
+    { name: "Facebook", icon: Facebook, href: "https://www.facebook.com/webalora/" },
+    { name: "Twitter", icon: Twitter, href: "https://x.com/WebAlora" },
+    { name: "LinkedIn", icon: LinkedIn, href: "https://www.linkedin.com/company/webalora/" },
+    { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/webalora/" },
+    { name: "YouTube", icon: Youtube, href: "https://www.youtube.com/@WebAlora" },
 ];
 
 export function Footer() {

@@ -78,7 +78,7 @@ export function Header() {
             {navItems.map((item) => (
               <div
                 key={item.name}
-                className="relative"
+                className="relative group"
                 onMouseEnter={() => setActiveDropdown(item.name)}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
@@ -92,20 +92,18 @@ export function Header() {
                 >
                   {item.name}
                   {item.dropdown && (
-                    <ChevronDown className="ml-1 h-4 w-4 transition-transform duration-200" />
+                    <ChevronDown className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:rotate-180" />
                   )}
                 </Link>
 
                 {/* Dropdown Menu */}
                 {item.dropdown && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{
-                      opacity: activeDropdown === item.name ? 1 : 0,
-                      y: activeDropdown === item.name ? 0 : 10,
-                    }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+                  <div
+                    className={`absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-200 ${
+                      activeDropdown === item.name
+                        ? "opacity-100 visible translate-y-0"
+                        : "opacity-0 invisible -translate-y-2"
+                    }`}
                   >
                     <div className="py-2">
                       {item.dropdown.map((dropdownItem) => (
@@ -113,14 +111,13 @@ export function Header() {
                           key={dropdownItem.name}
                           href={dropdownItem.href}
                           className="group flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-150"
-                          onClick={() => setActiveDropdown(null)}
                         >
                           <ChevronRight className="mr-2 h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity duration-150" />
                           {dropdownItem.name}
                         </Link>
                       ))}
                     </div>
-                  </motion.div>
+                  </div>
                 )}
               </div>
             ))}

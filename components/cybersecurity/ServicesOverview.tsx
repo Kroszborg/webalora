@@ -42,7 +42,7 @@ export function ServicesOverview() {
   ];
 
   return (
-    <section className="py-20 relative overflow-hidden">
+    <section id="services" className="py-20 relative overflow-hidden">
       {/* Background Image */}
       <Image
         src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=2034&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"

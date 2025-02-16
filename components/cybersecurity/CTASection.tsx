@@ -1,14 +1,64 @@
 "use client";
 
+import type React from "react";
+
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight, Download, Shield, Lock } from "lucide-react";
 import Image from "next/image";
+import Script from "next/script";
+
+declare global {
+  interface Window {
+    Calendly: {
+      initPopupWidget: (options: { url: string }) => void;
+    };
+  }
+}
 
 export function CTASection() {
+  useEffect(() => {
+    // Load Calendly CSS
+    const link = document.createElement("link");
+    link.href = "https://assets.calendly.com/assets/external/widget.css";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+
+    return () => {
+      // Remove Calendly CSS
+      document.head.removeChild(link);
+
+      // Clean up Calendly widget
+      const calendlyEmbed = document.querySelector(".calendly-overlay");
+      if (calendlyEmbed) {
+        calendlyEmbed.remove();
+      }
+      const calendlyInlineWidget = document.querySelector(
+        ".calendly-inline-widget"
+      );
+      if (calendlyInlineWidget) {
+        calendlyInlineWidget.remove();
+      }
+    };
+  }, []);
+
+  const openCalendly = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({
+        url: "https://calendly.com/behzad-webalora/30min",
+      });
+    }
+  };
+
   return (
     <section className="py-24 relative overflow-hidden bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900">
+      <Script
+        src="https://assets.calendly.com/assets/external/widget.js"
+        strategy="lazyOnload"
+      />
       <Image
         src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2070"
         alt="Cybersecurity Background"
@@ -78,13 +128,17 @@ export function CTASection() {
               <Button
                 asChild
                 size="lg"
-                className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-8 py-6 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl "
+                className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-8 py-6 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl"
               >
-                <Link href="/contact" className="flex items-center">
+                <a
+                  href="#"
+                  onClick={openCalendly}
+                  className="flex items-center"
+                >
                   <Lock className="mr-2 h-5 w-5" />
                   <span>Book My Free Security Assessment</span>
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
+                </a>
               </Button>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -92,7 +146,7 @@ export function CTASection() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="bg-white/10 backdrop-filter backdrop-blur-lg border-2 border-white/50 text-white hover:bg-white/20 hover:border-white px-8 py-6 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl "
+                className="bg-white/10 backdrop-filter backdrop-blur-lg border-2 border-white/50 text-white hover:bg-white/20 hover:border-white px-8 py-6 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl"
               >
                 <Link href="#download-guide" className="flex items-center">
                   <Download className="mr-2 h-5 w-5" />

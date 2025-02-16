@@ -1,14 +1,64 @@
 "use client";
 
+import type React from "react";
+
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Cloud, Lock, Zap } from "lucide-react";
+import Script from "next/script";
+
+declare global {
+  interface Window {
+    Calendly: {
+      initPopupWidget: (options: { url: string }) => void;
+    };
+  }
+}
 
 export function HeroSection() {
+  useEffect(() => {
+    // Load Calendly CSS
+    const link = document.createElement("link");
+    link.href = "https://assets.calendly.com/assets/external/widget.css";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+
+    return () => {
+      // Remove Calendly CSS
+      document.head.removeChild(link);
+
+      // Clean up Calendly widget
+      const calendlyEmbed = document.querySelector(".calendly-overlay");
+      if (calendlyEmbed) {
+        calendlyEmbed.remove();
+      }
+      const calendlyInlineWidget = document.querySelector(
+        ".calendly-inline-widget"
+      );
+      if (calendlyInlineWidget) {
+        calendlyInlineWidget.remove();
+      }
+    };
+  }, []);
+
+  const openCalendly = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({
+        url: "https://calendly.com/behzad-webalora/30min",
+      });
+    }
+  };
+
   return (
     <section className="relative py-32 min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-blue-900 to-indigo-900">
+      <Script
+        src="https://assets.calendly.com/assets/external/widget.js"
+        strategy="lazyOnload"
+      />
       <Image
         src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2072"
         alt="Cloud Technology Background"
@@ -40,10 +90,10 @@ export function HeroSection() {
               size="lg"
               className="bg-white text-blue-900 hover:bg-blue-50"
             >
-              <Link href="/contact">
+              <a href="#" onClick={openCalendly} className="flex items-center">
                 Book Your Free Consultation
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
+              </a>
             </Button>
             <Button
               asChild
@@ -51,7 +101,7 @@ export function HeroSection() {
               variant="outline"
               className="border-white text-blue-900 hover:bg-white/10"
             >
-              <Link href="#quote">Get Your Custom Quote</Link>
+              <Link href="/contact">Get Your Custom Quote</Link>
             </Button>
           </div>
         </motion.div>

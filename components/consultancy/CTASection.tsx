@@ -1,13 +1,63 @@
 "use client";
+
+import type React from "react";
+
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Script from "next/script";
+
+declare global {
+  interface Window {
+    Calendly: {
+      initPopupWidget: (options: { url: string }) => void;
+    };
+  }
+}
 
 export function CTASection() {
+  useEffect(() => {
+    // Load Calendly CSS
+    const link = document.createElement("link");
+    link.href = "https://assets.calendly.com/assets/external/widget.css";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+
+    return () => {
+      // Remove Calendly CSS
+      document.head.removeChild(link);
+
+      // Clean up Calendly widget
+      const calendlyEmbed = document.querySelector(".calendly-overlay");
+      if (calendlyEmbed) {
+        calendlyEmbed.remove();
+      }
+      const calendlyInlineWidget = document.querySelector(
+        ".calendly-inline-widget"
+      );
+      if (calendlyInlineWidget) {
+        calendlyInlineWidget.remove();
+      }
+    };
+  }, []);
+
+  const openCalendly = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({
+        url: "https://calendly.com/behzad-webalora/30min",
+      });
+    }
+  };
+
   return (
     <section className="py-20 relative overflow-hidden">
+      <Script
+        src="https://assets.calendly.com/assets/external/widget.js"
+        strategy="lazyOnload"
+      />
       <div className="absolute inset-0 z-0">
         <Image
           src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2070"
@@ -49,12 +99,12 @@ export function CTASection() {
             <Button
               asChild
               size="lg"
-              className="bg-white/10 backdrop-blur-md text-white border border-white/50 hover:bg-white/20  shadow-[0_4px_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.2)]"
+              className="bg-white/10 backdrop-blur-md text-white border border-white/50 hover:bg-white/20 shadow-[0_4px_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.2)]"
             >
-              <Link href="/contact" className="flex items-center">
+              <a href="#" onClick={openCalendly} className="flex items-center">
                 Book a Free IT Consultation
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
+              </a>
             </Button>
           </motion.div>
         </div>

@@ -1,13 +1,64 @@
 "use client";
+
+import type React from "react";
+
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import Script from "next/script";
+
+declare global {
+  interface Window {
+    Calendly: {
+      initPopupWidget: (options: { url: string }) => void;
+    };
+  }
+}
 
 export function HeroSection() {
+  useEffect(() => {
+    // Load Calendly CSS
+    const link = document.createElement("link");
+    link.href = "https://assets.calendly.com/assets/external/widget.css";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+
+    return () => {
+      // Remove Calendly CSS
+      document.head.removeChild(link);
+
+      // Clean up Calendly widget
+      const calendlyEmbed = document.querySelector(".calendly-overlay");
+      if (calendlyEmbed) {
+        calendlyEmbed.remove();
+      }
+      const calendlyInlineWidget = document.querySelector(
+        ".calendly-inline-widget"
+      );
+      if (calendlyInlineWidget) {
+        calendlyInlineWidget.remove();
+      }
+    };
+  }, []);
+
+  const openCalendly = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({
+        url: "https://calendly.com/behzad-webalora/30min",
+      });
+    }
+  };
+
   return (
     <section className="relative min-h-[100dvh] flex items-center justify-center bg-gradient-to-br from-blue-900 to-indigo-900">
+      <Script
+        src="https://assets.calendly.com/assets/external/widget.js"
+        strategy="lazyOnload"
+      />
       <div className="absolute inset-0 z-0">
         <Image
           src="https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?auto=format&fit=crop&q=80&w=2070"
@@ -61,10 +112,14 @@ export function HeroSection() {
                 size="lg"
                 className="bg-white text-blue-900 hover:bg-blue-50 w-full sm:w-auto"
               >
-                <Link href="/contact" className="flex items-center">
+                <a
+                  href="#"
+                  onClick={openCalendly}
+                  className="flex items-center"
+                >
                   Book a Free Consultation
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
+                </a>
               </Button>
               <Button
                 asChild
