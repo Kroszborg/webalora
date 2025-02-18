@@ -16,7 +16,12 @@ import {
 import { X, CheckCircle } from "lucide-react";
 import emailjs from "@emailjs/browser";
 
-emailjs.init("90tht713qoeJPf180"); // Public Key
+// Initialize EmailJS with your public key
+emailjs.init("90tht713qoeJPf180");
+
+// EmailJS configuration
+const EMAILJS_SERVICE_ID = "service_c4c3d18";
+const EMAILJS_TEMPLATE_ID = "template_iobjdlo";
 
 interface FormData {
   fullName: string;
@@ -124,8 +129,8 @@ export const ITHealthCheckForm: React.FC<{ onClose: () => void }> = ({
 
     try {
       const result = await emailjs.send(
-        "service_nndam4k", // Your Gmail service ID
-        "template_iobjdlo", // Your EmailJS template ID
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
         formData as unknown as Record<string, unknown>
       );
 
@@ -147,8 +152,8 @@ export const ITHealthCheckForm: React.FC<{ onClose: () => void }> = ({
         <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
         <h2 className="text-2xl font-bold mb-4">Thank You!</h2>
         <p className="text-gray-600 mb-6">
-          Your IT Health Check request has been submitted successfully. We&apos;ll be
-          in touch with you soon.
+          Your IT Health Check request has been submitted successfully.
+          We&apos;ll be in touch with you soon.
         </p>
         <Button onClick={onClose}>Close</Button>
       </div>
