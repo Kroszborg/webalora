@@ -30,6 +30,10 @@ const nextConfig = {
         source: '/api/blogs',
         destination: 'http://webaloracms-production-9e8b.up.railway.app/api/blogs',
       },
+      {
+        source: '/api/case-studies',
+        destination: 'http://webaloracms-production-9e8b.up.railway.app/api/case-studies',
+      },
     ];
   },
   typescript: {
