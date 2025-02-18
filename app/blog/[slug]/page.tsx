@@ -5,125 +5,47 @@ import { SocialShare } from "@/components/blog/SocialShare";
 import BlogContent from "@/components/blog/BlogContent";
 import { Calendar, User } from "lucide-react";
 import type { Metadata } from "next";
-
-interface StrapiBlog {
-  id: number;
-  documentId: string;
-  Title: string;
-  Author: string;
-  slug: string;
-  content: string;
-  publishdate: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-}
-
-interface StrapiResponse {
-  data: StrapiBlog[];
-  meta: {
-    pagination: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
-    };
-  };
-}
-
-async function getBlogPost(slug: string) {
-  try {
-    const response = await fetch(`http://127.0.0.1:1337/api/blogs?filters[slug][$eq]=${slug}`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      cache: 'no-store'
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data: StrapiResponse = await response.json();
-    
-    if (!data.data || data.data.length === 0) {
-      return null;
-    }
-
-    const post = data.data[0];
-    
-    return {
-      id: post.id.toString(),
-      title: post.Title,
-      author: post.Author,
-      slug: post.slug,
-      body: post.content,
-      content: post.content,
-      excerpt: post.content.substring(0, 160) + '...',
-      featuredImage: 'https://images.unsplash.com/photo-1557426272-fc759fdf7a8d',
-      category: 'General',
-      publishDate: post.publishdate,
-      tags: []
-    };
-  } catch (error) {
-    console.error('Error fetching blog post:', error);
-    return null;
-  }
-}
-
-async function getRelatedPosts(currentSlug: string) {
-  try {
-    const response = await fetch('http://127.0.0.1:1337/api/blogs', {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      cache: 'no-store'
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data: StrapiResponse = await response.json();
-    
-    return data.data
-      .filter(post => post.slug !== currentSlug)
-      .slice(0, 3)
-      .map(post => ({
-        id: post.id.toString(),
-        title: post.Title,
-        author: post.Author,
-        slug: post.slug,
-        content: post.content,
-        excerpt: post.content.substring(0, 160) + '...',
-        featuredImage: 'https://images.unsplash.com/photo-1557426272-fc759fdf7a8d',
-        category: 'General',
-        publishDate: post.publishdate,
-        tags: []
-      }));
-  } catch (error) {
-    console.error('Error fetching related posts:', error);
-    return [];
-  }
-}
+import { getBlogPost, getRelatedPosts } from "@/lib/db";
 
 type PageProps = {
   params: { slug: string };
 };
 
 export default async function BlogPostPage({ params }: PageProps) {
-  const post = await getBlogPost(params.slug);
+  const strapiPost = await getBlogPost(params.slug);
 
-  if (!post) {
+  if (!strapiPost) {
     notFound();
   }
 
-  const postUrl = `https://webalora.com/blog/${params.slug}`;
+  const post = {
+    id: strapiPost.id.toString(),
+    title: strapiPost.Title,
+    author: strapiPost.Author,
+    slug: strapiPost.slug,
+    body: strapiPost.content,
+    content: strapiPost.content,
+    excerpt: strapiPost.content.substring(0, 160) + "...",
+    featuredImage: "https://images.unsplash.com/photo-1557426272-fc759fdf7a8d",
+    category: "General",
+    publishDate: strapiPost.publishdate || strapiPost.publishedAt,
+  };
+
+  const postUrl = `${
+    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+  }/blog/${params.slug}`;
   const relatedPosts = await getRelatedPosts(params.slug);
+
+  const transformedRelatedPosts = relatedPosts.map((relatedPost) => ({
+    id: relatedPost.id.toString(),
+    title: relatedPost.Title,
+    author: relatedPost.Author,
+    slug: relatedPost.slug,
+    excerpt: relatedPost.content.substring(0, 160) + "...",
+    featuredImage: "https://images.unsplash.com/photo-1557426272-fc759fdf7a8d",
+    category: "General",
+    publishDate: relatedPost.publishdate || relatedPost.publishedAt,
+  }));
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24">
@@ -152,7 +74,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         <div className="mb-12">
           <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-xl">
             <Image
-              src={post.featuredImage || "/placeholder.svg"}
+              src={post.featuredImage}
               alt={post.title}
               fill
               style={{ objectFit: "cover" }}
@@ -167,24 +89,9 @@ export default async function BlogPostPage({ params }: PageProps) {
           <BlogContent content={post.body} />
         </div>
 
-        {post.tags && post.tags.length > 0 && (
-          <div className="mb-12">
-            <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="inline-block bg-gray-100 text-gray-800 text-sm px-3 py-1 rounded-full hover:bg-gray-200 transition-colors duration-200"
-                >
-                  #{tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {relatedPosts.length > 0 && (
+        {transformedRelatedPosts.length > 0 && (
           <div className="border-t border-gray-100 pt-12">
-            <RelatedPosts posts={relatedPosts} />
+            <RelatedPosts posts={transformedRelatedPosts} />
           </div>
         )}
       </article>
@@ -195,16 +102,16 @@ export default async function BlogPostPage({ params }: PageProps) {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const post = await getBlogPost(params.slug);
+  const strapiPost = await getBlogPost(params.slug);
 
-  if (!post) {
+  if (!strapiPost) {
     return {
       title: "Post Not Found",
     };
   }
 
   return {
-    title: post.title,
-    description: post.excerpt,
+    title: strapiPost.Title,
+    description: strapiPost.content.substring(0, 160) + "...",
   };
 }
