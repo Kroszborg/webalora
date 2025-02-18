@@ -1,4 +1,3 @@
-import { getBlogPost, getBlogPosts } from "@/lib/tina";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { RelatedPosts } from "@/components/blog/RelatedPosts";
@@ -6,6 +5,111 @@ import { SocialShare } from "@/components/blog/SocialShare";
 import BlogContent from "@/components/blog/BlogContent";
 import { Calendar, User } from "lucide-react";
 import type { Metadata } from "next";
+
+interface StrapiBlog {
+  id: number;
+  documentId: string;
+  Title: string;
+  Author: string;
+  slug: string;
+  content: string;
+  publishdate: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
+
+interface StrapiResponse {
+  data: StrapiBlog[];
+  meta: {
+    pagination: {
+      page: number;
+      pageSize: number;
+      pageCount: number;
+      total: number;
+    };
+  };
+}
+
+async function getBlogPost(slug: string) {
+  try {
+    const response = await fetch(`http://127.0.0.1:1337/api/blogs?filters[slug][$eq]=${slug}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-store'
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data: StrapiResponse = await response.json();
+    
+    if (!data.data || data.data.length === 0) {
+      return null;
+    }
+
+    const post = data.data[0];
+    
+    return {
+      id: post.id.toString(),
+      title: post.Title,
+      author: post.Author,
+      slug: post.slug,
+      body: post.content,
+      content: post.content,
+      excerpt: post.content.substring(0, 160) + '...',
+      featuredImage: 'https://images.unsplash.com/photo-1557426272-fc759fdf7a8d',
+      category: 'General',
+      publishDate: post.publishdate,
+      tags: []
+    };
+  } catch (error) {
+    console.error('Error fetching blog post:', error);
+    return null;
+  }
+}
+
+async function getRelatedPosts(currentSlug: string) {
+  try {
+    const response = await fetch('http://127.0.0.1:1337/api/blogs', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-store'
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data: StrapiResponse = await response.json();
+    
+    return data.data
+      .filter(post => post.slug !== currentSlug)
+      .slice(0, 3)
+      .map(post => ({
+        id: post.id.toString(),
+        title: post.Title,
+        author: post.Author,
+        slug: post.slug,
+        content: post.content,
+        excerpt: post.content.substring(0, 160) + '...',
+        featuredImage: 'https://images.unsplash.com/photo-1557426272-fc759fdf7a8d',
+        category: 'General',
+        publishDate: post.publishdate,
+        tags: []
+      }));
+  } catch (error) {
+    console.error('Error fetching related posts:', error);
+    return [];
+  }
+}
 
 type PageProps = {
   params: { slug: string };
@@ -19,11 +123,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   }
 
   const postUrl = `https://webalora.com/blog/${params.slug}`;
-
-  const allPosts = await getBlogPosts();
-  const relatedPosts = allPosts
-    .filter((p) => p.category === post.category && p.slug !== params.slug)
-    .slice(0, 3);
+  const relatedPosts = await getRelatedPosts(params.slug);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24">
@@ -54,7 +154,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             <Image
               src={post.featuredImage || "/placeholder.svg"}
               alt={post.title}
-              layout="fill"
+              fill
               style={{ objectFit: "cover" }}
               priority
             />
@@ -67,22 +167,26 @@ export default async function BlogPostPage({ params }: PageProps) {
           <BlogContent content={post.body} />
         </div>
 
-        <div className="mb-12">
-          <div className="flex flex-wrap gap-2">
-            {post.tags?.map((tag) => (
-              <span
-                key={tag}
-                className="inline-block bg-gray-100 text-gray-800 text-sm px-3 py-1 rounded-full hover:bg-gray-200 transition-colors duration-200"
-              >
-                #{tag}
-              </span>
-            ))}
+        {post.tags && post.tags.length > 0 && (
+          <div className="mb-12">
+            <div className="flex flex-wrap gap-2">
+              {post.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="inline-block bg-gray-100 text-gray-800 text-sm px-3 py-1 rounded-full hover:bg-gray-200 transition-colors duration-200"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
-        <div className="border-t border-gray-100 pt-12">
-          <RelatedPosts posts={relatedPosts} />
-        </div>
+        {relatedPosts.length > 0 && (
+          <div className="border-t border-gray-100 pt-12">
+            <RelatedPosts posts={relatedPosts} />
+          </div>
+        )}
       </article>
     </div>
   );
