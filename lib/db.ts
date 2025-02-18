@@ -45,7 +45,7 @@ export interface StrapiResponse {
   };
 }
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://webaloracms-production-9e8b.up.railway.app';
 
 export async function getBlogPosts(): Promise<StrapiPost[]> {
   try {

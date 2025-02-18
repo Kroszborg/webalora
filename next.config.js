@@ -13,7 +13,7 @@ const nextConfig = {
     return [
       {
         source: '/api/blogs',
-        destination: 'http://localhost:1337/api/blogs',
+        destination: 'http://webaloracms-production-9e8b.up.railway.app/api/blogs',
       },
     ];
   },
