@@ -6,12 +6,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { CheckCircle2 } from "lucide-react";
 import emailjs from "@emailjs/browser";
 
 // Initialize EmailJS with your public key
@@ -23,8 +33,9 @@ const EMAILJS_TEMPLATE_ID = "template_contact";
 
 export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [formData, setFormData] = useState({
-    to_name: "Admin", // Default recipient name
+    to_name: "Admin",
     from_name: "",
     company: "",
     email: "",
@@ -45,15 +56,27 @@ export function ContactForm() {
     setFormData((prevData) => ({ ...prevData, department: value }));
   };
 
+  const resetForm = () => {
+    setFormData({
+      to_name: "Admin",
+      from_name: "",
+      company: "",
+      email: "",
+      phone: "",
+      department: "",
+      subject: "",
+      message: "",
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      // Update from_name with the full name from the form
       const emailData = {
         ...formData,
-        from_name: formData.from_name || formData.email, // Use email if name not provided
+        from_name: formData.from_name || formData.email,
         message: `
 Subject: ${formData.subject}
 Department: ${formData.department}
@@ -72,19 +95,8 @@ ${formData.message}
       );
 
       console.log("Email sent successfully:", result.text);
-      alert("Thank you for your message. We'll get back to you soon!");
-
-      // Reset form
-      setFormData({
-        to_name: "Admin",
-        from_name: "",
-        company: "",
-        email: "",
-        phone: "",
-        department: "",
-        subject: "",
-        message: "",
-      });
+      setShowSuccessDialog(true);
+      resetForm();
     } catch (error) {
       console.error("Failed to send email:", error);
       alert(
@@ -111,6 +123,28 @@ ${formData.message}
         specialist, please complete the form below. We aim to respond to all
         online enquiries within one business day.
       </p>
+
+      {/* Success Dialog */}
+      <AlertDialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+        <AlertDialogContent className="max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <CheckCircle2 className="h-6 w-6 text-green-500" />
+              <span>Message Sent Successfully</span>
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-600">
+              Thank you for your enquiry. Our team will review your message and
+              get back to you within one business day.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction className="bg-green-500 text-white hover:bg-green-600">
+              Got it, thanks!
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <form
         onSubmit={handleSubmit}
         className="space-y-6 bg-white/50 backdrop-blur-md p-8 rounded-xl shadow-lg"
