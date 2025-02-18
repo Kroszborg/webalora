@@ -1,5 +1,5 @@
 import BlogPage from "@/components/blog/BlogPage";
-import { getBlogPosts, type StrapiPost, type BlogPost } from "@/lib/db";
+import { getBlogPosts, type StrapiPost, type BlogPost, getImageUrl } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -21,6 +21,7 @@ export default async function Blog({
   console.log("Fetching blog posts...");
   const strapiPosts = await getBlogPosts();
   console.log("Received Strapi posts:", strapiPosts);
+  const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://webaloracms-production-9e8b.up.railway.app';
 
   // Transform Strapi posts to match the BlogPost interface
   const posts: BlogPost[] = strapiPosts.map((post: StrapiPost) => ({
@@ -38,10 +39,10 @@ export default async function Blog({
     slug: post.slug,
     body: post.content,
     content: post.content,
-    // excerpt: post.content?.substring(0, 160) + "..." || "",
+    excerpt: post.Description || post.content?.substring(0, 160) + "...",
     Description: post.Description || "",
-    featuredImage: "https://images.unsplash.com/photo-1557426272-fc759fdf7a8d",
-    category: "General",
+    featuredImage: getImageUrl(post.image?.[0]?.url),
+    category: post.blog_category?.Type || "General",
     tags: [],
     publishDate: post.publishdate || post.publishedAt
   }));

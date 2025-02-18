@@ -32,6 +32,19 @@ export interface StrapiPost {
   updatedAt: string;
   publishedAt: string;
   Description: string | null;
+  image: {
+    url: string;
+    formats: {
+      large: { url: string };
+      medium: { url: string };
+      small: { url: string };
+      thumbnail: { url: string };
+    };
+  }[];
+  blog_category?: {
+    id: number;
+    Type: string;
+  };
 }
 
 export interface StrapiResponse {
@@ -52,7 +65,7 @@ export async function getBlogPosts(): Promise<StrapiPost[]> {
   try {
     console.log('Fetching from:', `${STRAPI_URL}/api/blogs`);
     
-    const response = await fetch(`${STRAPI_URL}/api/blogs`, {
+    const response = await fetch(`${STRAPI_URL}/api/blogs?populate=*`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -123,4 +136,13 @@ export async function getRelatedPosts(currentSlug: string): Promise<StrapiPost[]
     console.error('Error fetching related posts:', error);
     return [];
   }
+}
+
+export function getImageUrl(imageUrl: string): string {
+  if (!imageUrl) return "https://images.unsplash.com/photo-1557426272-fc759fdf7a8d";
+  
+  if (imageUrl.startsWith('http')) return imageUrl;
+  
+  const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://webaloracms-production-9e8b.up.railway.app';
+  return `${STRAPI_URL}${imageUrl}`;
 }
