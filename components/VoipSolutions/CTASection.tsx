@@ -1,55 +1,27 @@
 "use client";
 
 import type React from "react";
-
-import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import Script from "next/script";
-
-declare global {
-  interface Window {
-    Calendly: {
-      initPopupWidget: (options: { url: string }) => void;
-    };
-  }
-}
+import { useCalendly } from "@/hooks/useCalendly";
 
 export function CTASection() {
-  useEffect(() => {
-    // Load Calendly CSS
-    const link = document.createElement("link");
-    link.href = "https://assets.calendly.com/assets/external/widget.css";
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
-
-    return () => {
-      document.head.removeChild(link);
-    };
-  }, []);
-
-  const openCalendly = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    if (window.Calendly) {
-      window.Calendly.initPopupWidget({
-        url: "https://calendly.com/behzad-webalora/30min",
-      });
-    }
-  };
+  const { openCalendly } = useCalendly(
+    "https://calendly.com/behzad-webalora/30min"
+  );
 
   return (
     <section className="py-20 relative overflow-hidden">
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
-      />
       <Image
         src="https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3"
         alt="VOIP Background"
         fill
         className="object-cover object-center opacity-20"
+        sizes="100vw"
+        quality={90}
+        priority
       />
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/80 to-indigo-900/80 backdrop-blur-sm" />
       <div className="container mx-auto px-4 relative z-10">
@@ -85,11 +57,11 @@ export function CTASection() {
             <Button
               asChild
               size="lg"
-              className="bg-white text-blue-900 hover:bg-blue-50"
+              className="bg-white text-blue-900 hover:bg-blue-50 transition-all duration-300 group"
             >
               <a href="#" onClick={openCalendly} className="flex items-center">
                 Book Your Free Consultation
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
             </Button>
           </motion.div>

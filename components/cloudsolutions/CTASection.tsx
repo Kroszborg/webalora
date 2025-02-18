@@ -1,63 +1,88 @@
 "use client";
 
 import type React from "react";
-
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import Script from "next/script";
 
 declare global {
   interface Window {
     Calendly: {
+      initBadgeWidget: (config: {
+        url: string;
+        text: string;
+        color: string;
+        textColor: string;
+        branding?: boolean;
+      }) => void;
       initPopupWidget: (options: { url: string }) => void;
+      closePopupWidget?: () => void;
+      destroyBadgeWidget?: () => void;
     };
   }
 }
 
 export function CTASection() {
+  const calendlyInitialized = useRef(false);
+
   useEffect(() => {
-    // Load Calendly CSS
-    const link = document.createElement("link");
-    link.href = "https://assets.calendly.com/assets/external/widget.css";
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
+    // Only add the CSS if it doesn't already exist
+    const existingLink = document.querySelector('link[href*="calendly.com"]');
+    if (!existingLink) {
+      const link = document.createElement("link");
+      link.href = "https://assets.calendly.com/assets/external/widget.css";
+      link.rel = "stylesheet";
+      document.head.appendChild(link);
+    }
 
     return () => {
-      // Remove Calendly CSS
-      document.head.removeChild(link);
+      // Clean up Calendly widget elements if they exist
+      const elementsToRemove = [
+        ".calendly-overlay",
+        ".calendly-inline-widget",
+        ".calendly-popup-content",
+        ".calendly-popup-close",
+      ];
 
-      // Clean up Calendly widget
-      const calendlyEmbed = document.querySelector(".calendly-overlay");
-      if (calendlyEmbed) {
-        calendlyEmbed.remove();
+      elementsToRemove.forEach((selector) => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach((element) => element.remove());
+      });
+
+      // Close popup if it's open
+      if (window.Calendly?.closePopupWidget) {
+        window.Calendly.closePopupWidget();
       }
-      const calendlyInlineWidget = document.querySelector(
-        ".calendly-inline-widget"
-      );
-      if (calendlyInlineWidget) {
-        calendlyInlineWidget.remove();
-      }
+
+      // Clean up iframes
+      const iframes = document.querySelectorAll('iframe[src*="calendly.com"]');
+      iframes.forEach((iframe) => iframe.remove());
     };
   }, []);
 
   const openCalendly = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+
+    // Ensure we don't have any existing popups
+    const existingPopup = document.querySelector(".calendly-overlay");
+    if (existingPopup) {
+      existingPopup.remove();
+    }
+
+    // Initialize popup
     if (window.Calendly) {
       window.Calendly.initPopupWidget({
         url: "https://calendly.com/behzad-webalora/30min",
       });
+      calendlyInitialized.current = true;
     }
   };
 
   return (
     <section className="py-20 relative overflow-hidden">
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
-      />
+      {/* We can share the same Calendly script since it's already loaded in CalendlyWidget */}
       <div className="absolute inset-0 z-0">
         <Image
           src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2072"

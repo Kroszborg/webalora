@@ -1,71 +1,78 @@
 "use client";
 
 import type React from "react";
-
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import Script from "next/script";
-
-declare global {
-  interface Window {
-    Calendly: {
-      initPopupWidget: (options: { url: string }) => void;
-    };
-  }
-}
 
 export function HeroSection() {
+  const calendlyInitialized = useRef(false);
+
   useEffect(() => {
-    // Load Calendly CSS
-    const link = document.createElement("link");
-    link.href = "https://assets.calendly.com/assets/external/widget.css";
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
+    // Only add the CSS if it doesn't already exist
+    const existingLink = document.querySelector('link[href*="calendly.com"]');
+    if (!existingLink) {
+      const link = document.createElement("link");
+      link.href = "https://assets.calendly.com/assets/external/widget.css";
+      link.rel = "stylesheet";
+      document.head.appendChild(link);
+    }
 
     return () => {
-      // Remove Calendly CSS
-      document.head.removeChild(link);
+      // Clean up Calendly widget elements if they exist
+      const elementsToRemove = [
+        ".calendly-overlay",
+        ".calendly-inline-widget",
+        ".calendly-popup-content",
+        ".calendly-popup-close",
+      ];
 
-      // Clean up Calendly widget
-      const calendlyEmbed = document.querySelector(".calendly-overlay");
-      if (calendlyEmbed) {
-        calendlyEmbed.remove();
+      elementsToRemove.forEach((selector) => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach((element) => element.remove());
+      });
+
+      // Close popup if it's open
+      if (window.Calendly?.closePopupWidget) {
+        window.Calendly.closePopupWidget();
       }
-      const calendlyInlineWidget = document.querySelector(
-        ".calendly-inline-widget"
-      );
-      if (calendlyInlineWidget) {
-        calendlyInlineWidget.remove();
-      }
+
+      // Clean up iframes
+      const iframes = document.querySelectorAll('iframe[src*="calendly.com"]');
+      iframes.forEach((iframe) => iframe.remove());
     };
   }, []);
 
   const openCalendly = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+
+    // Ensure we don't have any existing popups
+    const existingPopup = document.querySelector(".calendly-overlay");
+    if (existingPopup) {
+      existingPopup.remove();
+    }
+
+    // Initialize popup
     if (window.Calendly) {
       window.Calendly.initPopupWidget({
         url: "https://calendly.com/behzad-webalora/30min",
       });
+      calendlyInitialized.current = true;
     }
   };
 
   return (
     <section className="relative min-h-[100dvh] flex items-center justify-center bg-gradient-to-br from-blue-900 to-indigo-900">
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
-      />
       <div className="absolute inset-0 z-0">
         <Image
           src="https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?auto=format&fit=crop&q=80&w=2070"
           alt="IT Consultancy Background"
-          layout="fill"
-          objectFit="cover"
-          className="opacity-20"
+          fill
+          className="opacity-20 object-cover"
+          sizes="100vw"
           priority
         />
       </div>
@@ -110,7 +117,7 @@ export function HeroSection() {
               <Button
                 asChild
                 size="lg"
-                className="bg-white text-blue-900 hover:bg-blue-50 w-full sm:w-auto"
+                className="bg-white text-blue-900 hover:bg-blue-50 w-full sm:w-auto group"
               >
                 <a
                   href="#"
@@ -118,7 +125,7 @@ export function HeroSection() {
                   className="flex items-center"
                 >
                   Book a Free Consultation
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </a>
               </Button>
               <Button
@@ -141,8 +148,9 @@ export function HeroSection() {
               <Image
                 src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=2070"
                 alt="IT Consultancy"
-                layout="fill"
-                objectFit="cover"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent" />

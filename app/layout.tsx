@@ -4,6 +4,7 @@ import "./globals.css";
 import "@/styles/advantages.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { CalendlyWidget } from "@/components/calendly-widget";
 import type React from "react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -28,6 +29,7 @@ export default function RootLayout({
           <Header />
           <main className="flex-grow">{children}</main>
           <Footer />
+          <CalendlyWidget />
         </div>
       </body>
     </html>

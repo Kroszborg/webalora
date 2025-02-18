@@ -1,8 +1,7 @@
 "use client";
 
 import type React from "react";
-
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -10,35 +9,65 @@ import Image from "next/image";
 import { ArrowRight, Shield, Clock, Database } from "lucide-react";
 import Script from "next/script";
 
-declare global {
-  interface Window {
-    Calendly: {
-      initPopupWidget: (options: { url: string }) => void;
-    };
-  }
-}
-
 export function HeroSection() {
+  const calendlyInitialized = useRef(false);
+
   useEffect(() => {
-    // Load Calendly CSS
-    const link = document.createElement("link");
-    link.href = "https://assets.calendly.com/assets/external/widget.css";
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
+    // Only add the CSS if it doesn't already exist
+    const existingLink = document.querySelector('link[href*="calendly.com"]');
+    if (!existingLink) {
+      const link = document.createElement("link");
+      link.href = "https://assets.calendly.com/assets/external/widget.css";
+      link.rel = "stylesheet";
+      document.head.appendChild(link);
+    }
 
     return () => {
-      document.head.removeChild(link);
+      // Clean up Calendly widget elements if they exist
+      const elementsToRemove = [
+        ".calendly-overlay",
+        ".calendly-inline-widget",
+        ".calendly-popup-content",
+        ".calendly-popup-close",
+      ];
+
+      elementsToRemove.forEach((selector) => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach((element) => element.remove());
+      });
+
+      // Close popup if it's open
+      if (window.Calendly?.closePopupWidget) {
+        window.Calendly.closePopupWidget();
+      }
     };
   }, []);
 
   const openCalendly = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+
+    // Ensure we don't have any existing popups
+    const existingPopup = document.querySelector(".calendly-overlay");
+    if (existingPopup) {
+      existingPopup.remove();
+    }
+
+    // Initialize popup
     if (window.Calendly) {
       window.Calendly.initPopupWidget({
         url: "https://calendly.com/behzad-webalora/30min",
       });
+      calendlyInitialized.current = true;
     }
   };
+
+  // Remove any Calendly-related elements when component unmounts
+  useEffect(() => {
+    return () => {
+      const iframes = document.querySelectorAll('iframe[src*="calendly.com"]');
+      iframes.forEach((iframe) => iframe.remove());
+    };
+  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">

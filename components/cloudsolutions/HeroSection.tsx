@@ -10,14 +10,6 @@ import Image from "next/image";
 import { ArrowRight, Cloud, Lock, Zap } from "lucide-react";
 import Script from "next/script";
 
-declare global {
-  interface Window {
-    Calendly: {
-      initPopupWidget: (options: { url: string }) => void;
-    };
-  }
-}
-
 export function HeroSection() {
   useEffect(() => {
     // Load Calendly CSS

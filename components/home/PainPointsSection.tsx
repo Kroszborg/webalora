@@ -1,12 +1,11 @@
 "use client";
 
 import type React from "react";
-import { useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, ArrowRight } from "lucide-react";
-import Script from "next/script";
+import { useCalendly } from "@/hooks/useCalendly";
 
 const painPoints = [
   {
@@ -39,45 +38,13 @@ const painPoints = [
   },
 ];
 
-declare global {
-  interface Window {
-    Calendly: {
-      initPopupWidget: (options: { url: string }) => void;
-    };
-  }
-}
-
 export const PainPointsSection: React.FC = () => {
-  useEffect(() => {
-    // Ensure Calendly is loaded before trying to use it
-    if (window.Calendly) {
-      window.Calendly.initPopupWidget({
-        url: "https://calendly.com/behzad-webalora/30min",
-      });
-    }
-  }, []);
-
-  const handleCalendlyClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    if (window.Calendly) {
-      window.Calendly.initPopupWidget({
-        url: "https://calendly.com/behzad-webalora/30min",
-      });
-    }
-  };
+  const { openCalendly } = useCalendly(
+    "https://calendly.com/behzad-webalora/30min"
+  );
 
   return (
     <section className="relative py-16 md:py-24 lg:py-32 bg-gradient-to-br from-slate-50 via-white to-blue-50">
-      {/* Calendly Script */}
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
-      />
-      <link
-        href="https://assets.calendly.com/assets/external/widget.css"
-        rel="stylesheet"
-      />
-
       {/* Decorative Elements */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800A_1px,transparent_1px),linear-gradient(to_bottom,#8080800A_1px,transparent_1px)] bg-[size:24px_24px]" />
       <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-white to-transparent" />
@@ -100,8 +67,12 @@ export const PainPointsSection: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-12 md:mb-20">
           {painPoints.map((point, index) => (
-            <div
+            <motion.div
               key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
               className="group relative overflow-hidden rounded-3xl shadow-lg hover:shadow-xl transition-all duration-500"
             >
               {/* Card Background with adjusted opacity */}
@@ -114,8 +85,9 @@ export const PainPointsSection: React.FC = () => {
                   alt={point.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  style={{ objectFit: "cover" }}
-                  className="group-hover:scale-110 transition-transform duration-700 ease-out opacity-90"
+                  quality={90}
+                  className="group-hover:scale-110 transition-transform duration-700 ease-out opacity-90 object-cover"
+                  priority={index < 2}
                 />
                 {/* Refined gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/70 to-gray-900/90" />
@@ -144,7 +116,7 @@ export const PainPointsSection: React.FC = () => {
 
               {/* Enhanced hover effect overlay */}
               <div className="absolute inset-0 z-10 bg-gradient-to-t from-blue-600/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            </div>
+            </motion.div>
           ))}
         </div>
 
@@ -157,11 +129,11 @@ export const PainPointsSection: React.FC = () => {
           <Button
             asChild
             size="lg"
-            className="relative px-6 md:px-8 py-3 md:py-6 text-base md:text-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white group overflow-hidden shadow-xl hover:shadow-2xl"
+            className="relative px-6 md:px-8 py-3 md:py-6 text-base md:text-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white group overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300"
           >
             <a
               href="#"
-              onClick={handleCalendlyClick}
+              onClick={openCalendly}
               className="flex items-center gap-2"
             >
               <span className="relative z-10">Book a Free Consultation</span>

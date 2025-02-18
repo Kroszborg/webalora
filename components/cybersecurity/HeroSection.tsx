@@ -1,54 +1,65 @@
 "use client";
 
 import type React from "react";
-
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Shield, Lock, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import Script from "next/script";
-
-declare global {
-  interface Window {
-    Calendly: {
-      initPopupWidget: (options: { url: string }) => void;
-    };
-  }
-}
 
 export function HeroSection() {
+  const calendlyInitialized = useRef(false);
+
   useEffect(() => {
-    // Load Calendly CSS
-    const link = document.createElement("link");
-    link.href = "https://assets.calendly.com/assets/external/widget.css";
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
+    // Only add the CSS if it doesn't already exist
+    const existingLink = document.querySelector('link[href*="calendly.com"]');
+    if (!existingLink) {
+      const link = document.createElement("link");
+      link.href = "https://assets.calendly.com/assets/external/widget.css";
+      link.rel = "stylesheet";
+      document.head.appendChild(link);
+    }
 
     return () => {
-      // Remove Calendly CSS
-      document.head.removeChild(link);
+      // Clean up Calendly widget elements if they exist
+      const elementsToRemove = [
+        ".calendly-overlay",
+        ".calendly-inline-widget",
+        ".calendly-popup-content",
+        ".calendly-popup-close",
+      ];
 
-      // Clean up Calendly widget
-      const calendlyEmbed = document.querySelector(".calendly-overlay");
-      if (calendlyEmbed) {
-        calendlyEmbed.remove();
+      elementsToRemove.forEach((selector) => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach((element) => element.remove());
+      });
+
+      // Close popup if it's open
+      if (window.Calendly?.closePopupWidget) {
+        window.Calendly.closePopupWidget();
       }
-      const calendlyInlineWidget = document.querySelector(
-        ".calendly-inline-widget"
-      );
-      if (calendlyInlineWidget) {
-        calendlyInlineWidget.remove();
-      }
+
+      // Clean up iframes
+      const iframes = document.querySelectorAll('iframe[src*="calendly.com"]');
+      iframes.forEach((iframe) => iframe.remove());
     };
   }, []);
 
   const openCalendly = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+
+    // Ensure we don't have any existing popups
+    const existingPopup = document.querySelector(".calendly-overlay");
+    if (existingPopup) {
+      existingPopup.remove();
+    }
+
+    // Initialize popup
     if (window.Calendly) {
       window.Calendly.initPopupWidget({
         url: "https://calendly.com/behzad-webalora/30min",
       });
+      calendlyInitialized.current = true;
     }
   };
 
@@ -62,19 +73,15 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-20">
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
-      />
       {/* Background Image */}
       <Image
         src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         alt="Cybersecurity Background"
-        layout="fill"
-        objectFit="cover"
+        fill
         quality={100}
         priority
-        className="opacity-70"
+        className="opacity-70 object-cover"
+        sizes="100vw"
       />
 
       {/* Gradient Overlay */}
@@ -103,9 +110,13 @@ export function HeroSection() {
             <Button
               asChild
               size="lg"
-              className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/50  shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)]"
+              className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/50 shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)] transition-all duration-300"
             >
-              <a href="#" onClick={openCalendly} className="flex items-center">
+              <a
+                href="#"
+                onClick={openCalendly}
+                className="flex items-center group"
+              >
                 <Shield className="mr-2 h-5 w-5" />
                 <span>Schedule Security Assessment</span>
               </a>
@@ -114,7 +125,7 @@ export function HeroSection() {
               asChild
               size="lg"
               variant="outline"
-              className="bg-white/5 backdrop-blur-md text-white border border-white/50 hover:bg-white/10  shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)]"
+              className="bg-white/5 backdrop-blur-md text-blue-900 border border-white/50 hover:bg-white/10 shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)] transition-all duration-300"
             >
               <a
                 href="#services"

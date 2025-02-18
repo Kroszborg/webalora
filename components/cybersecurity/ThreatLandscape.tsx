@@ -1,8 +1,6 @@
 "use client";
 
 import type React from "react";
-
-import { useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   AlertTriangle,
@@ -15,84 +13,54 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import Script from "next/script";
+import { useCalendly } from "@/hooks/useCalendly";
 
-declare global {
-  interface Window {
-    Calendly: {
-      initPopupWidget: (options: { url: string }) => void;
-    };
-  }
-}
+const stats = [
+  {
+    icon: AlertTriangle,
+    title: "Ransomware Costs",
+    value: "3x",
+    description: "Increase for UK businesses in the last 3 years",
+  },
+  {
+    icon: TrendingUp,
+    title: "Data Breaches",
+    value: "60%",
+    description: "Stem from unpatched vulnerabilities or phishing scams",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Compliance",
+    value: "£20M",
+    description: "Maximum GDPR fine for non-compliance",
+  },
+  {
+    icon: Globe,
+    title: "Global Impact",
+    value: "£5.5T",
+    description: "Estimated cybercrime costs by 2025",
+  },
+  {
+    icon: Clock,
+    title: "Response Time",
+    value: "287",
+    description: "Average days to identify and contain a breach",
+  },
+  {
+    icon: Users,
+    title: "Human Error",
+    value: "95%",
+    description: "Of cybersecurity breaches caused by human mistakes",
+  },
+];
 
 export function ThreatLandscape() {
-  useEffect(() => {
-    // Load Calendly CSS
-    const link = document.createElement("link");
-    link.href = "https://assets.calendly.com/assets/external/widget.css";
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
-
-    return () => {
-      document.head.removeChild(link);
-    };
-  }, []);
-
-  const openCalendly = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    if (window.Calendly) {
-      window.Calendly.initPopupWidget({
-        url: "https://calendly.com/behzad-webalora/30min",
-      });
-    }
-  };
-
-  const stats = [
-    {
-      icon: AlertTriangle,
-      title: "Ransomware Costs",
-      value: "3x",
-      description: "Increase for UK businesses in the last 3 years",
-    },
-    {
-      icon: TrendingUp,
-      title: "Data Breaches",
-      value: "60%",
-      description: "Stem from unpatched vulnerabilities or phishing scams",
-    },
-    {
-      icon: ShieldCheck,
-      title: "Compliance",
-      value: "£20M",
-      description: "Maximum GDPR fine for non-compliance",
-    },
-    {
-      icon: Globe,
-      title: "Global Impact",
-      value: "£5.5T",
-      description: "Estimated cybercrime costs by 2025",
-    },
-    {
-      icon: Clock,
-      title: "Response Time",
-      value: "287",
-      description: "Average days to identify and contain a breach",
-    },
-    {
-      icon: Users,
-      title: "Human Error",
-      value: "95%",
-      description: "Of cybersecurity breaches caused by human mistakes",
-    },
-  ];
+  const { openCalendly } = useCalendly(
+    "https://calendly.com/behzad-webalora/30min"
+  );
 
   return (
     <section className="py-20 relative overflow-hidden">
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
-      />
-
       {/* Background Image */}
       <Image
         src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2072&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -100,6 +68,8 @@ export function ThreatLandscape() {
         fill
         quality={100}
         className="opacity-10 object-cover"
+        sizes="100vw"
+        priority
       />
 
       {/* Gradient Overlay */}
@@ -123,7 +93,7 @@ export function ThreatLandscape() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: index * 0.2 }}
-              className="bg-white/10 backdrop-filter backdrop-blur-lg p-6 rounded-xl shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] border border-white/20 hover:shadow-[0_8px_32px_0_rgba(31,38,135,0.6)] "
+              className="bg-white/10 backdrop-filter backdrop-blur-lg p-6 rounded-xl shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] border border-white/20 hover:shadow-[0_8px_32px_0_rgba(31,38,135,0.6)] transition-all duration-300"
             >
               <stat.icon className="w-12 h-12 text-blue-400 mb-4" />
               <h3 className="text-xl font-semibold mb-2 text-white">
@@ -151,11 +121,15 @@ export function ThreatLandscape() {
           <Button
             asChild
             size="lg"
-            className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/50 shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)]"
+            className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/50 shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)] transition-all duration-300"
           >
-            <a href="#" onClick={openCalendly} className="flex items-center">
+            <a
+              href="#"
+              onClick={openCalendly}
+              className="flex items-center group"
+            >
               <span>Get Your Threat Assessment</span>
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
             </a>
           </Button>
         </motion.div>

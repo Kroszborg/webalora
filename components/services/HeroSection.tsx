@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { ArrowRight, Shield, Lock, Server, Cloud } from "lucide-react";
-import Script from "next/script";
+import { useCalendly } from "@/hooks/useCalendly";
 
 const stats = [
   { value: "99.9%", label: "Guaranteed Uptime for Your Systems" },
@@ -18,6 +18,10 @@ const stats = [
 ];
 
 export function HeroSection() {
+  const { openCalendly } = useCalendly(
+    "https://calendly.com/behzad-webalora/30min"
+  );
+
   const scrollToPricing = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const pricingSection = document.getElementById("pricing-section");
@@ -34,6 +38,8 @@ export function HeroSection() {
         alt="Digital Globe"
         fill
         className="opacity-30 object-cover"
+        sizes="100vw"
+        quality={90}
         priority
       />
 
@@ -91,7 +97,8 @@ export function HeroSection() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + index * 0.1 }}
-                className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10"
+                whileHover={{ scale: 1.02 }}
+                className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 transition-colors duration-300 hover:bg-white/10"
               >
                 <div className="text-2xl md:text-3xl font-bold text-white mb-1">
                   {stat.value}
@@ -109,25 +116,21 @@ export function HeroSection() {
             className="flex flex-col sm:flex-row justify-center gap-4 mb-12"
           >
             <Button
+              asChild
               size="lg"
-              className="group relative overflow-hidden bg-white text-blue-900 hover:bg-blue-50 h-14 px-6 text-lg font-semibold min-w-[280px]"
-              onClick={() => {
-                if (typeof window !== "undefined" && (window as { Calendly?: { initPopupWidget: (options: { url: string }) => void } }).Calendly) {
-                  (window as { Calendly: { initPopupWidget: (options: { url: string }) => void } }).Calendly.initPopupWidget({
-                    url: "https://calendly.com/behzad-webalora/30min",
-                  });
-                }
-              }}
+              className="group relative overflow-hidden bg-white text-blue-900 hover:bg-blue-50 h-14 px-6 text-lg font-semibold min-w-[280px] transition-all duration-300"
             >
-              <Lock className="mr-2 h-5 w-5" />
-              <span>Get Your Free Security Assessment</span>
-              <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              <a href="#" onClick={openCalendly}>
+                <Lock className="mr-2 h-5 w-5" />
+                <span>Get Your Free Security Assessment</span>
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+              </a>
             </Button>
             <Button
               asChild
               size="lg"
               variant="outline"
-              className="group relative overflow-hidden text-blue-900 border-2 border-white hover:border-blue-200 h-14 px-6 text-lg font-semibold backdrop-blur-sm min-w-[280px]"
+              className="group relative overflow-hidden text-blue-900 border-2 border-white hover:border-blue-200 h-14 px-6 text-lg font-semibold backdrop-blur-sm min-w-[280px] transition-all duration-300"
             >
               <a
                 href="#pricing-section"
@@ -164,7 +167,8 @@ export function HeroSection() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 + index * 0.1 }}
-                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10"
+                whileHover={{ scale: 1.02 }}
+                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 transition-all duration-300 hover:bg-white/10"
               >
                 <feature.icon className="w-8 h-8 text-blue-400 mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">
@@ -176,10 +180,6 @@ export function HeroSection() {
           </div>
         </div>
       </div>
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
-      />
     </section>
   );
 }

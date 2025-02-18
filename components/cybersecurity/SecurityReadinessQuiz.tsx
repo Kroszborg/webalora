@@ -1,8 +1,7 @@
 "use client";
 
 import type React from "react";
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,15 +11,6 @@ import {
   ShieldAlert,
 } from "lucide-react";
 import Image from "next/image";
-import Script from "next/script";
-
-declare global {
-  interface Window {
-    Calendly: {
-      initPopupWidget: (options: { url: string }) => void;
-    };
-  }
-}
 
 const questions = [
   {
@@ -100,16 +90,40 @@ export function SecurityReadinessQuiz() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [showResult, setShowResult] = useState(false);
+  const calendlyInitialized = useRef(false);
 
   useEffect(() => {
-    // Load Calendly CSS
-    const link = document.createElement("link");
-    link.href = "https://assets.calendly.com/assets/external/widget.css";
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
+    // Only add the CSS if it doesn't already exist
+    const existingLink = document.querySelector('link[href*="calendly.com"]');
+    if (!existingLink) {
+      const link = document.createElement("link");
+      link.href = "https://assets.calendly.com/assets/external/widget.css";
+      link.rel = "stylesheet";
+      document.head.appendChild(link);
+    }
 
     return () => {
-      document.head.removeChild(link);
+      // Clean up Calendly widget elements if they exist
+      const elementsToRemove = [
+        ".calendly-overlay",
+        ".calendly-inline-widget",
+        ".calendly-popup-content",
+        ".calendly-popup-close",
+      ];
+
+      elementsToRemove.forEach((selector) => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach((element) => element.remove());
+      });
+
+      // Close popup if it's open
+      if (window.Calendly?.closePopupWidget) {
+        window.Calendly.closePopupWidget();
+      }
+
+      // Clean up iframes
+      const iframes = document.querySelectorAll('iframe[src*="calendly.com"]');
+      iframes.forEach((iframe) => iframe.remove());
     };
   }, []);
 
@@ -153,25 +167,30 @@ export function SecurityReadinessQuiz() {
 
   const openCalendly = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+
+    // Ensure we don't have any existing popups
+    const existingPopup = document.querySelector(".calendly-overlay");
+    if (existingPopup) {
+      existingPopup.remove();
+    }
+
+    // Initialize popup
     if (window.Calendly) {
       window.Calendly.initPopupWidget({
         url: "https://calendly.com/behzad-webalora/30min",
       });
+      calendlyInitialized.current = true;
     }
   };
 
   return (
     <section className="py-20 relative overflow-hidden bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900">
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
-      />
       <Image
         src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2070"
         alt="Cybersecurity Background"
-        layout="fill"
-        objectFit="cover"
-        className="opacity-10"
+        fill
+        className="opacity-10 object-cover"
+        sizes="100vw"
         priority
       />
       <div className="container mx-auto px-4 relative z-10">
@@ -199,7 +218,7 @@ export function SecurityReadinessQuiz() {
                   </h3>
                   <div className="w-32 h-2 bg-blue-200 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-blue-500 ease-out"
+                      className="h-full bg-blue-500 transition-all duration-300 ease-out"
                       style={{
                         width: `${
                           ((currentQuestion + 1) / questions.length) * 100
@@ -225,7 +244,7 @@ export function SecurityReadinessQuiz() {
                           <Button
                             key={index}
                             onClick={() => handleAnswer(index)}
-                            className="w-full text-left justify-start bg-white/10 hover:bg-white/20 text-white py-4 px-6 rounded-lg text-lg"
+                            className="w-full text-left justify-start bg-white/10 hover:bg-white/20 text-white py-4 px-6 rounded-lg text-lg transition-all duration-200"
                           >
                             {option}
                           </Button>
@@ -273,15 +292,15 @@ export function SecurityReadinessQuiz() {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-xl font-semibold rounded-full shadow-lg hover:shadow-xl"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-xl font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   <a
                     href="#"
                     onClick={openCalendly}
-                    className="flex items-center"
+                    className="flex items-center group"
                   >
                     Book a Consultation
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                   </a>
                 </Button>
               </motion.div>

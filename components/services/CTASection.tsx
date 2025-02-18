@@ -1,56 +1,47 @@
 "use client";
 
 import type React from "react";
-
-import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight, Download } from "lucide-react";
-import Script from "next/script";
-
-declare global {
-  interface Window {
-    Calendly: {
-      initPopupWidget: (options: { url: string }) => void;
-    };
-  }
-}
+import { useCalendly } from "@/hooks/useCalendly";
 
 export function CTASection() {
-  useEffect(() => {
-    // Load Calendly CSS
-    const link = document.createElement("link");
-    link.href = "https://assets.calendly.com/assets/external/widget.css";
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
-
-    return () => {
-      document.head.removeChild(link);
-    };
-  }, []);
-
-  const openCalendly = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    if (window.Calendly) {
-      window.Calendly.initPopupWidget({
-        url: "https://calendly.com/behzad-webalora/30min",
-      });
-    }
-  };
+  const { openCalendly } = useCalendly(
+    "https://calendly.com/behzad-webalora/30min"
+  );
 
   return (
     <section className="py-24 bg-gradient-to-br from-blue-900 to-indigo-900 relative overflow-hidden">
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
-      />
       {/* Glassmorphism background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-blue-500/20 rounded-full filter blur-3xl" />
-        <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-purple-500/20 rounded-full filter blur-3xl" />
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.2, 0.3, 0.2],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
+          className="absolute top-1/4 right-1/4 w-64 h-64 bg-blue-500/20 rounded-full filter blur-3xl"
+        />
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.2, 0.3, 0.2],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            repeatType: "reverse",
+            delay: 4,
+          }}
+          className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-purple-500/20 rounded-full filter blur-3xl"
+        />
       </div>
-
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -71,22 +62,22 @@ export function CTASection() {
             <Button
               asChild
               size="lg"
-              className="bg-white text-blue-900 hover:bg-blue-100 shadow-lg hover:shadow-xl"
+              className="bg-white text-blue-900 hover:bg-blue-100 shadow-lg hover:shadow-xl transition-all duration-300 group"
             >
               <a href="#" onClick={openCalendly} className="flex items-center">
                 Book a Free IT Consultation
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
             </Button>
             <Button
               asChild
               size="lg"
               variant="outline"
-              className="border-white text-blue-900 hover:bg-white/10"
+              className="border-white text-white hover:bg-white/10 transition-colors duration-300 group"
             >
               <Link href="/download-checklist" className="flex items-center">
                 Download IT Best Practices Checklist
-                <Download className="ml-2 h-5 w-5" />
+                <Download className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-y-1" />
               </Link>
             </Button>
           </div>

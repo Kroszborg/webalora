@@ -1,8 +1,7 @@
 "use client";
 
 import type React from "react";
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,15 +15,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { ArrowRight, CheckCircle } from "lucide-react";
-import Script from "next/script";
-
-declare global {
-  interface Window {
-    Calendly: {
-      initPopupWidget: (options: { url: string }) => void;
-    };
-  }
-}
+import { useCalendly } from "@/hooks/useCalendly";
 
 const questions = [
   {
@@ -121,18 +112,9 @@ export function AssessmentQuiz() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
   const [showResults, setShowResults] = useState(false);
-
-  useEffect(() => {
-    // Load Calendly CSS
-    const link = document.createElement("link");
-    link.href = "https://assets.calendly.com/assets/external/widget.css";
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
-
-    return () => {
-      document.head.removeChild(link);
-    };
-  }, []);
+  const { openCalendly } = useCalendly(
+    "https://calendly.com/behzad-webalora/30min"
+  );
 
   const handleAnswer = (value: string) => {
     const newAnswers = [...answers];
@@ -167,24 +149,11 @@ export function AssessmentQuiz() {
     }
   };
 
-  const openCalendly = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    if (window.Calendly) {
-      window.Calendly.initPopupWidget({
-        url: "https://calendly.com/behzad-webalora/30min",
-      });
-    }
-  };
-
   return (
     <section
       id="assessment"
       className="py-20 bg-gradient-to-br from-blue-50 to-indigo-100"
     >
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
-      />
       <div className="container mx-auto px-4">
         <Card className="max-w-2xl mx-auto">
           <CardHeader>
@@ -250,7 +219,7 @@ export function AssessmentQuiz() {
                           fill="transparent"
                         ></circle>
                         <circle
-                          className="text-blue-600  progress-ring__circle stroke-current"
+                          className="text-blue-600 progress-ring__circle stroke-current"
                           strokeWidth="10"
                           strokeLinecap="round"
                           cx="50"
@@ -296,20 +265,32 @@ export function AssessmentQuiz() {
                 }
                 disabled={currentQuestion === 0}
                 variant="outline"
+                className="transition-all duration-300"
               >
                 Previous
               </Button>
             )}
             {!showResults && currentQuestion === questions.length - 1 && (
-              <Button onClick={() => setShowResults(true)}>
+              <Button
+                onClick={() => setShowResults(true)}
+                className="transition-all duration-300 group"
+              >
                 See Results
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
             )}
             {showResults && (
-              <Button asChild className="w-full">
-                <a href="#" onClick={openCalendly}>
+              <Button
+                asChild
+                className="w-full transition-all duration-300 group"
+              >
+                <a
+                  href="#"
+                  onClick={openCalendly}
+                  className="flex items-center justify-center"
+                >
                   Book Free Consultation
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </a>
               </Button>
             )}
