@@ -9,6 +9,14 @@ const nextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/api/blogs',
+        destination: 'http://localhost:1337/api/blogs',
+      },
+    ];
+  },
   typescript: {
     ignoreBuildErrors: true,
   },
