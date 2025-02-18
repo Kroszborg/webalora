@@ -31,6 +31,7 @@ export interface StrapiPost {
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
+  Description: string | null;
 }
 
 export interface StrapiResponse {

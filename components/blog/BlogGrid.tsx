@@ -11,6 +11,7 @@ interface BlogPost {
   featuredImage: string;
   category: string;
   publishDate: string;
+  Description: string;
 }
 
 interface BlogGridProps {
@@ -42,7 +43,7 @@ export function BlogGrid({ posts }: BlogGridProps) {
               <h3 className="text-xl font-bold text-gray-900 mb-2">
                 {post.title}
               </h3>
-              <p className="text-gray-600 mb-4">{post.excerpt}</p>
+              <p className="text-gray-600 mb-4">{post.Description}</p>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-500">
                   {new Date(post.publishDate).toLocaleDateString()}
