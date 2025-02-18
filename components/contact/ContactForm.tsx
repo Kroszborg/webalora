@@ -12,10 +12,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import emailjs from "@emailjs/browser";
+
+// Initialize EmailJS with your public key
+emailjs.init("90tht713qoeJPf180");
+
+// EmailJS configuration
+const EMAILJS_SERVICE_ID = "service_c4c3d18";
+const EMAILJS_TEMPLATE_ID = "template_contact";
 
 export function ContactForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    fullName: "",
+    to_name: "Admin", // Default recipient name
+    from_name: "",
     company: "",
     email: "",
     phone: "",
@@ -35,10 +45,54 @@ export function ContactForm() {
     setFormData((prevData) => ({ ...prevData, department: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log(formData);
+    setIsSubmitting(true);
+
+    try {
+      // Update from_name with the full name from the form
+      const emailData = {
+        ...formData,
+        from_name: formData.from_name || formData.email, // Use email if name not provided
+        message: `
+Subject: ${formData.subject}
+Department: ${formData.department}
+Company: ${formData.company}
+Phone: ${formData.phone}
+
+Message:
+${formData.message}
+        `.trim(),
+      };
+
+      const result = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        emailData
+      );
+
+      console.log("Email sent successfully:", result.text);
+      alert("Thank you for your message. We'll get back to you soon!");
+
+      // Reset form
+      setFormData({
+        to_name: "Admin",
+        from_name: "",
+        company: "",
+        email: "",
+        phone: "",
+        department: "",
+        subject: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error("Failed to send email:", error);
+      alert(
+        "Sorry, there was an error sending your message. Please try again later."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -68,8 +122,8 @@ export function ContactForm() {
           >
             <Input
               type="text"
-              name="fullName"
-              value={formData.fullName}
+              name="from_name"
+              value={formData.from_name}
               onChange={handleChange}
               placeholder="Full Name"
               required
@@ -163,9 +217,10 @@ export function ContactForm() {
             <Button
               type="submit"
               size="lg"
-              className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl "
+              disabled={isSubmitting}
+              className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl"
             >
-              Submit Enquiry
+              {isSubmitting ? "Sending..." : "Submit Enquiry"}
             </Button>
           </motion.div>
         </div>
