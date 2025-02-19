@@ -143,20 +143,22 @@ export function SecurityReadinessQuiz() {
     const maxScore = questions.length * 2;
     const percentage = (score / maxScore) * 100;
 
-    if (percentage >= 80)
+    if (percentage >= 80) {
       return {
         level: "Low Risk",
         label: "Advanced",
         icon: CheckCircle,
         color: "text-green-400",
       };
-    if (percentage >= 50)
+    }
+    if (percentage >= 50) {
       return {
         level: "Moderate Risk",
         label: "Intermediate",
         icon: AlertTriangle,
         color: "text-yellow-400",
       };
+    }
     return {
       level: "High Risk",
       label: "Beginner",

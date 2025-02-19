@@ -1,25 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
-import Script from "next/script";
-
-// Declare global Calendly interface
-declare global {
-  interface Window {
-    Calendly?: {
-      initBadgeWidget: (config: {
-        url: string;
-        text: string;
-        color: string;
-        textColor: string;
-        branding?: boolean;
-      }) => void;
-      initPopupWidget: (options: { url: string }) => void;
-      closePopupWidget?: () => void;
-      destroyBadgeWidget?: () => void;
-    };
-  }
-}
+import { useEffect, useRef } from "react";
 
 interface CalendlyWidgetProps {
   url?: string;
@@ -30,53 +11,75 @@ interface CalendlyWidgetProps {
 
 export function CalendlyWidget({
   url = "https://calendly.com/behzad-webalora/30min",
-  text = "Schedule time with me",
+  text = "Book a Free Consultation",
   color = "#0069ff",
   textColor = "#ffffff",
 }: CalendlyWidgetProps) {
-  useEffect(() => {
-    // Initialize widget once Calendly script is loaded
-    const initWidget = () => {
-      if (window.Calendly) {
-        window.Calendly.initBadgeWidget({
-          url,
-          text,
-          color,
-          textColor,
-        });
-      }
-    };
+  const isInitialized = useRef(false);
 
-    // If Calendly is already loaded, initialize immediately
-    if (window.Calendly) {
-      initWidget();
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
     }
 
-    // Add event listener for when Calendly script loads
-    window.addEventListener("calendly:ready", initWidget);
+    const loadCalendlyScript = () => {
+      const script = document.createElement("script");
+      script.src = "https://assets.calendly.com/assets/external/widget.js";
+      script.async = true;
+      script.onload = initializeWidget;
+      document.body.appendChild(script);
 
-    // Cleanup
+      const link = document.createElement("link");
+      link.href = "https://assets.calendly.com/assets/external/widget.css";
+      link.rel = "stylesheet";
+      document.head.appendChild(link);
+    };
+
+    const initializeWidget = () => {
+      if (!window.Calendly || isInitialized.current) {
+        return;
+      }
+
+      // Clean up any existing widgets first
+      if (window.Calendly.destroyBadgeWidget) {
+        window.Calendly.destroyBadgeWidget();
+      }
+
+      window.Calendly.initBadgeWidget({
+        url,
+        text,
+        color,
+        textColor,
+        branding: false,
+      });
+
+      isInitialized.current = true;
+    };
+
+    if (window.Calendly) {
+      initializeWidget();
+    } else {
+      loadCalendlyScript();
+    }
+
     return () => {
-      window.removeEventListener("calendly:ready", initWidget);
-
-      // Destroy badge widget if it exists
       if (window.Calendly?.destroyBadgeWidget) {
         window.Calendly.destroyBadgeWidget();
       }
+
+      const elementsToRemove = [
+        ".calendly-overlay",
+        ".calendly-inline-widget",
+        ".calendly-popup-content",
+        ".calendly-popup-close",
+        'iframe[src*="calendly.com"]',
+      ];
+
+      elementsToRemove.forEach((selector) => {
+        document.querySelectorAll(selector).forEach((el) => el.remove());
+      });
     };
   }, [url, text, color, textColor]);
 
-  return (
-    <>
-      <Script
-        id="calendly-script"
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
-      />
-      <link
-        href="https://assets.calendly.com/assets/external/widget.css"
-        rel="stylesheet"
-      />
-    </>
-  );
+  return null;
 }

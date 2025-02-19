@@ -29,7 +29,12 @@ export default function RootLayout({
           <Header />
           <main className="flex-grow">{children}</main>
           <Footer />
-          <CalendlyWidget />
+          <CalendlyWidget
+            url="https://calendly.com/behzad-webalora/30min"
+            text="Book a Free Consultation"
+            color="#0069ff"
+            textColor="#ffffff"
+          />
         </div>
       </body>
     </html>
