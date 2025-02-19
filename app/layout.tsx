@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   title: "WebAlora - Professional IT Solutions",
   description:
     "Expert IT support and managed services for finance and legal sectors",
+  icons: {
+    icon: "/preview.ico",
+  },
 };
 
 export default function RootLayout({
