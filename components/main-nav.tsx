@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 
-// Update the MenuItem type to include the description property
+// Update the MenuItem type to include description property
 type MenuItem = {
   name: string;
   href?: string;
