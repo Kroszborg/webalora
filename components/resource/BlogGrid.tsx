@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 interface BlogPost {
   _sys: {
     filename: string;
+    path: string;
   };
   title: string;
   excerpt: string;
@@ -12,6 +13,7 @@ interface BlogPost {
   category: string;
   publishDate: string;
   Description: string;
+  slug: string;
 }
 
 interface BlogGridProps {
@@ -26,7 +28,7 @@ export function BlogGrid({ posts }: BlogGridProps) {
           key={post._sys.filename}
           className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200"
         >
-          <Link href={`/blog/${post._sys.filename}`}>
+          <Link href={post._sys.path || `/resource/${post.slug}`}>
             <div className="relative h-48 sm:h-56 md:h-64">
               <Image
                 src={post.featuredImage || "/placeholder.svg"}

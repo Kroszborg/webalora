@@ -15,14 +15,14 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
   return (
     <section className="mb-16">
       <h2 className="text-3xl font-bold text-gray-900 mb-8">
-        Related Articles
+        Related Resources
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {posts.map((post) => (
           <Link
             key={post.id}
-            href={`/blog/${post.slug}`}
-            className="group bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg "
+            href={`/resource/${post.slug}`}
+            className="group bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg"
           >
             <div className="relative h-48 overflow-hidden">
               <Image

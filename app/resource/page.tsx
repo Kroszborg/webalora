@@ -1,4 +1,4 @@
-import BlogPage from "@/components/blog/BlogPage";
+import BlogPage from "@/components/resource/BlogPage";
 import { getResources, type StrapiPost, type BlogPost, getImageUrl } from "@/lib/db";
 
 export const dynamic = "force-dynamic";

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { RelatedPosts } from "@/components/blog/RelatedPosts";
-import { SocialShare } from "@/components/blog/SocialShare";
+import { RelatedPosts } from "@/components/resource/RelatedPosts";
+import { SocialShare } from "@/components/resource/SocialShare";
 import BlogContent from "@/components/blog/BlogContent";
 import { Calendar, User } from "lucide-react";
 import type { Metadata } from "next";
@@ -12,7 +12,8 @@ type PageProps = {
 };
 
 export default async function ResourcePage({ params }: PageProps) {
-  const strapiPost = await getResourcePost(params.slug);
+  const decodedSlug = decodeURIComponent(params.slug);
+  const strapiPost = await getResourcePost(decodedSlug);
 
   if (!strapiPost) {
     notFound();
@@ -34,8 +35,8 @@ export default async function ResourcePage({ params }: PageProps) {
 
   const postUrl = `${
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
-  }/resource/${params.slug}`;
-  const relatedPosts = await getRelatedResources(params.slug);
+  }/resource/${decodedSlug}`;
+  const relatedPosts = await getRelatedResources(decodedSlug);
 
   const transformedRelatedPosts = relatedPosts.map((relatedPost) => ({
     id: relatedPost.id.toString(),
@@ -48,7 +49,10 @@ export default async function ResourcePage({ params }: PageProps) {
     category: relatedPost.blog_category?.Type || "General",
     publishDate: relatedPost.publishdate || relatedPost.publishedAt,
     content: relatedPost.content,
-    tags: []
+    tags: [],
+    _sys: {
+      path: `/resource/${relatedPost.slug}`
+    }
   }));
 
   return (
@@ -106,7 +110,8 @@ export default async function ResourcePage({ params }: PageProps) {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const strapiPost = await getResourcePost(params.slug);
+  const decodedSlug = decodeURIComponent(params.slug);
+  const strapiPost = await getResourcePost(decodedSlug);
 
   if (!strapiPost) {
     return {
@@ -116,6 +121,7 @@ export async function generateMetadata({
 
   return {
     title: strapiPost.Title,
-    description: strapiPost.content.substring(0, 160) + "...",
+    description: strapiPost.Description || 
+      (strapiPost.content ? strapiPost.content.substring(0, 160) + "..." : ""),
   };
 }
