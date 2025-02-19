@@ -138,6 +138,56 @@ export async function getRelatedPosts(currentSlug: string): Promise<StrapiPost[]
   }
 }
 
+export async function getResourcePost(slug: string): Promise<StrapiPost | null> {
+  try {
+    const response = await fetch(
+      `${STRAPI_URL}/api/resources?filters[slug][$eq]=${slug}`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        next: { revalidate: 10 }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data: StrapiResponse = await response.json();
+    return data.data[0] || null;
+  } catch (error) {
+    console.error('Error fetching blog post:', error);
+    return null;
+  }
+}
+export async function getRelatedResources(currentSlug: string): Promise<StrapiPost[]> {
+  try {
+    const response = await fetch(
+      `${STRAPI_URL}/api/resources?filters[slug][$ne]=${currentSlug}&pagination[limit]=3`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        next: { revalidate: 10 }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data: StrapiResponse = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error('Error fetching related posts:', error);
+    return [];
+  }
+}
 export function getImageUrl(imageUrl: string): string {
   if (!imageUrl) return "https://images.unsplash.com/photo-1557426272-fc759fdf7a8d";
   
@@ -145,4 +195,29 @@ export function getImageUrl(imageUrl: string): string {
   
   const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://webaloracms-production-9e8b.up.railway.app';
   return `${STRAPI_URL}${imageUrl}`;
+}
+
+export async function getResources(): Promise<StrapiPost[]> {
+  try {
+    console.log('Fetching from:', `${STRAPI_URL}/api/resources`);
+    
+    const response = await fetch(`${STRAPI_URL}/api/resources?populate=*`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      next: { revalidate: 10 }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data: StrapiResponse = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error('Error fetching resources:', error);
+    return [];
+  }
 }
