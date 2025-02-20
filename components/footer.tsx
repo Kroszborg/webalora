@@ -216,9 +216,6 @@ export function Footer() {
             <p className="text-xs leading-5 text-gray-400 text-center">
               &copy; {new Date().getFullYear()} WebAlora. All rights reserved.
             </p>
-            <p className="text-xs leading-5 text-gray-400 text-center">
-              Designed and developed with ❤️ by WebAlora Team
-            </p>
           </div>
         </div>
       </div>

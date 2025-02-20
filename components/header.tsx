@@ -22,7 +22,7 @@ export function Header() {
   }, []);
 
   const services = [
-    { name: "IT Services", href: "/services" },
+    { name: "Managed IT Services", href: "/services" },
     { name: "Cybersecurity Solutions", href: "/cybersecurity-solutions" },
     { name: "Cloud Solutions & Migration", href: "/cloud-solutions" },
     { name: "IT Consultancy", href: "/consultancy" },

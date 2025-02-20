@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, ArrowRight } from "lucide-react";
 import { useCalendly } from "@/hooks/useCalendly";
+import Link from "next/link";
 
 const painPoints = [
   {
@@ -64,61 +65,62 @@ export const PainPointsSection: React.FC = () => {
             We address your most pressing IT concerns with tailored solutions
           </p>
         </motion.div>
+        <Link href="/services">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-12 md:mb-20">
+            {painPoints.map((point, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group relative overflow-hidden rounded-3xl shadow-lg hover:shadow-xl"
+              >
+                {/* Card Background with adjusted opacity */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 backdrop-blur-[2px] z-10" />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-12 md:mb-20">
-          {painPoints.map((point, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative overflow-hidden rounded-3xl shadow-lg hover:shadow-xl transition-all duration-500"
-            >
-              {/* Card Background with adjusted opacity */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 backdrop-blur-[2px] z-10" />
+                {/* Image Background with adjusted opacity */}
+                <div className="absolute inset-0">
+                  <Image
+                    src={point.image || "/placeholder.svg"}
+                    alt={point.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    quality={90}
+                    className="group-hover:scale-110 transition-transform duration-700 ease-out opacity-90 object-cover"
+                    priority={index < 2}
+                  />
+                  {/* Refined gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/70 to-gray-900/90" />
+                </div>
 
-              {/* Image Background with adjusted opacity */}
-              <div className="absolute inset-0">
-                <Image
-                  src={point.image || "/placeholder.svg"}
-                  alt={point.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  quality={90}
-                  className="group-hover:scale-110 transition-transform duration-700 ease-out opacity-90 object-cover"
-                  priority={index < 2}
-                />
-                {/* Refined gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/70 to-gray-900/90" />
-              </div>
+                {/* Content */}
+                <div className="relative z-20 p-6 md:p-8 h-full flex flex-col justify-end transform group-hover:-translate-y-2 transition-transform duration-500">
+                  <motion.div
+                    className="flex items-start gap-4"
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    <div className="bg-white/95 rounded-full p-2 backdrop-blur-sm shadow-lg">
+                      <CheckCircle className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-bold text-white mb-2 md:mb-3 drop-shadow-md">
+                        {point.title}
+                      </h3>
+                      <p className="text-sm md:text-base text-gray-100 leading-relaxed drop-shadow-md">
+                        {point.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                </div>
 
-              {/* Content */}
-              <div className="relative z-20 p-6 md:p-8 h-full flex flex-col justify-end transform group-hover:-translate-y-2 transition-transform duration-500">
-                <motion.div
-                  className="flex items-start gap-4"
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <div className="bg-white/95 rounded-full p-2 backdrop-blur-sm shadow-lg">
-                    <CheckCircle className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl md:text-2xl font-bold text-white mb-2 md:mb-3 drop-shadow-md">
-                      {point.title}
-                    </h3>
-                    <p className="text-sm md:text-base text-gray-100 leading-relaxed drop-shadow-md">
-                      {point.description}
-                    </p>
-                  </div>
-                </motion.div>
-              </div>
-
-              {/* Enhanced hover effect overlay */}
-              <div className="absolute inset-0 z-10 bg-gradient-to-t from-blue-600/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            </motion.div>
-          ))}
-        </div>
+                {/* Enhanced hover effect overlay */}
+                <div className="absolute inset-0 z-10 bg-gradient-to-t from-blue-600/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </motion.div>
+            ))}
+          </div>
+        </Link>
 
         <motion.div
           className="text-center"

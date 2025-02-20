@@ -123,10 +123,12 @@ export const HeroSection: React.FC = () => {
       >
         <FloatingElement yOffset={15} duration={6} delay={0.5}>
           <div className="inline-block mb-4 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm text-sm font-medium">
+          <Link href="/services" className="flex items-center">
             <span className="text-blue-300">New:</span>{" "}
             <span className="text-white">
               Introducing AI-Powered Cybersecurity
             </span>
+          </Link>
           </div>
         </FloatingElement>
 
