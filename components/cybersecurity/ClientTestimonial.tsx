@@ -32,8 +32,8 @@ export function ClientTestimonial() {
               <Quote className="w-12 h-12 text-blue-400 mb-4" />
               <p className="text-xl text-white mb-4">
                 &quot;We partnered with WebAlora after a phishing attack nearly
-                jeopardized our operations. Within weeks, their SOC identified
-                multiple attempted breaches and neutralized them before any
+                jeopardised our operations. Within weeks, their SOC identified
+                multiple attempted breaches and neutralised them before any
                 damage could occur. Our team is now fully trained, and we
                 haven&apos;t had a single incident since.&quot;
               </p>

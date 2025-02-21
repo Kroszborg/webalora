@@ -32,7 +32,7 @@ export function CybersecurityFramework() {
     },
     {
       icon: RefreshCw,
-      title: "Review & Optimization",
+      title: "Review & optimisation",
       description:
         "Regular penetration tests, vulnerability scans, and updates to maintain a strong posture.",
     },

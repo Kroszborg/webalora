@@ -33,7 +33,7 @@ const services = [
       "Accelerate your digital transformation",
     ],
     additionalOffering:
-      "Customized workshops for executive teams to align cloud strategy with business goals.",
+      "Customised workshops for executive teams to align cloud strategy with business goals.",
     riskOfInaction:
       "Without a clear cloud strategy, businesses risk inefficient resource allocation and missed opportunities for innovation and growth.",
   },
@@ -53,7 +53,7 @@ const services = [
       "Future-proof your IT infrastructure",
     ],
     additionalOffering:
-      "Post-migration performance optimization and user training.",
+      "Post-migration performance optimisation and user training.",
     riskOfInaction:
       "Delaying cloud migration can lead to increased operational costs and reduced competitiveness in the market.",
   },
@@ -61,7 +61,7 @@ const services = [
     icon: Cloud,
     title: "Managed Cloud Services",
     description:
-      "24/7 monitoring, support, and optimization of your cloud environment.",
+      "24/7 monitoring, support, and optimisation of your cloud environment.",
     whatWeDo: [
       "24/7 Monitoring & Support",
       "Automated Backups & Disaster Recovery",
@@ -73,7 +73,7 @@ const services = [
       "Reduce operational costs with a scalable service model",
     ],
     additionalOffering:
-      "Customized dashboards for real-time insights into your cloud environment.",
+      "Customised dashboards for real-time insights into your cloud environment.",
     riskOfInaction:
       "Without proper management, cloud environments can become inefficient, insecure, and costly to maintain.",
   },
@@ -85,7 +85,7 @@ const services = [
     whatWeDo: [
       "Flexible Architecture Design",
       "Data Sovereignty & Compliance Management",
-      "Workload Optimization",
+      "Workload optimisation",
     ],
     benefits: [
       "Enjoy flexibility in data storage and processing",
@@ -133,7 +133,7 @@ const services = [
       "Improve application performance and user experience",
     ],
     additionalOffering:
-      "DevOps pipeline setup and optimization for continuous integration and deployment.",
+      "DevOps pipeline setup and optimisation for continuous integration and deployment.",
     riskOfInaction:
       "Not leveraging cloud-native development can result in applications that are less scalable, more costly to maintain, and slower to update.",
   },

@@ -34,7 +34,7 @@ const faqs = [
   {
     question: "Are your services compliant with GDPR?",
     answer:
-      "All solutions follow GDPR guidelines. We also offer specialized audits to maintain or achieve compliance.",
+      "All solutions follow GDPR guidelines. We also offer specialised audits to maintain or achieve compliance.",
     icon: FileCheck,
   },
   {

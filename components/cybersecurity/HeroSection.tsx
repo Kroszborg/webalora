@@ -125,7 +125,7 @@ export function HeroSection() {
               asChild
               size="lg"
               variant="outline"
-              className="bg-white/5 backdrop-blur-md text-blue-900 border border-white/50 hover:bg-white/10 shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)] transition-all duration-300"
+              className="bg-white backdrop-blur-md text-blue-900 border border-white/50 hover:bg-white/10 shadow-[0_5px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)] transition-all duration-300"
             >
               <a
                 href="#services"

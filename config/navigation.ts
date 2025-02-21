@@ -60,7 +60,7 @@ export const navigationConfig: NavigationItem[] = [
             {
               name: "Request a Quote",
               href: "/contact/quote",
-              description: "Get a customized quote for your business needs",
+              description: "Get a Customised quote for your business needs",
             },
             {
               name: "Free IT Health-check",

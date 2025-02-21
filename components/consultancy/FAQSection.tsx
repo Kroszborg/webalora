@@ -5,9 +5,9 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 
 const faqs = [
   {
-    question: "What industries do you specialize in for IT consultancy?",
+    question: "What industries do you specialise in for IT consultancy?",
     answer:
-      "We specialize in providing IT consultancy services to a wide range of industries, including finance, healthcare, retail, and manufacturing. Our team has extensive experience in addressing the unique challenges and regulatory requirements of these sectors.",
+      "We specialise in providing IT consultancy services to a wide range of industries, including finance, healthcare, retail, and manufacturing. Our team has extensive experience in addressing the unique challenges and regulatory requirements of these sectors.",
   },
   {
     question: "How long does a typical IT consultancy project take?",

@@ -24,7 +24,7 @@ const faqs = [
     question:
       "Do you handle cloud migrations for platforms like Microsoft 365?",
     answer:
-      "Yes. We specialize in secure, seamless migrations and ongoing cloud management. Our certified experts ensure minimal disruption during transition, handling everything from initial assessment to post-migration support and optimization.",
+      "Yes. We specialise in secure, seamless migrations and ongoing cloud management. Our certified experts ensure minimal disruption during transition, handling everything from initial assessment to post-migration support and optimisation.",
   },
   {
     question: "How do you ensure GDPR and Cyber Essentials compliance?",
@@ -32,7 +32,7 @@ const faqs = [
       "Through continuous audits, best-practice implementations, and real-time updates on regulatory changes. We maintain comprehensive documentation, conduct regular staff training, and implement robust security measures to ensure full compliance.",
   },
   {
-    question: "What industries do you specialize in?",
+    question: "What industries do you specialise in?",
     answer:
       "We have extensive experience in finance, legal, healthcare, and manufacturing sectors, but our solutions are adaptable to various industries. Our team understands sector-specific compliance requirements and best practices for each industry we serve.",
   },

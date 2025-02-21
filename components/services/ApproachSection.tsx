@@ -17,13 +17,13 @@ const steps = [
     icon: ClipboardCheck,
   },
   {
-    title: "Customized Strategy & Onboarding",
+    title: "Customised Strategy & Onboarding",
     description:
       "We craft a roadmap aligned with your budget and objectives, ensuring minimal disruption to daily operations.",
     icon: Rocket,
   },
   {
-    title: "Implementation & Optimization",
+    title: "Implementation & optimisation",
     description:
       "We deploy best-in-class tools and methodologies, from patches to full-scale migrations.",
     icon: Cog,

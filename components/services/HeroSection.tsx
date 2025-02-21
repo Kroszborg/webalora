@@ -154,7 +154,7 @@ export function HeroSection() {
               {
                 icon: Server,
                 title: "Infrastructure Management",
-                description: "Proactive maintenance and optimization",
+                description: "Proactive maintenance and optimisation",
               },
               {
                 icon: Cloud,

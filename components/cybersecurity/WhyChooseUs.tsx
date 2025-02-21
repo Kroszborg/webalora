@@ -43,7 +43,7 @@ export function WhyChooseUs() {
     },
     {
       icon: Scale,
-      title: "Scalable & Customizable",
+      title: "Scalable & Customisable",
       description:
         "Our flexible solutions adapt to your needs, whether you're a growing SME or a large enterprise.",
       detail: "Pay only for what you need, scale as you grow",
