@@ -33,7 +33,7 @@ export const navigationConfig: NavigationItem[] = [
             {
               name: "Network & Connectivity",
               href: "/services/network",
-              description: "Reliable network solutions for your organization",
+              description: "Reliable network solutions for your organisation",
             },
             {
               name: "VOIP",

@@ -20,7 +20,7 @@ const featuredBlogs = [
   {
     title: "Cybersecurity Best Practices for Remote Work",
     excerpt:
-      "Learn how to protect your organization's data and systems in an increasingly remote work environment.",
+      "Learn how to protect your organisation's data and systems in an increasingly remote work environment.",
     image:
       "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&q=80&w=2070",
     category: "Cybersecurity",

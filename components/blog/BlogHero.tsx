@@ -14,7 +14,9 @@ export function BlogHero() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push(`/blog?search=${encodeURIComponent(searchQuery)}`);
+    if (searchQuery.trim()) {
+      router.push(`/blog?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
   };
 
   return (
@@ -54,14 +56,14 @@ export function BlogHero() {
           </p>
           <form
             onSubmit={handleSearch}
-            className="flex items-center max-w-md mx-auto bg-white backdrop-filter backdrop-blur-md rounded-full p-1 mb-8"
+            className="flex items-center max-w-md mx-auto bg-white rounded-full p-1 mb-8"
           >
             <Input
               type="text"
               placeholder="Search articles..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-grow bg-transparent border-none text-white placeholder-blue-200 focus:ring-0"
+              className="flex-grow bg-transparent border-none text-gray-800 placeholder-gray-500 focus:ring-0 focus:outline-none"
             />
             <Button
               type="submit"

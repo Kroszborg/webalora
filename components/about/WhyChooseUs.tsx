@@ -31,7 +31,7 @@ const reasons = [
   {
     icon: Zap,
     title: "Dedicated Account Management",
-    description: "Personalized support and communication",
+    description: "Personalised support and communication",
   },
 ];
 

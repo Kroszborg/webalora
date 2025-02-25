@@ -38,7 +38,7 @@ const reasons = [
     icon: Headphones,
     title: "Superior Call Quality",
     description:
-      "Experience crystal-clear audio and reliable connections with our advanced VOIP technology and optimized network infrastructure.",
+      "Experience crystal-clear audio and reliable connections with our advanced VOIP technology and optimised network infrastructure.",
   },
 ];
 
@@ -84,12 +84,12 @@ export function WhyChooseUs() {
           transition={{ duration: 0.5, delay: 0.5 }}
           className="text-center mt-12 text-lg text-gray-700"
         >
-          At WebAlora, we&apos;re more than just a VOIP service provider—we&apos;re your
-          strategic partner in transforming the way you communicate. Let us
-          build a cutting-edge VOIP system that not only meets your current
-          needs but also sets the foundation for future success, enabling
-          seamless collaboration and crystal-clear communication across your
-          entire organization.
+          At WebAlora, we&apos;re more than just a VOIP service
+          provider—we&apos;re your strategic partner in transforming the way you
+          communicate. Let us build a cutting-edge VOIP system that not only
+          meets your current needs but also sets the foundation for future
+          success, enabling seamless collaboration and crystal-clear
+          communication across your entire organisation.
         </motion.p>
       </div>
     </section>

@@ -41,5 +41,5 @@ The combination of 5G and edge computing brings processing power closer to the d
 
 ## Conclusion
 
-As 5G networks continue to roll out globally, businesses and consumers alike will benefit from its transformative capabilities. Organizations should start planning now to leverage 5G technology and stay ahead in the rapidly evolving digital landscape.
+As 5G networks continue to roll out globally, businesses and consumers alike will benefit from its transformative capabilities. organisations should start planning now to leverage 5G technology and stay ahead in the rapidly evolving digital landscape.
 

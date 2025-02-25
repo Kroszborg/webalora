@@ -32,7 +32,7 @@ const services = [
   },
   {
     title: "Network & Infrastructure Management",
-    description: "24/7 monitoring and optimized configurations.",
+    description: "24/7 monitoring and optimised configurations.",
     icon: Network,
   },
   {

@@ -90,7 +90,7 @@ export function HeroSection() {
               asChild
               size="lg"
               variant="outline"
-              className="border-white text-white hover:bg-white/10 transition-all duration-300 ease-in-out transform hover:scale-105"
+              className="border-white text-blue-900 hover:bg-white/10 transition-all duration-300 ease-in-out transform hover:scale-105"
             >
               <Link href="/contact">Get Your Custom Quote</Link>
             </Button>

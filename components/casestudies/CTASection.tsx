@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export function CTASection() {
   return (
@@ -21,10 +22,12 @@ export function CTASection() {
             Join the ranks of industry leaders who have partnered with WebAlora
             to drive innovation and achieve unprecedented growth.
           </p>
+          <Link href="/contact">
           <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
             Schedule a Consultation
             <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
+          </Link>
         </motion.div>
       </div>
     </section>

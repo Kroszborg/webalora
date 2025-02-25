@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { SectionTitle } from "@/components/ui/section-title";
@@ -19,7 +19,7 @@ const clientLogos = [
   { src: "/trust/aws.png", alt: "Client Logo 8" },
   { src: "/trust/Tesco.png", alt: "Client Logo 9" },
   { src: "/trust/MSP.png", alt: "Client Logo 10" },
-  { src: "/trust/DELL.png", alt: "Client Logo 10" },
+  { src: "/trust/DELL.png", alt: "Client Logo 11" },
 ];
 
 const stats = [
@@ -51,13 +51,21 @@ const stats = [
 
 const LogoCarousel: React.FC = () => {
   const carouselRef = useRef<HTMLDivElement>(null);
+  const [animationStarted, setAnimationStarted] = useState(false);
   const controls = useAnimation();
-  const inView = useInView(carouselRef);
+  const inView = useInView(carouselRef, { once: true });
 
   useEffect(() => {
-    if (inView) {
+    // Start animation only if it hasn't started yet and is in view
+    if (inView && !animationStarted) {
+      setAnimationStarted(true);
+
+      // Calculate total width for smooth looping
+      const logoWidth = 160; // Width of each logo + margin
+      const totalWidth = clientLogos.length * logoWidth;
+
       controls.start({
-        x: [0, -100 * clientLogos.length],
+        x: [0, -totalWidth],
         transition: {
           x: {
             repeat: Number.POSITIVE_INFINITY,
@@ -67,20 +75,21 @@ const LogoCarousel: React.FC = () => {
           },
         },
       });
-    } else {
-      controls.stop();
     }
-  }, [controls, inView]);
+  }, [controls, inView, animationStarted]);
+
+  // Duplicate logos to create seamless loop
+  const duplicatedLogos = [...clientLogos, ...clientLogos];
 
   return (
     <div className="overflow-hidden w-full mb-16" ref={carouselRef}>
       <motion.div
         className="flex items-center space-x-8"
         animate={controls}
-        style={{ width: `${clientLogos.length * 200}px` }}
+        style={{ width: `${duplicatedLogos.length * 160}px` }}
       >
-        {[...clientLogos, ...clientLogos].map((logo, index) => (
-          <div key={index} className="relative w-40 h-20 flex-shrink-0 ">
+        {duplicatedLogos.map((logo, index) => (
+          <div key={index} className="relative w-40 h-20 flex-shrink-0">
             <Image
               src={logo.src || "/placeholder.svg"}
               alt={logo.alt}

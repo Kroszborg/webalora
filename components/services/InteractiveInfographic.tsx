@@ -136,7 +136,7 @@ const quizQuestions = [
     options: ["33%", "47%", "58%", "72%"],
     answer: "47%",
     explanation:
-      "Only 47% of UK businesses have a formal cybersecurity incident response plan, indicating a significant gap in preparedness for many organizations.",
+      "Only 47% of UK businesses have a formal cybersecurity incident response plan, indicating a significant gap in preparedness for many organisations.",
   },
   {
     question: "Which of the following is NOT a principle of the UK GDPR?",

@@ -39,7 +39,7 @@ const questions = [
   },
   {
     question:
-      "How often does your organization conduct cybersecurity risk assessments?",
+      "How often does your organisation conduct cybersecurity risk assessments?",
     options: [
       { value: "1", label: "Never or rarely" },
       { value: "2", label: "Annually" },
@@ -61,7 +61,7 @@ const questions = [
   },
   {
     question:
-      "How would you describe your organization's approach to IT budget allocation?",
+      "How would you describe your organisation's approach to IT budget allocation?",
     options: [
       {
         value: "1",
@@ -85,7 +85,7 @@ const questions = [
   },
   {
     question:
-      "How well-defined is your organization's IT governance and compliance framework?",
+      "How well-defined is your organisation's IT governance and compliance framework?",
     options: [
       {
         value: "1",
@@ -161,7 +161,7 @@ export function AssessmentQuiz() {
               IT Strategy Readiness Assessment
             </CardTitle>
             <CardDescription className="text-center">
-              Evaluate your organization&apos;s IT readiness in just 5 minutes
+              Evaluate your organisation&apos;s IT readiness in just 5 minutes
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -249,7 +249,7 @@ export function AssessmentQuiz() {
                     </h4>
                     <p>
                       Book a free consultation with our IT strategy experts to
-                      discuss your results and get personalized recommendations
+                      discuss your results and get Personalised recommendations
                       for improving your IT readiness.
                     </p>
                   </div>

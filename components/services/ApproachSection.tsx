@@ -98,7 +98,7 @@ export function ApproachSection() {
               also prepared for future challenges.
             </p>
             <ul className="list-disc list-inside text-gray-600">
-              <li>Personalized solutions for your unique business needs</li>
+              <li>Personalised solutions for your unique business needs</li>
               <li>Proactive problem-solving to prevent IT issues</li>
               <li>Continuous improvement and adaptation to new technologies</li>
               <li>Transparent communication and regular progress updates</li>
