@@ -11,15 +11,27 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      const currentScrollPos = window.scrollY;
+
+      // Detect if scrolled past threshold
+      setScrolled(currentScrollPos > 20);
+
+      // Auto-hide logic
+      const isVisible =
+        prevScrollPos > currentScrollPos || currentScrollPos < 10;
+
+      setPrevScrollPos(currentScrollPos);
+      setVisible(isVisible);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [prevScrollPos]);
 
   const services = [
     { name: "Managed IT Services", href: "/services" },
@@ -54,8 +66,8 @@ export function Header() {
   return (
     <header
       className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled ? "bg-white/80 backdrop-blur-md shadow-md" : "bg-transparent"
-      }`}
+        scrolled ? "bg-white/80 backdrop-blur-md shadow-md" : "bg-white"
+      } ${visible ? "top-0" : "-top-24"}`}
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center justify-between">
@@ -63,7 +75,7 @@ export function Header() {
             <Image
               src="/logos/logo.png"
               alt="WebAlora Logo"
-              width={150}
+              width={120}
               height={40}
               className="transition-opacity duration-300"
               style={{
@@ -87,7 +99,7 @@ export function Header() {
                   className={`flex items-center text-sm font-semibold ${
                     scrolled
                       ? "text-gray-900 hover:text-blue-600"
-                      : "text-white hover:text-blue-200"
+                      : "text-gray-900 hover:text-blue-600"
                   } transition-colors duration-300`}
                 >
                   {item.name}
@@ -127,7 +139,7 @@ export function Header() {
               className={`flex items-center gap-2 text-sm font-medium ${
                 scrolled
                   ? "text-gray-900 hover:text-blue-600"
-                  : "text-white hover:text-blue-200"
+                  : "text-gray-900 hover:text-blue-600"
               } transition-colors duration-300`}
             >
               <Phone className="h-4 w-4" />
@@ -139,7 +151,7 @@ export function Header() {
               className={`${
                 scrolled
                   ? "bg-blue-600 text-white hover:bg-blue-700"
-                  : "bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm"
+                  : "bg-blue-600 text-white hover:bg-blue-700"
               } border border-transparent hover:border-white/50 transition-all duration-300`}
             >
               <Link href="/contact">Contact Us</Link>
@@ -151,8 +163,8 @@ export function Header() {
             <button
               type="button"
               className={`p-2 rounded-md ${
-                scrolled ? "text-gray-900" : "text-white"
-              } hover:bg-gray-100 hover:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white`}
+                scrolled ? "text-gray-900" : "text-gray-900"
+              } hover:bg-gray-100 hover:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500`}
               onClick={() => setMobileMenuOpen(true)}
               aria-label="Open main menu"
             >
@@ -193,8 +205,8 @@ export function Header() {
                     <Image
                       src="/logos/logo.png"
                       alt="WebAlora Logo"
-                      width={150}
-                      height={40}
+                      width={120}
+                      height={30}
                       priority
                     />
                   </Link>
