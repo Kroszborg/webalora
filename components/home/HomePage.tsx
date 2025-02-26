@@ -9,11 +9,13 @@ import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { CallToActionSection } from "@/components/home/CallToActionSection";
 import { AboutSection } from "@/components/home/AboutSection";
 import { FeaturedBlogsSection } from "@/components/home/FeaturedBlogsSection";
+import { VideoSection } from "./VideoSection";
 
 export default function Home() {
   return (
     <main>
       <ClientHeroSection />
+      <VideoSection />
       <TrustSection />
       <PainPointsSection />
       <ServicesSection />
