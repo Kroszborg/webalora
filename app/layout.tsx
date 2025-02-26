@@ -6,6 +6,8 @@ import { Footer } from "@/components/footer";
 import { CalendlyWidget } from "@/components/calendly-widget";
 import type { Metadata } from "next";
 import type React from "react";
+import { CookieConsent } from "@/components/CookieConsent";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,7 +29,11 @@ export default function RootLayout({
       >
         <div className="flex flex-col min-h-screen">
           <Header />
-          <main className="flex-grow">{children}</main>
+          <main className="flex-grow">
+            {children}
+            <CookieConsent />
+            <Toaster />
+          </main>
           <Footer />
           <CalendlyWidget
             url="https://calendly.com/behzad-webalora/30min"

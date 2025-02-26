@@ -28,9 +28,10 @@ const navigation = {
     { name: "Contact", href: "/contact" },
   ],
   legal: [
-    { name: "Privacy Policy", href: "/privacy" },
+    { name: "Privacy Policy", href: "/privacy-policy" },
     { name: "Terms of Service", href: "/terms" },
     { name: "Cookie Policy", href: "/cookie-policy" },
+    { name: "Modern Slavery Statement", href: "/modern-slavery-statement" },
   ],
 };
 
