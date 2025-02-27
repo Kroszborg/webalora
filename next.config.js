@@ -2,12 +2,16 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
+    domains: [
+      'webaloracms-production-9e8b.up.railway.app',
+      'images.unsplash.com'
+    ],
     remotePatterns: [
       {
         protocol: 'http',
         hostname: 'webaloracms-production-9e8b.up.railway.app',
         port: '',
-        pathname: '/uploads/**',
+        pathname: '/**', // Changed from '/uploads/**' to allow all paths
       },
       {
         protocol: 'https',
@@ -43,6 +47,4 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
 }
-
 module.exports = nextConfig
-

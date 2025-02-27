@@ -25,9 +25,10 @@ export default async function BlogPostPage({ params }: PageProps) {
     slug: strapiPost.slug,
     body: strapiPost.content,
     content: strapiPost.content,
-    excerpt: strapiPost.Description || strapiPost.content.substring(0, 160) + "...",
+    excerpt:
+      strapiPost.Description || strapiPost.content.substring(0, 160) + "...",
     Description: strapiPost.Description || "",
-    featuredImage: getImageUrl(strapiPost.image?.[0]?.url),
+    featuredImage: getImageUrl(strapiPost.image), // Changed from strapiPost.image?.[0]?.url
     category: strapiPost.blog_category?.Type || "General",
     publishDate: strapiPost.publishdate || strapiPost.publishedAt,
   };
@@ -42,13 +43,14 @@ export default async function BlogPostPage({ params }: PageProps) {
     title: relatedPost.Title,
     author: relatedPost.Author,
     slug: relatedPost.slug,
-    excerpt: relatedPost.Description || relatedPost.content.substring(0, 160) + "...",
+    excerpt:
+      relatedPost.Description || relatedPost.content.substring(0, 160) + "...",
     Description: relatedPost.Description || "",
-    featuredImage: getImageUrl(relatedPost.image?.[0]?.url),
+    featuredImage: getImageUrl(relatedPost.image), // Changed from relatedPost.image?.[0]?.url
     category: relatedPost.blog_category?.Type || "General",
     publishDate: relatedPost.publishdate || relatedPost.publishedAt,
     content: relatedPost.content,
-    tags: []
+    tags: [],
   }));
 
   return (

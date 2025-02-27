@@ -8,6 +8,9 @@ interface RelatedPostsProps {
 }
 
 export function RelatedPosts({ posts }: RelatedPostsProps) {
+  // Default fallback image
+  const fallbackImage = "/placeholder.svg";
+
   if (!posts || posts.length === 0) {
     return null;
   }
@@ -26,7 +29,7 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
           >
             <div className="relative h-48 overflow-hidden">
               <Image
-                src={post.featuredImage || "/placeholder.svg"}
+                src={post.featuredImage || fallbackImage}
                 alt={post.title}
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -47,7 +50,9 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
               </p>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-500">
-                  {post.publishDate}
+                  {typeof post.publishDate === "string"
+                    ? new Date(post.publishDate).toLocaleDateString()
+                    : "Unknown date"}
                 </span>
                 <span className="text-blue-600 flex items-center text-sm font-medium">
                   Read More
