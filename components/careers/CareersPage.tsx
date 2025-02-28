@@ -43,6 +43,11 @@ export function CareersPage() {
   const [selectedDepartment, setSelectedDepartment] = useState<string>("all");
   const [headerHeight, setHeaderHeight] = useState(0);
 
+  // Get unique values for filters
+  const getUniqueValues = (key: keyof Job) => {
+    return ['all', ...new Set(jobs.map(job => job[key]))].filter(Boolean);
+  };
+
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -50,9 +55,9 @@ export function CareersPage() {
         const data: JobsResponse = await response.json();
         setJobs(data.data);
         setFilteredJobs(data.data);
-        setIsLoading(false);
       } catch (err) {
         setError('Failed to fetch jobs');
+      } finally {
         setIsLoading(false);
       }
     };
@@ -80,12 +85,21 @@ export function CareersPage() {
     let filtered = [...jobs];
 
     if (location !== "all") {
-      filtered = filtered.filter((job) => job.Location === location);
+      filtered = filtered.filter((job) => 
+        job.Location.toLowerCase() === location.toLowerCase()
+      );
     }
     if (type !== "all") {
-      filtered = filtered.filter((job) => job.employment_type === type);
+      filtered = filtered.filter((job) => 
+        job.employment_type.toLowerCase() === type.toLowerCase()
+      );
     }
-    // Note: department filtering removed as it's not in the API data
+    // Keep department filter for UI consistency
+    if (department !== "all") {
+      filtered = filtered.filter((job) => 
+        job.job_description.toLowerCase().includes(department.toLowerCase())
+      );
+    }
 
     setFilteredJobs(filtered);
     setSelectedLocation(location);
@@ -197,6 +211,8 @@ export function CareersPage() {
                 selectedLocation={selectedLocation}
                 selectedType={selectedType}
                 selectedDepartment={selectedDepartment}
+                locations={getUniqueValues('Location')}
+                types={getUniqueValues('employment_type')}
               />
               <JobList jobs={filteredJobs} />
             </>

@@ -38,9 +38,16 @@ export function JobDetail({ job }: JobDetailProps) {
         >
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                {job.Title}
-              </h1>
+              <div className="flex items-center gap-3 mb-2">
+                <h1 className="text-3xl font-bold text-gray-900">
+                  {job.Title}
+                </h1>
+                {job.featuredjob && (
+                  <span className="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">
+                    Featured
+                  </span>
+                )}
+              </div>
               <div className="flex flex-wrap gap-4 text-sm text-gray-600">
                 <div className="flex items-center gap-1">
                   <MapPin className="w-4 h-4" />
@@ -55,7 +62,13 @@ export function JobDetail({ job }: JobDetailProps) {
                   <span>£{job.Salary}</span>
                 </div>
               </div>
+              {job.job_ref && (
+                <div className="mt-2 text-sm text-gray-500">
+                  Reference: {job.job_ref}
+                </div>
+              )}
             </div>
+
             {job.application_url && (
               <Button
                 size="lg"
@@ -101,14 +114,24 @@ export function JobDetail({ job }: JobDetailProps) {
             )}
           </div>
 
-          {job.deadline && (
-            <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-              <p className="text-gray-600">
-                <strong>Application Deadline:</strong>{" "}
-                {new Date(job.deadline).toLocaleDateString()}
-              </p>
-            </div>
-          )}
+          <div className="mt-8 space-y-4">
+            {job.job_status && (
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <p className="text-gray-600">
+                  <strong>Status:</strong> {job.job_status}
+                </p>
+              </div>
+            )}
+            
+            {job.deadline && (
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <p className="text-gray-600">
+                  <strong>Application Deadline:</strong>{" "}
+                  {new Date(job.deadline).toLocaleDateString()}
+                </p>
+              </div>
+            )}
+          </div>
 
           {job.application_url && (
             <div className="mt-8 text-center">

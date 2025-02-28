@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -21,6 +22,7 @@ export function JobFilters({
   selectedType,
   selectedDepartment,
 }: JobFiltersProps) {
+  // Keep the predefined options
   const locations = ["all", "London", "Remote", "Hybrid"];
   const types = ["all", "Full-time", "Part-time", "Contract"];
   const departments = [
