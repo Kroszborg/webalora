@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { MapPin, Clock, Banknote } from "lucide-react";
+import { MapPin, Clock, Banknote, Building2 } from "lucide-react";
 import type { Job } from "@/lib/jobs";
 import Link from "next/link";
 
@@ -52,6 +52,12 @@ export function JobList({ jobs }: JobListProps) {
                       <Clock className="w-4 h-4" />
                       <span>{job.employment_type}</span>
                     </div>
+                    {job.job_department && (
+                      <div className="flex items-center gap-1">
+                        <Building2 className="w-4 h-4" />
+                        <span>{job.job_department.name}</span>
+                      </div>
+                    )}
                     <div className="flex items-center gap-1">
                       <Banknote className="w-4 h-4" />
                       <span>£{job.Salary}</span>

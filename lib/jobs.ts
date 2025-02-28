@@ -18,6 +18,16 @@ export interface Job {
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
+  job_department: {
+    id: number;
+    documentId: string;
+    name: string;
+    slug: string;
+    description: string;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+  };
 }
 
 export interface JobsResponse {

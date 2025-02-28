@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import type { Job, JobsResponse } from "@/lib/jobs";
+import { useSearchParams } from "next/navigation";
 
 // Remove the static jobs array as we'll fetch from API
 
@@ -38,20 +39,25 @@ export function CareersPage() {
   const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedLocation, setSelectedLocation] = useState<string>("all");
-  const [selectedType, setSelectedType] = useState<string>("all");
-  const [selectedDepartment, setSelectedDepartment] = useState<string>("all");
   const [headerHeight, setHeaderHeight] = useState(0);
+  const searchParams = useSearchParams();
 
-  // Get unique values for filters
-  const getUniqueValues = (key: keyof Job) => {
-    return ['all', ...new Set(jobs.map(job => job[key]))].filter(Boolean);
+  const getUniqueLocations = () => {
+    return [...new Set(jobs.map(job => job.Location))].filter(Boolean);
+  };
+
+  const getUniqueTypes = () => {
+    return [...new Set(jobs.map(job => job.employment_type))].filter(Boolean);
+  };
+
+  const getUniqueDepartments = () => {
+    return [...new Set(jobs.map(job => job.job_department.name))].filter(Boolean);
   };
 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await fetch('https://webaloracms-production-9e8b.up.railway.app/api/jobs');
+        const response = await fetch('https://webaloracms-production-9e8b.up.railway.app/api/jobs?populate=*');
         const data: JobsResponse = await response.json();
         setJobs(data.data);
         setFilteredJobs(data.data);
@@ -81,31 +87,36 @@ export function CareersPage() {
     };
   }, []);
 
-  const handleFilter = (location: string, type: string, department: string) => {
-    let filtered = [...jobs];
+  useEffect(() => {
+    const filterJobs = () => {
+      let filtered = [...jobs];
+      const location = searchParams.get('location');
+      const type = searchParams.get('type');
+      const department = searchParams.get('department');
 
-    if (location !== "all") {
-      filtered = filtered.filter((job) => 
-        job.Location.toLowerCase() === location.toLowerCase()
-      );
-    }
-    if (type !== "all") {
-      filtered = filtered.filter((job) => 
-        job.employment_type.toLowerCase() === type.toLowerCase()
-      );
-    }
-    // Keep department filter for UI consistency
-    if (department !== "all") {
-      filtered = filtered.filter((job) => 
-        job.job_description.toLowerCase().includes(department.toLowerCase())
-      );
-    }
+      if (location && location !== 'all') {
+        filtered = filtered.filter(job => 
+          job.Location.toLowerCase() === location.toLowerCase()
+        );
+      }
 
-    setFilteredJobs(filtered);
-    setSelectedLocation(location);
-    setSelectedType(type);
-    setSelectedDepartment(department);
-  };
+      if (type && type !== 'all') {
+        filtered = filtered.filter(job => 
+          job.employment_type.toLowerCase() === type.toLowerCase()
+        );
+      }
+
+      if (department && department !== 'all') {
+        filtered = filtered.filter(job => 
+          job.job_department?.name.toLowerCase() === department.toLowerCase()
+        );
+      }
+
+      setFilteredJobs(filtered);
+    };
+
+    filterJobs();
+  }, [jobs, searchParams]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
@@ -207,12 +218,9 @@ export function CareersPage() {
           ) : (
             <>
               <JobFilters
-                onFilter={handleFilter}
-                selectedLocation={selectedLocation}
-                selectedType={selectedType}
-                selectedDepartment={selectedDepartment}
-                locations={getUniqueValues('Location')}
-                types={getUniqueValues('employment_type')}
+                locations={getUniqueLocations()}
+                types={getUniqueTypes()}
+                departments={getUniqueDepartments()}
               />
               <JobList jobs={filteredJobs} />
             </>
