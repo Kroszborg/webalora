@@ -11,8 +11,6 @@ import Link from "next/link";
 import type { Job, JobsResponse } from "@/lib/jobs";
 import { useSearchParams } from "next/navigation";
 
-// Remove the static jobs array as we'll fetch from API
-
 const benefits = [
   {
     icon: Award,
@@ -43,17 +41,18 @@ function CareersContent() {
   const searchParams = useSearchParams();
 
   const getUniqueLocations = () => {
-    return [...new Set(jobs.map((job) => job.Location))].filter(Boolean);
+    const locationsSet = new Set(jobs.map((job) => job.Location));
+    return Array.from(locationsSet).filter(Boolean);
   };
 
   const getUniqueTypes = () => {
-    return [...new Set(jobs.map((job) => job.employment_type))].filter(Boolean);
+    const typesSet = new Set(jobs.map((job) => job.employment_type));
+    return Array.from(typesSet).filter(Boolean);
   };
 
   const getUniqueDepartments = () => {
-    return [...new Set(jobs.map((job) => job.job_department.name))].filter(
-      Boolean
-    );
+    const departmentsSet = new Set(jobs.map((job) => job.job_department.name));
+    return Array.from(departmentsSet).filter(Boolean);
   };
 
   useEffect(() => {
@@ -65,8 +64,9 @@ function CareersContent() {
         const data: JobsResponse = await response.json();
         setJobs(data.data);
         setFilteredJobs(data.data);
-      } catch (err) {
+      } catch (error) {
         setError("Failed to fetch jobs");
+        console.error("Error fetching jobs:", error);
       } finally {
         setIsLoading(false);
       }
