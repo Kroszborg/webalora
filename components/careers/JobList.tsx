@@ -2,11 +2,11 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { MapPin, Clock, Building2, Banknote } from "lucide-react";
-import type { JobType } from "./CareersPage";
+import { MapPin, Clock, Banknote } from "lucide-react";
+import type { Job } from "@/lib/jobs";
 
 interface JobListProps {
-  jobs: JobType[];
+  jobs: Job[];
 }
 
 export function JobList({ jobs }: JobListProps) {
@@ -40,32 +40,28 @@ export function JobList({ jobs }: JobListProps) {
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    {job.title}
+                    {job.Title}
                   </h3>
                   <div className="flex flex-wrap gap-4 text-sm text-gray-600">
                     <div className="flex items-center gap-1">
                       <MapPin className="w-4 h-4" />
-                      <span>{job.location}</span>
+                      <span>{job.Location}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="w-4 h-4" />
-                      <span>{job.type}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Building2 className="w-4 h-4" />
-                      <span>{job.department}</span>
+                      <span>{job.employment_type}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Banknote className="w-4 h-4" />
-                      <span>{job.salary}</span>
+                      <span>£{job.Salary}</span>
                     </div>
                   </div>
                 </div>
                 <Button asChild className="md:self-start">
-                  <a href={`/careers/${job.id}`}>View Position</a>
+                  <a href={`/careers/${job.slug}`}>View Position</a>
                 </Button>
               </div>
-              <p className="mt-4 text-gray-600">{job.description}</p>
+              <p className="mt-4 text-gray-600">{job.job_description}</p>
             </motion.div>
           ))}
         </div>

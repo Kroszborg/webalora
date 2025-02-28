@@ -8,69 +8,9 @@ import { JobList } from "./JobList";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import type { Job, JobsResponse } from "@/lib/jobs";
 
-export type JobType = {
-  id: string;
-  title: string;
-  location: string;
-  type: string;
-  department: string;
-  salary: string;
-  description: string;
-};
-
-const jobs: JobType[] = [
-  {
-    id: "1",
-    title: "Senior IT Support Engineer",
-    location: "London",
-    type: "Full-time",
-    department: "Technical Support",
-    salary: "£45,000 - £55,000",
-    description:
-      "We're looking for an experienced IT Support Engineer to join our growing team...",
-  },
-  {
-    id: "2",
-    title: "Cloud Solutions Architect",
-    location: "Remote",
-    type: "Full-time",
-    department: "Cloud Services",
-    salary: "£65,000 - £85,000",
-    description:
-      "Join us in designing and implementing cutting-edge cloud solutions...",
-  },
-  {
-    id: "3",
-    title: "Cybersecurity Analyst",
-    location: "London",
-    type: "Full-time",
-    department: "Security",
-    salary: "£50,000 - £65,000",
-    description:
-      "Help protect our clients' digital assets and infrastructure...",
-  },
-  {
-    id: "4",
-    title: "Technical Account Manager",
-    location: "Hybrid",
-    type: "Full-time",
-    department: "Account Management",
-    salary: "£40,000 - £50,000",
-    description:
-      "Build and maintain strong relationships with our enterprise clients...",
-  },
-  {
-    id: "5",
-    title: "Network Engineer",
-    location: "London",
-    type: "Contract",
-    department: "Infrastructure",
-    salary: "£400 - £500 per day",
-    description:
-      "Design and implement network solutions for our enterprise clients...",
-  },
-];
+// Remove the static jobs array as we'll fetch from API
 
 const benefits = [
   {
@@ -94,11 +34,31 @@ const benefits = [
 ];
 
 export function CareersPage() {
-  const [filteredJobs, setFilteredJobs] = useState<JobType[]>(jobs);
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<string>("all");
   const [selectedType, setSelectedType] = useState<string>("all");
   const [selectedDepartment, setSelectedDepartment] = useState<string>("all");
   const [headerHeight, setHeaderHeight] = useState(0);
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const response = await fetch('https://webaloracms-production-9e8b.up.railway.app/api/jobs');
+        const data: JobsResponse = await response.json();
+        setJobs(data.data);
+        setFilteredJobs(data.data);
+        setIsLoading(false);
+      } catch (err) {
+        setError('Failed to fetch jobs');
+        setIsLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
 
   useEffect(() => {
     const updateHeaderHeight = () => {
@@ -120,14 +80,12 @@ export function CareersPage() {
     let filtered = [...jobs];
 
     if (location !== "all") {
-      filtered = filtered.filter((job) => job.location === location);
+      filtered = filtered.filter((job) => job.Location === location);
     }
     if (type !== "all") {
-      filtered = filtered.filter((job) => job.type === type);
+      filtered = filtered.filter((job) => job.employment_type === type);
     }
-    if (department !== "all") {
-      filtered = filtered.filter((job) => job.department === department);
-    }
+    // Note: department filtering removed as it's not in the API data
 
     setFilteredJobs(filtered);
     setSelectedLocation(location);
@@ -224,13 +182,25 @@ export function CareersPage() {
         </div>
 
         <div id="positions" className="scroll-mt-24">
-          <JobFilters
-            onFilter={handleFilter}
-            selectedLocation={selectedLocation}
-            selectedType={selectedType}
-            selectedDepartment={selectedDepartment}
-          />
-          <JobList jobs={filteredJobs} />
+          {isLoading ? (
+            <div className="text-center py-12">
+              <p className="text-gray-600">Loading available positions...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center py-12">
+              <p className="text-red-600">{error}</p>
+            </div>
+          ) : (
+            <>
+              <JobFilters
+                onFilter={handleFilter}
+                selectedLocation={selectedLocation}
+                selectedType={selectedType}
+                selectedDepartment={selectedDepartment}
+              />
+              <JobList jobs={filteredJobs} />
+            </>
+          )}
         </div>
 
         <div id="why-join" className="mt-20 scroll-mt-24">
