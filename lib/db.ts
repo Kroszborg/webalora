@@ -46,8 +46,46 @@ export interface StrapiPost {
     };
   };
   blog_category?: {
-    id: number;
-    Type: string;
+    data?: {
+      id: number;
+      attributes?: {
+        Type: string;
+      };
+    };
+    id?: number;
+    Type?: string;
+  };
+  // Add Strapi v4 format for resource categories
+  resource_category?: {
+    data?: {
+      id: number;
+      attributes?: {
+        Type: string;
+        name?: string;
+        createdAt: string;
+        updatedAt: string;
+        publishedAt: string;
+      }
+    };
+    Type?: string;
+  };
+  resources_category?: {
+    data?: {
+      id: number;
+      attributes?: {
+        Type: string;
+      };
+    };
+    Type?: string;
+  };
+  category?: {
+    data?: {
+      id: number;
+      attributes?: {
+        Type: string;
+      };
+    };
+    Type?: string;
   };
 }
 
@@ -67,7 +105,7 @@ const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://webaloracms-pro
 
 export async function getBlogPosts(): Promise<StrapiPost[]> {
   try {
-    console.log('Fetching from:', `${STRAPI_URL}/api/blogs`);
+    // console.log('Fetching from:', `${STRAPI_URL}/api/blogs`);
     
     const response = await fetch(`${STRAPI_URL}/api/blogs?populate=*`, {
       method: 'GET',
@@ -163,7 +201,7 @@ export async function getResourcePost(slug: string): Promise<StrapiPost | null> 
     const data: StrapiResponse = await response.json();
     return data.data[0] || null;
   } catch (error) {
-    console.error('Error fetching blog post:', error);
+    console.error('Error fetching resource post:', error);
     return null;
   }
 }
@@ -189,7 +227,7 @@ export async function getRelatedResources(currentSlug: string): Promise<StrapiPo
     const data: StrapiResponse = await response.json();
     return data.data;
   } catch (error) {
-    console.error('Error fetching related posts:', error);
+    console.error('Error fetching related resources:', error);
     return [];
   }
 }
@@ -207,14 +245,16 @@ export function getImageUrl(strapiImage: any): string {
   
   try {
     // Debug the image object structure to console
-    console.log('Strapi image data structure:', JSON.stringify(strapiImage, null, 2));
+    // console.log('Strapi image data structure:', JSON.stringify(strapiImage, null, 2));
     
     // Case 1: Strapi v4 format
     if (strapiImage.data?.attributes?.url) {
       const imageUrl = strapiImage.data.attributes.url;
       
       // Handle absolute URLs
-      if (imageUrl.startsWith('http')) return imageUrl;
+      if (imageUrl.startsWith('http')) {
+        return imageUrl;
+      }
       
       // Handle relative URLs
       return `${STRAPI_URL}${imageUrl}`;
@@ -222,7 +262,9 @@ export function getImageUrl(strapiImage: any): string {
     
     // Case 2: Handle direct URL strings
     if (typeof strapiImage === 'string') {
-      if (strapiImage.startsWith('http')) return strapiImage;
+      if (strapiImage.startsWith('http')) {
+        return strapiImage;
+      }
       return `${STRAPI_URL}${strapiImage}`;
     }
     
@@ -230,7 +272,9 @@ export function getImageUrl(strapiImage: any): string {
     if (Array.isArray(strapiImage) && strapiImage.length > 0) {
       if (strapiImage[0]?.url) {
         const imageUrl = strapiImage[0].url;
-        if (imageUrl.startsWith('http')) return imageUrl;
+        if (imageUrl.startsWith('http')) {
+          return imageUrl;
+        }
         return `${STRAPI_URL}${imageUrl}`;
       }
     }
@@ -238,7 +282,9 @@ export function getImageUrl(strapiImage: any): string {
     // Case 4: Direct URL property
     if (strapiImage.url) {
       const imageUrl = strapiImage.url;
-      if (imageUrl.startsWith('http')) return imageUrl;
+      if (imageUrl.startsWith('http')) {
+        return imageUrl;
+      }
       return `${STRAPI_URL}${imageUrl}`;
     }
     
@@ -248,8 +294,10 @@ export function getImageUrl(strapiImage: any): string {
     }
     
     // Case 6: Look for any URL property at any level
-    const findUrlInObject = (obj: any): string | null => {
-      if (!obj || typeof obj !== 'object') return null;
+    const findUrlInObject = (obj: Record<string, unknown>): string | null => {
+      if (!obj || typeof obj !== 'object') {
+        return null;
+      }
       
       // Check direct url property
       if (obj.url && typeof obj.url === 'string') {
@@ -264,8 +312,10 @@ export function getImageUrl(strapiImage: any): string {
         
         // Recursively check nested objects, but not arrays to prevent circular references
         if (obj[key] && typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
-          const nestedUrl = findUrlInObject(obj[key]);
-          if (nestedUrl) return nestedUrl;
+          const nestedUrl = findUrlInObject(obj[key] as Record<string, unknown>);
+          if (nestedUrl) {
+            return nestedUrl;
+          }
         }
       }
       
@@ -273,7 +323,9 @@ export function getImageUrl(strapiImage: any): string {
     };
     
     const foundUrl = findUrlInObject(strapiImage);
-    if (foundUrl) return foundUrl;
+    if (foundUrl) {
+      return foundUrl;
+    }
     
   } catch (error) {
     console.error('Error parsing image data:', error);
@@ -283,9 +335,66 @@ export function getImageUrl(strapiImage: any): string {
   return fallbackImage;
 } 
 
+// Helper function to get the category name from a resource post
+export function getResourceCategory(post: StrapiPost): string {
+  // Check for Strapi v4 format first with nested data structure
+  if (post.resource_category?.data?.attributes?.Type) {
+    return post.resource_category.data.attributes.Type;
+  }
+  
+  // Check for direct Type property in resource_category
+  if (post.resource_category?.Type) {
+    return post.resource_category.Type;
+  }
+
+  // Check for resources_category (alternative naming)
+  if (post.resources_category?.data?.attributes?.Type) {
+    return post.resources_category.data.attributes.Type;
+  }
+  
+  if (post.resources_category?.Type) {
+    return post.resources_category.Type;
+  }
+
+  // Check for generic category
+  if (post.category?.data?.attributes?.Type) {
+    return post.category.data.attributes.Type;
+  }
+  
+  if (post.category?.Type) {
+    return post.category.Type;
+  }
+  
+  // Fall back to blog category if resource category is not found
+  if (post.blog_category?.data?.attributes?.Type) {
+    return post.blog_category.data.attributes.Type;
+  }
+  
+  if (post.blog_category?.Type) {
+    return post.blog_category.Type;
+  }
+  
+  // Default category if none found
+  return "General";
+}
+
+// Function to get all resource categories (hard-coded based on the screenshot)
+export function getAllResourceCategories(): string[] {
+  // Return the categories exactly as shown in your screenshot
+  return [
+    "Backup & Disaster Recovery",
+    "Cloud Solutions & Migration",
+    "Cybersecurity Solutions",
+    "IT Consultancy & Strategy",
+    "Managed IT services",
+    "Network Infrastructure",
+    "VOIP Solutions"
+  ];
+}
+
 export async function getResources(): Promise<StrapiPost[]> {
   try {
-    console.log('Fetching from:', `${STRAPI_URL}/api/resources`);
+    // console.log('Fetching from:', `${STRAPI_URL}/api/resources`);
     
     const response = await fetch(`${STRAPI_URL}/api/resources?populate=*`, {
       method: 'GET',

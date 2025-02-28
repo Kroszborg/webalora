@@ -1,6 +1,8 @@
-import Image from "next/image";
+"use client";
+
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { ResourceImage } from "./ResourceImage";
 
 interface BlogPost {
   _sys: {
@@ -21,6 +23,10 @@ interface BlogGridProps {
 }
 
 export function BlogGrid({ posts }: BlogGridProps) {
+  // Default fallback image
+  const fallbackImage =
+    "https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?auto=format&fit=crop&q=80&w=2070";
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {posts.map((post) => (
@@ -30,12 +36,13 @@ export function BlogGrid({ posts }: BlogGridProps) {
         >
           <Link href={post._sys.path || `/resource/${post.slug}`}>
             <div className="relative h-48 sm:h-56 md:h-64">
-              <Image
-                src={post.featuredImage || "/placeholder.svg"}
+              <ResourceImage
+                src={post.featuredImage}
+                fallbackSrc={fallbackImage}
                 alt={post.title}
-                layout="fill"
-                objectFit="cover"
-                className="transition-transform duration-300 hover:scale-105"
+                fill
+                className="object-cover transition-transform duration-300 hover:scale-105"
+                priority={false}
               />
               <div className="absolute top-4 left-4 bg-blue-600 text-white text-xs font-semibold px-2 py-1 rounded-full">
                 {post.category}

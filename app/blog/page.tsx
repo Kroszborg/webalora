@@ -5,6 +5,13 @@ import {
   type BlogPost,
   getImageUrl,
 } from "@/lib/db";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "WebAlora Blog | IT Insights, Trends & Expert Advice",
+  description:
+    "Stay updated with WebAlora's blog. Get expert insights on IT trends, cybersecurity, cloud computing, and technology best practices for businesses.",
+};
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -23,26 +30,22 @@ export default async function Blog({
   const category = (categoryParam as string) || "";
   const postsPerPage = 9;
 
-  console.log("Fetching blog posts...");
+  // console.log("Fetching blog posts...");
   const strapiPosts = await getBlogPosts();
-  console.log("Received Strapi posts:", strapiPosts.length);
+  // console.log("Received Strapi posts:", strapiPosts.length);
 
   // Debug: Log the first post's image structure
-  if (strapiPosts.length > 0) {
-    console.log(
-      "First post image structure:",
-      JSON.stringify(strapiPosts[0].image, null, 2)
-    );
-  }
-
-  const STRAPI_URL =
-    process.env.NEXT_PUBLIC_STRAPI_URL ||
-    "http://webaloracms-production-9e8b.up.railway.app";
+  // if (strapiPosts.length > 0) {
+  //   console.log(
+  //     "First post image structure:",
+  //     JSON.stringify(strapiPosts[0].image, null, 2)
+  //   );
+  // }
 
   // Transform Strapi posts to match the BlogPost interface
   const posts: BlogPost[] = strapiPosts.map((post: StrapiPost) => {
     const featuredImage = getImageUrl(post.image);
-    console.log(`Post ${post.slug} featured image URL:`, featuredImage);
+    // console.log(`Post ${post.slug} featured image URL:`, featuredImage);
 
     return {
       _sys: {

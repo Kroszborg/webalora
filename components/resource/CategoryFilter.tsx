@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 interface CategoryFilterProps {
   categories: string[];
@@ -11,13 +11,28 @@ interface CategoryFilterProps {
 export function CategoryFilter({ categories }: CategoryFilterProps) {
   const [activeCategory, setActiveCategory] = useState("All");
   const router = useRouter();
+  const pathname = usePathname();
+
+  // Determine if we're in the resource section
+  const isResourcePage = pathname.startsWith("/resource");
+  const basePath = isResourcePage ? "/resource" : "/blog";
+
+  // When the component mounts, check URL parameters to set the active category
+  useEffect(() => {
+    // Extract category from the URL if present
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryParam = urlParams.get("category");
+    if (categoryParam) {
+      setActiveCategory(categoryParam);
+    }
+  }, []);
 
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
     if (category === "All") {
-      router.push("/blog");
+      router.push(basePath); // Go to the resource or blog base path
     } else {
-      router.push(`/blog?category=${encodeURIComponent(category)}`);
+      router.push(`${basePath}?category=${encodeURIComponent(category)}`);
     }
   };
 

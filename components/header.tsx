@@ -47,6 +47,7 @@ export function Header() {
     { name: "Blog", href: "/blog" },
     { name: "Case Studies", href: "/case-studies" },
     { name: "Careers", href: "/careers" },
+    { name: "Resources", href: "/resource" },
   ];
 
   const navItems = [

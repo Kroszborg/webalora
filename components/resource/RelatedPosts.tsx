@@ -1,13 +1,19 @@
+"use client";
+
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import type { BlogPost } from "@/lib/blogposts";
+import { ResourceImage } from "./ResourceImage";
 
 interface RelatedPostsProps {
   posts: BlogPost[];
 }
 
 export function RelatedPosts({ posts }: RelatedPostsProps) {
+  // Default fallback image
+  const fallbackImage =
+    "https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?auto=format&fit=crop&q=80&w=2070";
+
   if (!posts || posts.length === 0) {
     return null;
   }
@@ -25,11 +31,13 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
             className="group bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg"
           >
             <div className="relative h-48 overflow-hidden">
-              <Image
-                src={post.featuredImage || "/placeholder.svg"}
+              <ResourceImage
+                src={post.featuredImage}
+                fallbackSrc={fallbackImage}
                 alt={post.title}
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-110"
+                priority={false}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent" />
               <div className="absolute top-4 left-4">
@@ -47,7 +55,9 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
               </p>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-500">
-                  {post.publishDate}
+                  {typeof post.publishDate === "string"
+                    ? new Date(post.publishDate).toLocaleDateString()
+                    : "Unknown date"}
                 </span>
                 <span className="text-blue-600 flex items-center text-sm font-medium">
                   Read More

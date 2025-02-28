@@ -148,8 +148,6 @@ export function getCaseStudyImageUrl(caseStudy: StrapiCaseStudy): string {
   console.log("🔍 Getting case study image for:", caseStudy.Title);
   
   try {
-    // Direct check for the expected full image URL format
-    const expectedUrlPattern = `${STRAPI_URL}/uploads/`;
     
     // Special case - if you know the exact URL format for a specific case study
     // This is useful for debugging specific cases
