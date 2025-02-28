@@ -31,3 +31,16 @@ export interface JobsResponse {
     };
   };
 }
+
+export async function getJobBySlug(slug: string): Promise<Job | null> {
+  try {
+    const response = await fetch(
+      `https://webaloracms-production-9e8b.up.railway.app/api/jobs?filters[slug]=${slug}`
+    );
+    const data: JobsResponse = await response.json();
+    return data.data[0] || null;
+  } catch (error) {
+    console.error('Error fetching job:', error);
+    return null;
+  }
+}

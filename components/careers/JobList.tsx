@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { MapPin, Clock, Banknote } from "lucide-react";
 import type { Job } from "@/lib/jobs";
+import Link from "next/link";
 
 interface JobListProps {
   jobs: Job[];
@@ -58,7 +59,7 @@ export function JobList({ jobs }: JobListProps) {
                   </div>
                 </div>
                 <Button asChild className="md:self-start">
-                  <a href={`/careers/${job.slug}`}>View Position</a>
+                  <Link href={`/careers/${job.slug}`}>View Position</Link>
                 </Button>
               </div>
               <p className="mt-4 text-gray-600">{job.job_description}</p>
