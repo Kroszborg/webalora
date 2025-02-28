@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
 import { Briefcase, ChevronRight, Users, Award, Zap } from "lucide-react";
 import { JobFilters } from "./JobFilters";
@@ -34,7 +34,7 @@ const benefits = [
   },
 ];
 
-export function CareersPage() {
+function CareersContent() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -43,26 +43,30 @@ export function CareersPage() {
   const searchParams = useSearchParams();
 
   const getUniqueLocations = () => {
-    return [...new Set(jobs.map(job => job.Location))].filter(Boolean);
+    return [...new Set(jobs.map((job) => job.Location))].filter(Boolean);
   };
 
   const getUniqueTypes = () => {
-    return [...new Set(jobs.map(job => job.employment_type))].filter(Boolean);
+    return [...new Set(jobs.map((job) => job.employment_type))].filter(Boolean);
   };
 
   const getUniqueDepartments = () => {
-    return [...new Set(jobs.map(job => job.job_department.name))].filter(Boolean);
+    return [...new Set(jobs.map((job) => job.job_department.name))].filter(
+      Boolean
+    );
   };
 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await fetch('https://webaloracms-production-9e8b.up.railway.app/api/jobs?populate=*');
+        const response = await fetch(
+          "https://webaloracms-production-9e8b.up.railway.app/api/jobs?populate=*"
+        );
         const data: JobsResponse = await response.json();
         setJobs(data.data);
         setFilteredJobs(data.data);
       } catch (err) {
-        setError('Failed to fetch jobs');
+        setError("Failed to fetch jobs");
       } finally {
         setIsLoading(false);
       }
@@ -90,25 +94,26 @@ export function CareersPage() {
   useEffect(() => {
     const filterJobs = () => {
       let filtered = [...jobs];
-      const location = searchParams.get('location');
-      const type = searchParams.get('type');
-      const department = searchParams.get('department');
+      const location = searchParams.get("location");
+      const type = searchParams.get("type");
+      const department = searchParams.get("department");
 
-      if (location && location !== 'all') {
-        filtered = filtered.filter(job => 
-          job.Location.toLowerCase() === location.toLowerCase()
+      if (location && location !== "all") {
+        filtered = filtered.filter(
+          (job) => job.Location.toLowerCase() === location.toLowerCase()
         );
       }
 
-      if (type && type !== 'all') {
-        filtered = filtered.filter(job => 
-          job.employment_type.toLowerCase() === type.toLowerCase()
+      if (type && type !== "all") {
+        filtered = filtered.filter(
+          (job) => job.employment_type.toLowerCase() === type.toLowerCase()
         );
       }
 
-      if (department && department !== 'all') {
-        filtered = filtered.filter(job => 
-          job.job_department?.name.toLowerCase() === department.toLowerCase()
+      if (department && department !== "all") {
+        filtered = filtered.filter(
+          (job) =>
+            job.job_department?.name.toLowerCase() === department.toLowerCase()
         );
       }
 
@@ -256,5 +261,24 @@ export function CareersPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Create a loading fallback component
+function CareersLoading() {
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center">
+      <div className="text-center">
+        <p className="text-lg text-gray-600">Loading careers page...</p>
+      </div>
+    </div>
+  );
+}
+
+export function CareersPage() {
+  return (
+    <Suspense fallback={<CareersLoading />}>
+      <CareersContent />
+    </Suspense>
   );
 }

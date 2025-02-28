@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -11,19 +11,14 @@ import {
 } from "@/components/ui/select";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const PREDEFINED_LOCATIONS = [
-  "all",
-  "London",
-  "Remote",
-  "Hybrid"
-];
+const PREDEFINED_LOCATIONS = ["all", "London", "Remote", "Hybrid"];
 
 const PREDEFINED_TYPES = [
   "all",
   "Full-time",
   // "Part-time",
   "Contract",
-  "Internship"
+  "Internship",
 ];
 
 const PREDEFINED_DEPARTMENTS = [
@@ -46,7 +41,7 @@ const PREDEFINED_DEPARTMENTS = [
   "Product Management",
   "Sales Engineering",
   "Technical Writing",
-  "Customer Success"
+  "Customer Success",
 ];
 
 interface JobFiltersProps {
@@ -55,28 +50,32 @@ interface JobFiltersProps {
   departments: string[];
 }
 
-export function JobFilters({ locations, types, departments }: JobFiltersProps) {
+function JobFiltersContent({ locations, types, departments }: JobFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  
-  const currentLocation = searchParams.get('location') || 'all';
-  const currentType = searchParams.get('type') || 'all';
-  const currentDepartment = searchParams.get('department') || 'all';
+
+  const currentLocation = searchParams.get("location") || "all";
+  const currentType = searchParams.get("type") || "all";
+  const currentDepartment = searchParams.get("department") || "all";
 
   // Combine API data with predefined options
-  const allLocations = Array.from(new Set([...PREDEFINED_LOCATIONS, ...locations]));
+  const allLocations = Array.from(
+    new Set([...PREDEFINED_LOCATIONS, ...locations])
+  );
   const allTypes = Array.from(new Set([...PREDEFINED_TYPES, ...types]));
-  const allDepartments = Array.from(new Set([...PREDEFINED_DEPARTMENTS, ...departments]));
+  const allDepartments = Array.from(
+    new Set([...PREDEFINED_DEPARTMENTS, ...departments])
+  );
 
   const updateFilters = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    
-    if (value === 'all') {
+
+    if (value === "all") {
       params.delete(key);
     } else {
       params.set(key, value);
     }
-    
+
     router.push(`/careers?${params.toString()}`);
   };
 
@@ -84,62 +83,88 @@ export function JobFilters({ locations, types, departments }: JobFiltersProps) {
     <div className="flex flex-wrap gap-4 mb-8">
       <Select
         value={currentLocation}
-        onValueChange={(value) => updateFilters('location', value)}
+        onValueChange={(value) => updateFilters("location", value)}
       >
         <SelectTrigger className="w-full sm:w-[180px]">
           <SelectValue placeholder="Location" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">All Locations</SelectItem>
-          {allLocations.filter(loc => loc !== 'all').map((location) => (
-            <SelectItem key={location} value={location}>
-              {location}
-            </SelectItem>
-          ))}
+          {allLocations
+            .filter((loc) => loc !== "all")
+            .map((location) => (
+              <SelectItem key={location} value={location}>
+                {location}
+              </SelectItem>
+            ))}
         </SelectContent>
       </Select>
 
       <Select
         value={currentType}
-        onValueChange={(value) => updateFilters('type', value)}
+        onValueChange={(value) => updateFilters("type", value)}
       >
         <SelectTrigger className="w-full sm:w-[180px]">
           <SelectValue placeholder="Employment Type" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">All Types</SelectItem>
-          {allTypes.filter(type => type !== 'all').map((type) => (
-            <SelectItem key={type} value={type}>
-              {type}
-            </SelectItem>
-          ))}
+          {allTypes
+            .filter((type) => type !== "all")
+            .map((type) => (
+              <SelectItem key={type} value={type}>
+                {type}
+              </SelectItem>
+            ))}
         </SelectContent>
       </Select>
 
       <Select
         value={currentDepartment}
-        onValueChange={(value) => updateFilters('department', value)}
+        onValueChange={(value) => updateFilters("department", value)}
       >
         <SelectTrigger className="w-full sm:w-[180px]">
           <SelectValue placeholder="Department" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">All Departments</SelectItem>
-          {allDepartments.filter(dept => dept !== 'all').map((dept) => (
-            <SelectItem key={dept} value={dept}>
-              {dept}
-            </SelectItem>
-          ))}
+          {allDepartments
+            .filter((dept) => dept !== "all")
+            .map((dept) => (
+              <SelectItem key={dept} value={dept}>
+                {dept}
+              </SelectItem>
+            ))}
         </SelectContent>
       </Select>
 
       <Button
         variant="outline"
-        onClick={() => router.push('/careers')}
+        onClick={() => router.push("/careers")}
         className="w-full sm:w-auto"
       >
         Reset Filters
       </Button>
     </div>
+  );
+}
+
+// Loading component for JobFilters
+function JobFiltersLoading() {
+  return (
+    <div className="flex flex-wrap gap-4 mb-8 animate-pulse">
+      <div className="w-full sm:w-[180px] h-10 bg-gray-200 rounded"></div>
+      <div className="w-full sm:w-[180px] h-10 bg-gray-200 rounded"></div>
+      <div className="w-full sm:w-[180px] h-10 bg-gray-200 rounded"></div>
+      <div className="w-full sm:w-auto h-10 bg-gray-200 rounded px-8"></div>
+    </div>
+  );
+}
+
+export function JobFilters(props: JobFiltersProps) {
+  return (
+    <Suspense fallback={<JobFiltersLoading />}>
+      <JobFiltersContent {...props} />
+    </Suspense>
   );
 }
