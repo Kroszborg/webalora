@@ -12,6 +12,7 @@ interface CaseStudiesPageProps {
 }
 
 export function CaseStudiesPage({ caseStudies }: CaseStudiesPageProps) {
+  // Handle case when no case studies are found
   if (!caseStudies || caseStudies.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -30,6 +31,7 @@ export function CaseStudiesPage({ caseStudies }: CaseStudiesPageProps) {
     );
   }
 
+  // Split the first case study as featured and the rest as other case studies
   const featuredCaseStudy = caseStudies[0];
   const otherCaseStudies = caseStudies.slice(1);
 

@@ -1,23 +1,27 @@
 import Link from "next/link";
-import Image from "next/image";
+import { CaseStudyImage } from "./CaseStudyImage"; // Import the CaseStudyImage component
 import { ArrowRight } from "lucide-react";
 import type { StrapiCaseStudy } from "@/lib/casestudies";
-import {
-  getCaseStudyImageUrl,
-  DEFAULT_CASE_STUDY_IMAGE,
-} from "@/lib/casestudies";
+import { getCaseStudyImageUrl } from "@/lib/casestudies";
 
 interface FeaturedCaseStudyProps {
   caseStudy: StrapiCaseStudy;
 }
 
 export function FeaturedCaseStudy({ caseStudy }: FeaturedCaseStudyProps) {
+  // Get the image URL
+  const imageUrl = getCaseStudyImageUrl(caseStudy);
+  // Fallback image if the URL is undefined or empty
+  const fallbackImageUrl =
+    "https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?auto=format&fit=crop&q=80&w=2070";
+
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
       <div className="md:flex">
         <div className="md:w-1/2 relative h-64 md:h-auto">
-          <Image
-            src={getCaseStudyImageUrl(caseStudy) || DEFAULT_CASE_STUDY_IMAGE}
+          <CaseStudyImage
+            src={imageUrl}
+            fallbackSrc={fallbackImageUrl}
             alt={caseStudy.Title}
             fill
             className="object-cover"
@@ -41,7 +45,7 @@ export function FeaturedCaseStudy({ caseStudy }: FeaturedCaseStudyProps) {
               {new Date(caseStudy.publishedAt).toLocaleDateString()}
             </div>
             <Link
-              href={`/case-studies/${caseStudy.slug}`} // Ensure the correct slug property is used
+              href={`/case-studies/${caseStudy.slug}`}
               className="inline-flex items-center px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
             >
               Read Full Case Study

@@ -33,8 +33,7 @@ export function CaseStudyImage({
   useEffect(() => {
     if (alt.toLowerCase().includes("first")) {
       const strapiUrl =
-        process.env.NEXT_PUBLIC_STRAPI_URL ||
-        "http://webaloracms-production-9e8b.up.railway.app";
+        process.env.NEXT_PUBLIC_STRAPI_URL || "https://cms.webalora.com";
       const directUrl = `${strapiUrl}/uploads/pexels_peter_olexa_2214257_3875821_56b4e377dc.jpg`;
       // console.log(`Using direct URL for case study: ${directUrl}`);
       setImgSrc(directUrl);

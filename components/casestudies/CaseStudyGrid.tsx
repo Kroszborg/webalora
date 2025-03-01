@@ -1,22 +1,25 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import type { StrapiCaseStudy } from "@/lib/casestudies";
-import {
-  getCaseStudyImageUrl,
-  DEFAULT_CASE_STUDY_IMAGE,
-} from "@/lib/casestudies";
+import { getCaseStudyImageUrl } from "@/lib/casestudies";
+import { CaseStudyImage } from "./CaseStudyImage"; // Import the CaseStudyImage component
 
 interface CaseStudyGridProps {
   caseStudies: StrapiCaseStudy[];
 }
 
 export function CaseStudyGrid({ caseStudies }: CaseStudyGridProps) {
+  // Fallback image if the URL is undefined or empty
+  const fallbackImageUrl =
+    "https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?auto=format&fit=crop&q=80&w=2070";
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {caseStudies.map((study) => {
         // Ensure we have a valid slug
         const slug = study.slug || `case-study-${study.id}`;
+        // Get the image URL
+        const imageUrl = getCaseStudyImageUrl(study);
 
         return (
           <div
@@ -24,8 +27,9 @@ export function CaseStudyGrid({ caseStudies }: CaseStudyGridProps) {
             className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg border border-gray-100 hover:border-gray-200 flex flex-col h-full"
           >
             <div className="relative h-48 w-full">
-              <Image
-                src={getCaseStudyImageUrl(study) || DEFAULT_CASE_STUDY_IMAGE}
+              <CaseStudyImage
+                src={imageUrl}
+                fallbackSrc={fallbackImageUrl}
                 alt={study.Title}
                 fill
                 className="object-cover"

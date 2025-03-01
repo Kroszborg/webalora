@@ -2,7 +2,6 @@ import {
   getCaseStudy,
   getRelatedCaseStudies,
   getCaseStudyImageUrl,
-  DEFAULT_CASE_STUDY_IMAGE,
 } from "@/lib/casestudies";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -63,7 +62,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
             <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-xl">
               <CaseStudyImage
                 src={imageUrl}
-                fallbackSrc={DEFAULT_CASE_STUDY_IMAGE}
+                fallbackSrc="https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?auto=format&fit=crop&q=80&w=2070"
                 alt={caseStudy.Title}
                 fill
                 className="object-cover"
@@ -94,7 +93,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
                     <div className="relative h-48 w-full">
                       <CaseStudyImage
                         src={getCaseStudyImageUrl(study)}
-                        fallbackSrc={DEFAULT_CASE_STUDY_IMAGE}
+                        fallbackSrc="https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?auto=format&fit=crop&q=80&w=2070"
                         alt={study.Title}
                         fill
                         className="object-cover"

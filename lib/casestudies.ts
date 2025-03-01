@@ -52,9 +52,7 @@ interface StrapiResponse {
   };
 }
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://webaloracms-production-9e8b.up.railway.app';
-
-export const DEFAULT_CASE_STUDY_IMAGE = "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=2069";
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.webalora.com';
 
 export async function getCaseStudies(): Promise<StrapiCaseStudy[]> {
   try {
@@ -128,16 +126,15 @@ export async function getSerializedContent(content: string) {
 // lib/casestudies.ts - Replace the getCaseStudyImageUrl function
 
 export function getCaseStudyImageUrl(caseStudy: StrapiCaseStudy): string {
+  // Define fallback image URL
+  const fallbackImage = "https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?auto=format&fit=crop&q=80&w=2070";
+  
   // Use your provided default as fallback
-  const DEFAULT_CASE_STUDY_IMAGE = "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=2069";
-  const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://webaloracms-production-9e8b.up.railway.app';
+  const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.webalora.com';
   
   console.log("🔍 Getting case study image for:", caseStudy.Title);
   
-  try {
-    // Direct check for the expected full image URL format
-    const expectedUrlPattern = `${STRAPI_URL}/uploads/`;
-    
+  try {    
     // Special case - if you know the exact URL format for a specific case study
     // This is useful for debugging specific cases
     if (caseStudy.slug === "first") {
@@ -188,7 +185,9 @@ export function getCaseStudyImageUrl(caseStudy: StrapiCaseStudy): string {
       const urls: string[] = [];
       
       const search = (o: any, path: string = '') => {
-        if (!o || typeof o !== 'object') return;
+        if (!o || typeof o !== 'object') {
+          return;
+        }
         
         Object.entries(o).forEach(([key, value]) => {
           const currentPath = path ? `${path}.${key}` : key;
@@ -216,18 +215,15 @@ export function getCaseStudyImageUrl(caseStudy: StrapiCaseStudy): string {
       return foundUrls[0];
     }
     
-    // Hardcoded fallback for when all else fails
-    if (caseStudy.slug) {
-      // Example of using a pattern based on the slug
-      const fallbackPattern = `${STRAPI_URL}/uploads/${caseStudy.slug.replace(/-/g, '_')}_image.jpg`;
-      console.log("⚠️ Using generated pattern URL:", fallbackPattern);
-      return fallbackPattern;
-    }
+    // Generate a placeholder image URL based on the case study ID
+    console.log("⚠️ No image found, using general placeholder");
+    return `https://source.unsplash.com/random/800x600?business&sig=${caseStudy.id}`;
     
   } catch (error) {
     console.error("❌ Error extracting image URL:", error);
   }
   
-  console.log("⚠️ No image found, using default fallback");
-  return DEFAULT_CASE_STUDY_IMAGE;
+  // Final fallback
+  console.log("⚠️ Function is returning fallback image");
+  return fallbackImage;
 }
