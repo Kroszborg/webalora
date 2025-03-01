@@ -63,7 +63,7 @@ export interface StrapiResponse {
   };
 }
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://webaloracms-production-9e8b.up.railway.app';
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.webalora.com';
 
 export async function getBlogPosts(): Promise<StrapiPost[]> {
   try {
@@ -184,7 +184,7 @@ export async function getRelatedResources(currentSlug: string): Promise<StrapiPo
 export function getImageUrl(strapiImage: any): string {
   // Default fallback image - using the Unsplash image directly since we know it works
   const fallbackImage = "https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?auto=format&fit=crop&q=80&w=2070";
-  const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://webaloracms-production-9e8b.up.railway.app';
+  const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.webalora.com';
   
   // Handle null/undefined case
   if (!strapiImage) {

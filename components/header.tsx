@@ -68,17 +68,19 @@ export function Header() {
   return (
     <header
       className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled ? "bg-white/80 backdrop-blur-md shadow-md" : "bg-white"
+        scrolled
+          ? "bg-white/80 backdrop-blur-md shadow-md h-20"
+          : "bg-white h-24"
       } ${visible ? "top-0" : "-top-24"}`}
     >
-      <nav className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex items-center justify-between">
+      <nav className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
+        <div className="flex items-center justify-between w-full">
           <Link href="/" className="flex items-center">
             <Image
               src="/logos/logo.png"
               alt="WebAlora Logo"
-              width={120}
-              height={40}
+              width={130}
+              height={45}
               className="transition-opacity duration-300"
               style={{
                 opacity: scrolled ? 1 : 0.9,
@@ -88,7 +90,7 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
             {navItems.map((item) => (
               <div
                 key={item.name}
@@ -98,7 +100,7 @@ export function Header() {
               >
                 <Link
                   href={item.href}
-                  className={`flex items-center text-sm font-semibold ${
+                  className={`flex items-center text-base font-semibold ${
                     scrolled
                       ? "text-gray-900 hover:text-blue-600"
                       : "text-gray-900 hover:text-blue-600"
@@ -124,7 +126,7 @@ export function Header() {
                         <Link
                           key={dropdownItem.name}
                           href={dropdownItem.href}
-                          className="group flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-150"
+                          className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-150"
                         >
                           <ChevronRight className="mr-2 h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity duration-150" />
                           {dropdownItem.name}
@@ -154,7 +156,7 @@ export function Header() {
                 scrolled
                   ? "bg-blue-600 text-white hover:bg-blue-700"
                   : "bg-blue-600 text-white hover:bg-blue-700"
-              } border border-transparent hover:border-white/50 transition-all duration-300`}
+              } border border-transparent hover:border-white/50 transition-all duration-300 text-sm px-5 py-2 h-10`}
             >
               <Link href="/contact">Contact Us</Link>
             </Button>
@@ -208,7 +210,7 @@ export function Header() {
                       src="/logos/logo.png"
                       alt="WebAlora Logo"
                       width={120}
-                      height={30}
+                      height={40}
                       priority
                     />
                   </Link>
@@ -262,7 +264,7 @@ export function Header() {
                     </Link>
                     <Button
                       asChild
-                      className="w-full bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-300"
+                      className="w-full bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-300 py-2.5 text-base"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       <Link href="/contact">Contact Us</Link>

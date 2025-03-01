@@ -3,13 +3,13 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: [
-      'webaloracms-production-9e8b.up.railway.app',
+      'cms.webalora.com',
       'images.unsplash.com'
     ],
     remotePatterns: [
       {
         protocol: 'http',
-        hostname: 'webaloracms-production-9e8b.up.railway.app',
+        hostname: 'cms.webalora.com',
         port: '',
         pathname: '/**', // Changed from '/uploads/**' to allow all paths
       },
@@ -32,11 +32,11 @@ const nextConfig = {
     return [
       {
         source: '/api/blogs',
-        destination: 'http://webaloracms-production-9e8b.up.railway.app/api/blogs',
+        destination: 'https://cms.webalora.com/api/blogs',
       },
       {
         source: '/api/case-studies',
-        destination: 'http://webaloracms-production-9e8b.up.railway.app/api/case-studies',
+        destination: 'https://cms.webalora.com/api/case-studies',
       },
     ];
   },

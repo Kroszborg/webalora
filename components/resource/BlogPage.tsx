@@ -1,6 +1,5 @@
 import { BlogGrid } from "./BlogGrid";
 import { BlogHero } from "./BlogHero";
-import { CategoryFilter } from "./CategoryFilter";
 import { Pagination } from "./Pagination";
 
 interface BlogPageProps {
@@ -28,7 +27,6 @@ export interface BlogPost {
 
 export default function BlogPage({
   posts,
-  categories,
   totalPages,
   currentPage,
   searchQuery,
@@ -41,7 +39,6 @@ export default function BlogPage({
 
       <div className="container mx-auto px-4 py-12">
         <div className="w-full">
-          <CategoryFilter categories={categories} />
 
           {posts.length > 0 ? (
             <BlogGrid posts={posts} />

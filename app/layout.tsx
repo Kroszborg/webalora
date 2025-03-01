@@ -29,18 +29,21 @@ export default function RootLayout({
       >
         <div className="flex flex-col min-h-screen">
           <Header />
+          {/* Add a spacer div that matches the larger header height */}
+          <div className="h-20 md:h-8"></div>
           <main className="flex-grow">
             {children}
-            <CookieConsent />
             <Toaster />
           </main>
           <Footer />
+          {/* Ensure CookieConsent is rendered after CalendlyWidget in the DOM */}
           <CalendlyWidget
             url="https://calendly.com/behzad-webalora/30min"
             text="Book a Free Consultation"
             color="#0069ff"
             textColor="#ffffff"
           />
+          <CookieConsent />
         </div>
       </body>
     </html>
