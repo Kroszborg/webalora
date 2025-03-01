@@ -79,25 +79,12 @@ export async function getCaseStudies(): Promise<StrapiCaseStudy[]> {
   }
 }
 
-export async function getCaseStudy(slug: string): Promise<StrapiCaseStudy | null> {
+export async function getCaseStudy(slug: string) {
   try {
     const response = await fetch(
-      `${STRAPI_URL}/api/case-studies?filters[slug][$eq]=${slug}&populate=*`,
-      {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        next: { revalidate: 10 }
-      }
+      `https://webaloracms-production-9e8b.up.railway.app/api/case-studies?filters[slug]=${slug}&populate=*`
     );
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data: StrapiResponse = await response.json();
+    const data = await response.json();
     return data.data[0] || null;
   } catch (error) {
     console.error('Error fetching case study:', error);
@@ -148,6 +135,8 @@ export function getCaseStudyImageUrl(caseStudy: StrapiCaseStudy): string {
   console.log("🔍 Getting case study image for:", caseStudy.Title);
   
   try {
+    // Direct check for the expected full image URL format
+    const expectedUrlPattern = `${STRAPI_URL}/uploads/`;
     
     // Special case - if you know the exact URL format for a specific case study
     // This is useful for debugging specific cases
