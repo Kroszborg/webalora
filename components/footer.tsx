@@ -16,16 +16,21 @@ import {
 
 const navigation = {
   solutions: [
-    { name: "Managed IT Services", href: "/services/managed-it" },
-    { name: "Cybersecurity", href: "/services/cybersecurity" },
-    { name: "Cloud Solutions", href: "/services/cloud" },
-    { name: "IT Consulting", href: "/services/consulting" },
+    { name: "Managed IT Services", href: "/services" },
+    { name: "Cybersecurity Solutions", href: "/cybersecurity-solutions" },
+    { name: "Cloud Solutions & Migration", href: "/cloud-solutions" },
+    { name: "IT Consultancy", href: "/consultancy" },
+    { name: "Network Infrastructure", href: "/networking" },
+    { name: "Backup & Disaster Recovery", href: "/backup" },
+    { name: "VOIP Solutions", href: "/voip-solutions" },
   ],
   company: [
     { name: "About", href: "/about" },
-    { name: "Case Studies", href: "/case-studies" },
-    { name: "Blog", href: "/blog" },
     { name: "Contact", href: "/contact" },
+    { name: "Case Studies", href: "/case-studies" },
+    { name: "Articles", href: "/blog" },
+    { name: "Resources", href: "/resource" },
+    { name: "Careers", href: "/careers" },
   ],
   legal: [
     { name: "Privacy Policy", href: "/privacy-policy" },

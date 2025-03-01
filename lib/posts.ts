@@ -22,8 +22,9 @@ export function getPostData(slug: string) {
 
   return {
     slug,
-    ...data,
     content,
+    date: data.date,
+    ...data,
   }
 }
 

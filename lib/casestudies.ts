@@ -132,37 +132,40 @@ export function getCaseStudyImageUrl(caseStudy: StrapiCaseStudy): string {
   // Use your provided default as fallback
   const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.webalora.com';
   
-  console.log("🔍 Getting case study image for:", caseStudy.Title);
+  // console.log("🔍 Getting case study image for:", caseStudy.Title);
   
   try {    
     // Special case - if you know the exact URL format for a specific case study
     // This is useful for debugging specific cases
-    if (caseStudy.slug === "first") {
-      const directURL = `${STRAPI_URL}/uploads/pexels_peter_olexa_2214257_3875821_56b4e377dc.jpg`;
-      console.log("✅ Using direct URL for first case study:", directURL);
-      return directURL;
-    }
+    // if (caseStudy.slug === "first") {
+    //   const directURL = `${STRAPI_URL}/uploads/pexels_peter_olexa_2214257_3875821_56b4e377dc.jpg`;
+    //   console.log("✅ Using direct URL for first case study:", directURL);
+    //   return directURL;
+    // }
     
     // Log the full case study object to inspect all properties
-    console.log("📦 Full case study object:", JSON.stringify(caseStudy, null, 2));
+    // console.log("📦 Full case study object:", JSON.stringify(caseStudy, null, 2));
     
     // Try to find image URL in caseStudy.image
     if (caseStudy.image) {
-      console.log("🖼️ Case study has image property:", JSON.stringify(caseStudy.image, null, 2));
+      // console.log("🖼️ Case study has image property:", JSON.stringify(caseStudy.image, null, 2));
       
       // Case 1: Standard Strapi v4 format
       if (caseStudy.image.data?.attributes?.url) {
         const imageUrl = caseStudy.image.data.attributes.url;
         const fullUrl = imageUrl.startsWith('http') ? imageUrl : `${STRAPI_URL}${imageUrl}`;
-        console.log("✅ Found standard Strapi v4 image URL:", fullUrl);
+        // console.log("✅ Found standard Strapi v4 image URL:", fullUrl);
         return fullUrl;
       }
       
       // Case 2: Direct URL in the image object
       if (typeof caseStudy.image === 'string') {
-        const fullUrl = caseStudy.image.startsWith('http') ? caseStudy.image : `${STRAPI_URL}${caseStudy.image}`;
-        console.log("✅ Found direct string URL:", fullUrl);
-        return fullUrl;
+        if (typeof caseStudy.image === 'string') {
+          const imageUrl = caseStudy.image as string;
+          const fullUrl = imageUrl.startsWith('http') ? imageUrl : `${STRAPI_URL}${imageUrl}`;
+          // console.log("✅ Found direct string URL:", fullUrl);
+          return fullUrl;
+        }
       }
     }
     
@@ -170,22 +173,22 @@ export function getCaseStudyImageUrl(caseStudy: StrapiCaseStudy): string {
     const commonProperties = ['image', 'coverImage', 'featured_image', 'featured', 'thumbnail', 'photo'];
     for (const prop of commonProperties) {
       if (caseStudy[prop as keyof StrapiCaseStudy]) {
-        const propValue = caseStudy[prop as keyof StrapiCaseStudy];
-        console.log(`🔍 Checking property ${prop}:`, propValue);
+        // const propValue = caseStudy[prop as keyof StrapiCaseStudy];
+        // console.log(`🔍 Checking property ${prop}:`, propValue);
         
-        if (typeof propValue === 'string' && propValue.includes('/uploads/')) {
-          console.log(`✅ Found URL in ${prop}:`, propValue);
-          return propValue.startsWith('http') ? propValue : `${STRAPI_URL}${propValue}`;
-        }
+        // if (typeof propValue === 'string' && propValue.includes('/uploads/')) {
+        //   console.log(`✅ Found URL in ${prop}:`, propValue);
+        //   return propValue.startsWith('http') ? propValue : `${STRAPI_URL}${propValue}`;
+        // }
       }
     }
     
     // Case 4: Deep search for URL patterns in the entire object
-    const findUrlsInObject = (obj: any): string[] => {
+    const findUrlsInObject = (obj: Record<string, unknown>): string[] => {
       const urls: string[] = [];
       
-      const search = (o: any, path: string = '') => {
-        if (!o || typeof o !== 'object') {
+      const search = (o: Record<string, unknown>, path: string = '') => {
+        if (!o || typeof o !== 'object' || Array.isArray(o)) {
           return;
         }
         
@@ -193,10 +196,10 @@ export function getCaseStudyImageUrl(caseStudy: StrapiCaseStudy): string {
           const currentPath = path ? `${path}.${key}` : key;
           
           if (typeof value === 'string' && value.includes('/uploads/')) {
-            console.log(`🔍 Found URL pattern at ${currentPath}:`, value);
+            // console.log(`🔍 Found URL pattern at ${currentPath}:`, value);
             urls.push(value.startsWith('http') ? value : `${STRAPI_URL}${value}`);
           } else if (value && typeof value === 'object' && !Array.isArray(value)) {
-            search(value, currentPath);
+            search(value as Record<string, unknown>, currentPath);
           } else if (Array.isArray(value)) {
             value.forEach((item, index) => {
               search(item, `${currentPath}[${index}]`);
@@ -209,9 +212,9 @@ export function getCaseStudyImageUrl(caseStudy: StrapiCaseStudy): string {
       return urls;
     };
     
-    const foundUrls = findUrlsInObject(caseStudy);
+    const foundUrls = findUrlsInObject(caseStudy as unknown as Record<string, unknown>);
     if (foundUrls.length > 0) {
-      console.log("✅ Found URL patterns in deep search:", foundUrls[0]);
+      // console.log("✅ Found URL patterns in deep search:", foundUrls[0]);
       return foundUrls[0];
     }
     

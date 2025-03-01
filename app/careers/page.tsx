@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { CareersPage } from "@/components/careers/CareersPage"
+import { Metadata } from "next";
 
 export const metadata: Metadata= {
   title: "Careers | WebAlora",

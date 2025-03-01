@@ -18,6 +18,7 @@ export interface BlogPost {
   category: string;
   tags: string[];
   publishDate: string;
+  Description: string;
 }
 
 export interface StrapiPost {
@@ -67,7 +68,7 @@ const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.webalora.c
 
 export async function getBlogPosts(): Promise<StrapiPost[]> {
   try {
-    console.log('Fetching from:', `${STRAPI_URL}/api/blogs`);
+    // console.log('Fetching from:', `${STRAPI_URL}/api/blogs`);
     
     const response = await fetch(`${STRAPI_URL}/api/blogs?populate=*`, {
       method: 'GET',
@@ -181,7 +182,7 @@ export async function getRelatedResources(currentSlug: string): Promise<StrapiPo
   }
 }
 
-export function getImageUrl(strapiImage: any): string {
+export function getImageUrl(strapiImage: { data?: { attributes?: { url?: string; formats?: { large?: { url: string }; medium?: { url: string }; small?: { url: string }; thumbnail?: { url: string } } } } } | string | { url?: string; provider?: string; name?: string } | Array<{ url?: string }> | null): string {
   // Default fallback image - using the Unsplash image directly since we know it works
   const fallbackImage = "https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?auto=format&fit=crop&q=80&w=2070";
   const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.webalora.com';
@@ -194,14 +195,14 @@ export function getImageUrl(strapiImage: any): string {
   
   try {
     // Debug the image object structure to console
-    console.log('Strapi image data structure:', JSON.stringify(strapiImage, null, 2));
+    // console.log('Strapi image data structure:', JSON.stringify(strapiImage, null, 2));
     
     // Case 1: Strapi v4 format
-    if (strapiImage.data?.attributes?.url) {
+    if (typeof strapiImage === 'object' && 'data' in strapiImage && strapiImage.data?.attributes?.url) {
       const imageUrl = strapiImage.data.attributes.url;
       
       // Handle absolute URLs
-      if (imageUrl.startsWith('http')) return imageUrl;
+      if (imageUrl.startsWith('http')){ return imageUrl};
       
       // Handle relative URLs
       return `${STRAPI_URL}${imageUrl}`;
@@ -209,7 +210,7 @@ export function getImageUrl(strapiImage: any): string {
     
     // Case 2: Handle direct URL strings
     if (typeof strapiImage === 'string') {
-      if (strapiImage.startsWith('http')) return strapiImage;
+      if (strapiImage.startsWith('http')){ return strapiImage};
       return `${STRAPI_URL}${strapiImage}`;
     }
     
@@ -217,27 +218,36 @@ export function getImageUrl(strapiImage: any): string {
     if (Array.isArray(strapiImage) && strapiImage.length > 0) {
       if (strapiImage[0]?.url) {
         const imageUrl = strapiImage[0].url;
-        if (imageUrl.startsWith('http')) return imageUrl;
+        if (imageUrl.startsWith('http')) { return imageUrl};
         return `${STRAPI_URL}${imageUrl}`;
       }
     }
     
     // Case 4: Direct URL property
-    if (strapiImage.url) {
+    if ('url' in strapiImage && strapiImage.url) {
       const imageUrl = strapiImage.url;
-      if (imageUrl.startsWith('http')) return imageUrl;
+      if (imageUrl.startsWith('http')) { return imageUrl};
       return `${STRAPI_URL}${imageUrl}`;
     }
     
     // Case 5: For development, if we have a filename in uploads, construct the URL
-    if (strapiImage.provider === 'local' && strapiImage.name) {
+    if (typeof strapiImage === 'object' && 'provider' in strapiImage && strapiImage.provider === 'local' && strapiImage.name) {
       return `${STRAPI_URL}/uploads/${strapiImage.name}`;
     }
     
     // Case 6: Look for any URL property at any level
-    const findUrlInObject = (obj: any): string | null => {
-      if (!obj || typeof obj !== 'object') return null;
+    const findUrlInObject = (obj: { [key: string]: unknown } | Array<{ [key: string]: unknown }>): string | null => {
+      if (!obj || typeof obj !== 'object') { return null};
       
+      // Handle array case
+      if (Array.isArray(obj)) {
+        for (const item of obj) {
+          const url = findUrlInObject(item);
+          if (url) { return url; }
+        }
+        return null;
+      }
+    
       // Check direct url property
       if (obj.url && typeof obj.url === 'string') {
         return obj.url.startsWith('http') ? obj.url : `${STRAPI_URL}${obj.url}`;
@@ -251,8 +261,8 @@ export function getImageUrl(strapiImage: any): string {
         
         // Recursively check nested objects, but not arrays to prevent circular references
         if (obj[key] && typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
-          const nestedUrl = findUrlInObject(obj[key]);
-          if (nestedUrl) return nestedUrl;
+          const nestedUrl = findUrlInObject(obj[key] as { [key: string]: unknown });
+          if (nestedUrl) { return nestedUrl;}
         }
       }
       
@@ -260,7 +270,7 @@ export function getImageUrl(strapiImage: any): string {
     };
     
     const foundUrl = findUrlInObject(strapiImage);
-    if (foundUrl) return foundUrl;
+    if (foundUrl) { return foundUrl;}
     
   } catch (error) {
     console.error('Error parsing image data:', error);
@@ -272,7 +282,7 @@ export function getImageUrl(strapiImage: any): string {
 
 export async function getResources(): Promise<StrapiPost[]> {
   try {
-    console.log('Fetching from:', `${STRAPI_URL}/api/resources`);
+    // console.log('Fetching from:', `${STRAPI_URL}/api/resources`);
     
     const response = await fetch(`${STRAPI_URL}/api/resources?populate=*`, {
       method: 'GET',

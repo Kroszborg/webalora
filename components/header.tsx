@@ -44,9 +44,7 @@ export function Header() {
   ];
 
   const resources = [
-    { name: "Blog", href: "/blog" },
-    { name: "Case Studies", href: "/case-studies" },
-    { name: "Careers", href: "/careers" },
+    { name: "Articles", href: "/blog" },
     { name: "Resources", href: "/resource" },
   ];
 
@@ -59,9 +57,13 @@ export function Header() {
     },
     { name: "About Us", href: "/about" },
     {
-      name: "Resources",
+      name: "Insights",
       href: "#",
       dropdown: resources,
+    },
+    {
+      name: "Case Studies",
+      href: "/case-studies",
     },
   ];
 

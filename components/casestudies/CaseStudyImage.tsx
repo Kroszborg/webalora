@@ -49,7 +49,7 @@ export function CaseStudyImage({
     }
   };
 
-  console.log(`CaseStudyImage rendering for: ${alt}, using src: ${imgSrc}`);
+  // console.log(`CaseStudyImage rendering for: ${alt}, using src: ${imgSrc}`);
 
   const imageProps = {
     src: imgSrc,

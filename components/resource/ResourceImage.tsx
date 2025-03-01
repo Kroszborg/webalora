@@ -35,8 +35,8 @@ export function ResourceImage({
     }
   };
 
-  console.log(`ResourceImage rendering for: ${alt}`);
-  console.log(`Using image source: ${imgSrc}`);
+  // console.log(`ResourceImage rendering for: ${alt}`);
+  // console.log(`Using image source: ${imgSrc}`);
 
   const imageProps = {
     src: imgSrc,
