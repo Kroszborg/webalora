@@ -1,21 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Search, Cpu, Cloud, Shield } from "lucide-react";
+import { Cpu, Cloud, Shield } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 export function BlogHero() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const router = useRouter();
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    router.push(`/blog?search=${encodeURIComponent(searchQuery)}`);
-  };
 
   return (
     <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900">
@@ -52,25 +41,6 @@ export function BlogHero() {
             Cutting-edge analysis and expert perspectives on IT trends shaping
             the future of business in the UK and beyond.
           </p>
-          <form
-            onSubmit={handleSearch}
-            className="flex items-center max-w-md mx-auto bg-white backdrop-filter backdrop-blur-md rounded-full p-1 mb-8"
-          >
-            <Input
-              type="text"
-              placeholder="Search articles..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-grow bg-transparent border-none text-white placeholder-blue-200 focus:ring-0"
-            />
-            <Button
-              type="submit"
-              size="sm"
-              className="rounded-full bg-blue-600 hover:bg-blue-700"
-            >
-              <Search className="h-4 w-4" />
-            </Button>
-          </form>
           <div className="flex justify-center space-x-8 mb-12">
             <motion.div
               whileHover={{ scale: 1.05 }}

@@ -59,7 +59,7 @@ function CareersContent() {
     const fetchJobs = async () => {
       try {
         const response = await fetch(
-          "https://webaloracms-production-9e8b.up.railway.app/api/jobs?populate=*"
+          "https://cms.webalora.com/api/jobs?populate=*"
         );
         const data: JobsResponse = await response.json();
         setJobs(data.data);

@@ -1,11 +1,13 @@
+import React from "react";
 import { notFound } from "next/navigation";
-import Image from "next/image";
-import { RelatedPosts } from "@/components/blog/RelatedPosts";
 import { SocialShare } from "@/components/blog/SocialShare";
 import BlogContent from "@/components/blog/BlogContent";
 import { Calendar, User } from "lucide-react";
 import type { Metadata } from "next";
 import { getBlogPost, getRelatedPosts, getImageUrl } from "@/lib/db";
+import { Suspense } from "react";
+import { OptimizedImage } from "@/components/OptimizedImage";
+import { RelatedPosts } from "@/components/blog/RelatedPosts";
 
 type PageProps = {
   params: { slug: string };
@@ -21,14 +23,14 @@ export default async function BlogPostPage({ params }: PageProps) {
   const post = {
     id: strapiPost.id.toString(),
     title: strapiPost.Title,
-    author: strapiPost.Author,
+    author: strapiPost.Author || "Anonymous",
     slug: strapiPost.slug,
     body: strapiPost.content,
     content: strapiPost.content,
     excerpt:
       strapiPost.Description || strapiPost.content.substring(0, 160) + "...",
     Description: strapiPost.Description || "",
-    featuredImage: getImageUrl(strapiPost.image), // Changed from strapiPost.image?.[0]?.url
+    featuredImage: getImageUrl(strapiPost.image),
     category: strapiPost.blog_category?.Type || "General",
     publishDate: strapiPost.publishdate || strapiPost.publishedAt,
   };
@@ -36,22 +38,16 @@ export default async function BlogPostPage({ params }: PageProps) {
   const postUrl = `${
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
   }/blog/${params.slug}`;
-  const relatedPosts = await getRelatedPosts(params.slug);
 
-  const transformedRelatedPosts = relatedPosts.map((relatedPost) => ({
-    id: relatedPost.id.toString(),
-    title: relatedPost.Title,
-    author: relatedPost.Author,
-    slug: relatedPost.slug,
-    excerpt:
-      relatedPost.Description || relatedPost.content.substring(0, 160) + "...",
-    Description: relatedPost.Description || "",
-    featuredImage: getImageUrl(relatedPost.image), // Changed from relatedPost.image?.[0]?.url
-    category: relatedPost.blog_category?.Type || "General",
-    publishDate: relatedPost.publishdate || relatedPost.publishedAt,
-    content: relatedPost.content,
-    tags: [],
-  }));
+  // Start fetching related posts but don't wait for them
+  const relatedPostsPromise = getRelatedPosts(params.slug).then(posts =>
+    posts.map(post => ({
+      ...post,
+      id: post.id.toString(),
+      Description: post.Description || undefined,
+      image: getImageUrl(post.image),
+    }))
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24">
@@ -79,12 +75,14 @@ export default async function BlogPostPage({ params }: PageProps) {
 
         <div className="mb-12">
           <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-xl">
-            <Image
+            <OptimizedImage
               src={post.featuredImage}
+              fallbackSrc="https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?auto=format&fit=crop&q=80&w=2070"
               alt={post.title}
               fill
-              style={{ objectFit: "cover" }}
+              className="object-cover"
               priority
+              sizes="(max-width: 768px) 100vw, 1200px"
             />
           </div>
         </div>
@@ -95,12 +93,61 @@ export default async function BlogPostPage({ params }: PageProps) {
           <BlogContent content={post.body} />
         </div>
 
-        {transformedRelatedPosts.length > 0 && (
-          <div className="border-t border-gray-100 pt-12">
-            <RelatedPosts posts={transformedRelatedPosts} />
-          </div>
-        )}
+        <Suspense
+          fallback={
+            <div className="border-t border-gray-100 pt-12 animate-pulse h-48"></div>
+          }
+        >
+          <RelatedPostsSection
+            slug={params.slug}
+            relatedPostsPromise={relatedPostsPromise}
+          />
+        </Suspense>
       </article>
+    </div>
+  );
+}
+
+// Separate component for related posts to leverage Suspense
+async function RelatedPostsSection({
+  relatedPostsPromise,
+}: {
+  slug: string;
+  relatedPostsPromise: Promise<{
+    id: string;
+    Title: string;
+    Author?: string;
+    slug: string;
+    Description?: string;
+    content: string;
+    image: string;
+    blog_category?: { Type: string };
+    publishdate?: string;
+    publishedAt?: string;
+  }[]>;
+}) {
+  const relatedPosts = await relatedPostsPromise;
+
+  const transformedRelatedPosts = relatedPosts.map((relatedPost) => ({
+    id: relatedPost.id.toString(),
+    title: relatedPost.Title,
+    author: relatedPost.Author || "Anonymous",
+    slug: relatedPost.slug,
+    excerpt:
+      relatedPost.Description || relatedPost.content.substring(0, 160) + "...",
+    Description: relatedPost.Description || "",
+    featuredImage: getImageUrl(relatedPost.image),
+    category: relatedPost.blog_category?.Type || "General",
+    publishDate: relatedPost.publishdate || relatedPost.publishedAt || "",
+    content: relatedPost.content,
+    tags: [],
+  }));
+
+  if (!transformedRelatedPosts.length) return null;
+
+  return (
+    <div className="border-t border-gray-100 pt-12">
+      <RelatedPosts posts={transformedRelatedPosts} />
     </div>
   );
 }
@@ -118,6 +165,7 @@ export async function generateMetadata({
 
   return {
     title: strapiPost.Title,
-    description: strapiPost.content.substring(0, 160) + "...",
+    description:
+      strapiPost.Description || strapiPost.content.substring(0, 160) + "...",
   };
 }

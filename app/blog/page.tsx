@@ -30,22 +30,11 @@ export default async function Blog({
   const category = (categoryParam as string) || "";
   const postsPerPage = 9;
 
-  // console.log("Fetching blog posts...");
   const strapiPosts = await getBlogPosts();
-  // console.log("Received Strapi posts:", strapiPosts.length);
-
-  // Debug: Log the first post's image structure
-  // if (strapiPosts.length > 0) {
-  //   console.log(
-  //     "First post image structure:",
-  //     JSON.stringify(strapiPosts[0].image, null, 2)
-  //   );
-  // }
 
   // Transform Strapi posts to match the BlogPost interface
   const posts: BlogPost[] = strapiPosts.map((post: StrapiPost) => {
     const featuredImage = getImageUrl(post.image);
-    // console.log(`Post ${post.slug} featured image URL:`, featuredImage);
 
     return {
       _sys: {
@@ -73,6 +62,7 @@ export default async function Blog({
 
   let filteredPosts = [...posts];
 
+  // Apply search filter if provided
   if (search) {
     filteredPosts = filteredPosts.filter(
       (post) =>
@@ -81,8 +71,11 @@ export default async function Blog({
     );
   }
 
+  // Apply category filter if provided - use case-insensitive comparison
   if (category && category !== "All") {
-    filteredPosts = filteredPosts.filter((post) => post.category === category);
+    filteredPosts = filteredPosts.filter(
+      (post) => post.category.toLowerCase() === category.toLowerCase()
+    );
   }
 
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
@@ -91,6 +84,7 @@ export default async function Blog({
     page * postsPerPage
   );
 
+  // Get unique categories for the filter
   const categories: string[] = Array.from(
     new Set(posts.map((post) => post.category))
   );

@@ -44,9 +44,6 @@ export function BlogGrid({ posts }: BlogGridProps) {
                 className="object-cover transition-transform duration-300 hover:scale-105"
                 priority={false}
               />
-              <div className="absolute top-4 left-4 bg-blue-600 text-white text-xs font-semibold px-2 py-1 rounded-full">
-                {post.category}
-              </div>
             </div>
             <div className="p-6">
               <h3 className="text-xl font-bold text-gray-900 mb-2">

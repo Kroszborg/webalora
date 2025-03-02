@@ -8,6 +8,7 @@ import type { Metadata } from "next";
 import type React from "react";
 import { CookieConsent } from "@/components/CookieConsent";
 import { Toaster } from "sonner";
+import { CmsDataProvider } from "@/components/CmsDataProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,7 +33,7 @@ export default function RootLayout({
           {/* Add a spacer div that matches the larger header height */}
           <div className="h-20 md:h-8"></div>
           <main className="flex-grow">
-            {children}
+            <CmsDataProvider>{children}</CmsDataProvider>
             <Toaster />
           </main>
           <Footer />
