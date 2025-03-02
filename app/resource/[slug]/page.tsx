@@ -91,7 +91,7 @@ export default async function ResourcePage({ params }: PageProps) {
     Description: relatedPost.Description || "",
     featuredImage: getImageUrl(relatedPost.image?.[0] || null),
     category: relatedPost.resource_category?.Type || "General",
-    publishDate: relatedPost.publishdate || relatedPost.publishedAt || "",
+    publishDate: relatedPost.publishdate || relatedPost.publishedAt || "N/A",
     content: relatedPost.Content,
     tags: [],
     _sys: {

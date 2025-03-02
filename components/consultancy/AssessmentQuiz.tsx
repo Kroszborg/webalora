@@ -143,7 +143,7 @@ export function AssessmentQuiz() {
     } else if (score < 50) {
       return "There's room for improvement in your IT strategy. Focus on addressing key weaknesses and developing a more robust approach.";
     } else if (score < 75) {
-      return "Your IT strategy is on the right track. Look for opportunities to further optimize and align with business goals.";
+      return "Your IT strategy is on the right track. Look for opportunities to further optimise and align with business goals.";
     } else {
       return "Excellent IT strategy! Continue to innovate and stay ahead of emerging trends and technologies.";
     }

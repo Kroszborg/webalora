@@ -10,6 +10,7 @@ import type { Metadata } from "next";
 import { ClientTestimonials } from "@/components/casestudies/ClientTestimonials";
 import { CTASection } from "@/components/casestudies/CTASection";
 import { CaseStudyImage } from "@/components/casestudies/CaseStudyImage";
+import ReactMarkdown from "react-markdown";
 
 type PageProps = {
   params: { slug: string };
@@ -73,7 +74,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
 
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-16">
             <div className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-a:text-blue-600">
-              {caseStudy.Content}
+              <ReactMarkdown>{caseStudy.Content}</ReactMarkdown>
             </div>
           </div>
         </article>
