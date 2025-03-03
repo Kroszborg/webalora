@@ -73,7 +73,7 @@ export function CTASection() {
               asChild
               size="lg"
               variant="outline"
-              className="border-white text-white hover:bg-white/10 transition-colors duration-300 group"
+              className="border-white text-blue-900 hover:bg-white/10 transition-colors duration-300 group"
             >
               <Link href="/download-checklist" className="flex items-center">
                 Download IT Best Practices Checklist

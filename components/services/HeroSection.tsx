@@ -118,7 +118,7 @@ export function HeroSection() {
             <Button
               asChild
               size="lg"
-              className="group relative overflow-hidden bg-white text-blue-900 hover:bg-blue-50 h-14 px-6 text-lg font-semibold min-w-[280px] transition-all duration-300"
+              className="group relative overflow-hidden bg-white text-blue-900 hover:bg-blue-50 h-14 px-6 text-lg font-semibold min-w-[280px]"
             >
               <a href="#" onClick={openCalendly}>
                 <Lock className="mr-2 h-5 w-5" />
@@ -130,7 +130,7 @@ export function HeroSection() {
               asChild
               size="lg"
               variant="outline"
-              className="group relative overflow-hidden text-blue-900 border-2 border-white hover:border-blue-200 h-14 px-6 text-lg font-semibold backdrop-blur-sm min-w-[280px] transition-all duration-300"
+              className="group relative overflow-hidden text-blue-900 border-2 border-white hover:border-blue-200 h-14 px-6 text-lg font-semibold backdrop-blur-sm min-w-[280px]"
             >
               <a
                 href="#pricing-section"
@@ -168,7 +168,7 @@ export function HeroSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 + index * 0.1 }}
                 whileHover={{ scale: 1.02 }}
-                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 transition-all duration-300 hover:bg-white/10"
+                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/10"
               >
                 <feature.icon className="w-8 h-8 text-blue-400 mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">

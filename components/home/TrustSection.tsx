@@ -6,7 +6,6 @@ import Image from "next/image";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { SectionTitle } from "@/components/ui/section-title";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
-import { GradientBlob } from "@/components/ui/gradient-blob";
 
 const clientLogos = [
   { src: "/trust/NHS.png", alt: "Client Logo 1" },
@@ -108,17 +107,6 @@ const LogoCarousel: React.FC = () => {
 export const TrustSection: React.FC = () => {
   return (
     <section className="relative py-24 overflow-hidden bg-gradient-to-b from-gray-900 to-blue-900">
-      <GradientBlob
-        colors={["#60a5fa", "#5eead4"]}
-        className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 opacity-30"
-        size={300}
-      />
-      <GradientBlob
-        colors={["#a78bfa", "#f472b6"]}
-        className="absolute bottom-0 left-0 -translate-x-1/2 translate-y-1/2 opacity-30"
-        size={300}
-      />
-
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-blue-900/50" />
 
       <div className="container relative mx-auto px-4 text-white z-10">
