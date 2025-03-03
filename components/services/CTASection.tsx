@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight, Download } from "lucide-react";
-import { useCalendly } from "@/hooks/useCalendly";
+import { useCalendly } from "@/lib/hooks/useCalendly";
 
 export function CTASection() {
   const { openCalendly } = useCalendly(

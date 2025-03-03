@@ -15,7 +15,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { ArrowRight, CheckCircle } from "lucide-react";
-import { useCalendly } from "@/hooks/useCalendly";
+import { useCalendly } from "@/lib/hooks/useCalendly";
 
 const questions = [
   {

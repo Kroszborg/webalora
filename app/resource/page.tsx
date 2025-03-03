@@ -1,13 +1,10 @@
 import BlogPage from "@/components/resource/BlogPage";
 import {
   getResources,
-  type StrapiPost,
-  type BlogPost,
-  getImageUrl,
-  getResourceCategory,
   getAllResourceCategories,
 } from "@/lib/db";
 import { Metadata } from "next";
+import { transformStrapiPosts } from "@/lib/data-transformers";
 
 export const metadata: Metadata = {
   title: "Resources | WebAlora IT Knowledge Base & Insights",
@@ -23,53 +20,27 @@ export default async function Resource({
 }: {
   searchParams: Record<string, string | string[]>;
 }) {
-  const pageParam = searchParams?.page;
-  const searchParam = searchParams?.search;
-  const categoryParam = searchParams?.category;
+  // Process search parameters
+  const page = searchParams?.page
+    ? Number.parseInt(searchParams.page as string, 10)
+    : 1;
 
-  const page = pageParam ? Number.parseInt(pageParam as string, 10) : 1;
-  const search = (searchParam as string) || "";
-  const category = (categoryParam as string) || "";
+  const search = searchParams?.search ? (searchParams.search as string) : "";
+
+  const category = searchParams?.category
+    ? (searchParams.category as string)
+    : "";
+
   const postsPerPage = 9;
 
-  // Fetch resources
+  // Await data fetching first
   const strapiPosts = await getResources();
-
-  // Get all possible categories (from the hardcoded list based on your screenshot)
   const allCategories = getAllResourceCategories();
 
-  // Transform Strapi posts to match the BlogPost interface
-  const posts: BlogPost[] = strapiPosts.map((post: StrapiPost) => {
-    // Get image URL
-    const featuredImage = getImageUrl(post.image);
+  // Transform posts
+  const posts = transformStrapiPosts(strapiPosts);
 
-    // Get resource category using the helper function
-    const categoryName = getResourceCategory(post);
-
-    return {
-      _sys: {
-        filename: post.slug,
-        basename: post.slug,
-        breadcrumbs: [post.slug],
-        path: `/resource/${post.slug}`,
-        relativePath: `resource/${post.slug}`,
-        extension: "md",
-      },
-      id: post.id.toString(),
-      title: post.Title,
-      author: post.Author || "Anonymous",
-      slug: post.slug,
-      body: post.content,
-      content: post.content,
-      excerpt: post.Description || post.content?.substring(0, 160) + "...",
-      Description: post.Description || "",
-      featuredImage,
-      category: categoryName,
-      tags: [],
-      publishDate: post.publishdate || post.publishedAt,
-    };
-  });
-
+  // Filter data
   let filteredPosts = [...posts];
 
   if (search) {
@@ -90,10 +61,6 @@ export default async function Resource({
     page * postsPerPage
   );
 
-  // Use all possible categories instead of just the ones that appear in posts
-  // This ensures all categories from the admin panel are available for filtering
-  const categories = allCategories;
-
   const tags = Array.from(new Set(posts.flatMap((post) => post.tags))).map(
     (tag, index) => ({
       id: `tag-${index}`,
@@ -104,7 +71,7 @@ export default async function Resource({
   return (
     <BlogPage
       posts={currentPosts}
-      categories={categories}
+      categories={allCategories}
       tags={tags}
       totalPages={totalPages}
       currentPage={page}

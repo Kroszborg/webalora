@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { ArrowRight, Shield, Lock, Server, Cloud } from "lucide-react";
-import { useCalendly } from "@/hooks/useCalendly";
+import { useCalendly } from "@/lib/hooks/useCalendly";
 
 const stats = [
   { value: "99.9%", label: "Guaranteed Uptime for Your Systems" },
@@ -74,7 +74,7 @@ export function HeroSection() {
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-white"
           >
             Comprehensive Managed
-            <br/>
+            <br />
             IT Services
           </motion.h1>
 

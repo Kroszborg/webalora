@@ -1,41 +1,49 @@
+// app/blog/page.tsx
+"use client";
+
+import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import BlogPage from "@/components/blog/BlogPage";
-import {
-  getBlogPosts,
-  type StrapiPost,
-  type BlogPost,
-  getImageUrl,
-} from "@/lib/db";
-import type { Metadata } from "next";
+import { useBlogPosts, prefetchBlogPost } from "@/lib/hooks/useBlogData";
+import { getImageUrl } from "@/lib/db";
+import { LoadingFallback } from "@/components/loading";
+import type { StrapiPost } from "@/lib/db";
 
-export const metadata: Metadata = {
-  title: "WebAlora Blog | IT Insights, Trends & Expert Advice",
-  description:
-    "Stay updated with WebAlora's blog. Get expert insights on IT trends, cybersecurity, cloud computing, and technology best practices for businesses.",
-};
-
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
-export default async function Blog({
-  searchParams,
-}: {
-  searchParams: Record<string, string | string[]>;
-}) {
-  const pageParam = searchParams?.page;
-  const searchParam = searchParams?.search;
-  const categoryParam = searchParams?.category;
-
-  const page = pageParam ? Number.parseInt(pageParam as string, 10) : 1;
-  const search = (searchParam as string) || "";
-  const category = (categoryParam as string) || "";
+export default function Blog() {
+  // Get search params the client-side way
+  const searchParams = useSearchParams();
+  const page = parseInt(searchParams.get("page") || "1", 10);
+  const search = searchParams.get("search") || "";
+  const category = searchParams.get("category") || "";
   const postsPerPage = 9;
 
-  const strapiPosts = await getBlogPosts();
+  // Use the cached data hook
+  const { posts: strapiPosts, isLoading } = useBlogPosts();
+
+  // Important: Place useEffect before any conditional returns
+  useEffect(() => {
+    if (strapiPosts && Array.isArray(strapiPosts) && strapiPosts.length > 0) {
+      const postsToPreload = strapiPosts.slice(0, 5);
+      postsToPreload.forEach((post) => {
+        if (post && post.slug) {
+          prefetchBlogPost(post.slug);
+        }
+      });
+    }
+  }, [strapiPosts]);
+
+  // After the hook, we can add conditional returns
+  if (isLoading) {
+    return <LoadingFallback />;
+  }
+
+  if (!Array.isArray(strapiPosts)) {
+    return <div>Error loading blog posts</div>;
+  }
 
   // Transform Strapi posts to match the BlogPost interface
-  const posts: BlogPost[] = strapiPosts.map((post: StrapiPost) => {
+  const posts = strapiPosts.map((post: StrapiPost) => {
     const featuredImage = getImageUrl(post.image);
-
     return {
       _sys: {
         filename: post.slug,
@@ -55,7 +63,7 @@ export default async function Blog({
       Description: post.Description || "",
       featuredImage,
       category: post.blog_category?.Type || "General",
-      tags: [],
+      tags: [] as string[],
       publishDate: post.publishdate || post.publishedAt,
     };
   });
@@ -90,7 +98,7 @@ export default async function Blog({
   );
 
   const tags = Array.from(new Set(posts.flatMap((post) => post.tags))).map(
-    (tag, index) => ({
+    (tag: string, index) => ({
       id: `tag-${index}`,
       name: tag,
     })

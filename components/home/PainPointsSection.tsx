@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, ArrowRight } from "lucide-react";
-import { useCalendly } from "@/hooks/useCalendly";
+import { useCalendly } from "@/lib/hooks/useCalendly";
 import Link from "next/link";
 
 const painPoints = [

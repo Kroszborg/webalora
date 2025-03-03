@@ -1,10 +1,17 @@
-// app/api/cms/[type]/[slug]/route.ts
 import { NextRequest, NextResponse } from "next/server";
+import * as api from "@/lib/api";
 
-// Set cache headers for the response
-function setCacheHeaders(response: NextResponse) {
-  // Cache responses for 5 minutes
-  response.headers.set("Cache-Control", "public, max-age=300, s-maxage=300, stale-while-revalidate=300");
+// Enhanced cache headers for individual items
+function setCacheHeaders(response: NextResponse, type: string, slug: string) {
+  // Cache responses for 5 minutes with stale-while-revalidate for 1 hour
+  response.headers.set(
+    "Cache-Control",
+    "public, max-age=300, s-maxage=300, stale-while-revalidate=3600"
+  );
+  
+  // Add tags for cache invalidation
+  response.headers.set("Edge-Cache-Tag", `cms-${type}-${slug}`);
+  
   return response;
 }
 
@@ -19,19 +26,13 @@ export async function GET(
     let data;
     switch (type) {
       case "blog":
-        // Import the single post fetching function
-        const { getBlogPost } = await import("@/lib/db");
-        data = await getBlogPost(slug);
+        data = await api.getBlogPost(slug);
         break;
       case "resources":
-        // Import the single resource fetching function
-        const { getResourcePost } = await import("@/lib/db");
-        data = await getResourcePost(slug);
+        data = await api.getResourcePost(slug);
         break;
       case "case-studies":
-        // Import the single case study fetching function from the correct location
-        const { getCaseStudy } = await import("@/lib/casestudies");
-        data = await getCaseStudy(slug);
+        data = await api.getCaseStudy(slug);
         break;
       default:
         return NextResponse.json({ error: "Invalid type" }, { status: 400 });
@@ -43,7 +44,7 @@ export async function GET(
    
     // Return the data with caching headers
     const response = NextResponse.json({ data });
-    return setCacheHeaders(response);
+    return setCacheHeaders(response, type, slug);
   } catch (error) {
     console.error(`Error in API route /api/cms/${params.type}/${params.slug}:`, error);
     return NextResponse.json(

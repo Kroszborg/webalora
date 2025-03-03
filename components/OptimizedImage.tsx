@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 interface OptimizedImageProps {
   src: string;
@@ -32,14 +33,13 @@ export function OptimizedImage({
 
   // Reset loading state when src changes
   useEffect(() => {
-    setImgSrc(src);
+    setImgSrc(src || fallbackSrc);
     setHasError(false);
     setIsLoading(true);
-  }, [src]);
+  }, [src, fallbackSrc]);
 
   const handleImageError = () => {
-    console.error(`Failed to load image: ${imgSrc} for ${alt}`);
-    if (!hasError) {
+    if (!hasError && fallbackSrc) {
       setImgSrc(fallbackSrc);
       setHasError(true);
     }
@@ -49,19 +49,25 @@ export function OptimizedImage({
     setIsLoading(false);
   };
 
+  // Create a base64 placeholder for blur effect
+  const blurDataURL =
+    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNlMmU4ZjAiLz48L3N2Zz4=";
+
   const imageProps = {
     src: imgSrc,
     alt,
-    className: `transition-opacity duration-300 ${className} ${
-      hasError ? "fallback-image" : ""
-    } ${isLoading ? "opacity-0" : "opacity-100"}`,
+    className: cn(
+      "transition-opacity duration-300",
+      className,
+      hasError ? "fallback-image" : "",
+      isLoading ? "opacity-0" : "opacity-100"
+    ),
     onError: handleImageError,
     onLoad: handleImageLoad,
     priority,
     sizes,
-    loading: priority ? "eager" : "lazy" as "eager" | "lazy" | undefined,
-    blurDataURL:
-      "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNlMmU4ZjAiLz48L3N2Zz4=", // Simple SVG blur placeholder
+    loading: priority ? "eager" as const : "lazy" as const,
+    blurDataURL,
     placeholder: "blur" as const,
   };
 
@@ -69,7 +75,11 @@ export function OptimizedImage({
     <>
       {isLoading && (
         <div
-          className={`absolute inset-0 bg-gray-200 animate-pulse ${className}`}
+          className={cn(
+            "absolute inset-0 bg-gray-200 animate-pulse",
+            className
+          )}
+          aria-hidden="true"
         />
       )}
       {fill ? (
@@ -81,26 +91,22 @@ export function OptimizedImage({
   );
 }
 
-// Utility function to generate appropriate image sizes for responsive design
-export function getResponsiveSizes(): string {
-  return "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw";
-}
-
-// Function to add width/height parameters to image URLs for CDN optimization
+// Function to add progressive loading and optimize image URLs
 export function optimizeImageUrl(url: string, width = 800): string {
   if (!url) {
     return "";
   }
 
   try {
-    // Only add params if it's an image URL without existing width/height
-    if (
+    // Use modern image formats with the ?format parameter if CDN supports it
+    if (url.match(/\.(jpg|jpeg|png|webp|avif)/i) && !url.includes("?")) {
+      return `${url}?w=${width}&q=75&format=webp`;
+    } else if (
       url.match(/\.(jpg|jpeg|png|webp|avif)/i) &&
-      !url.includes("w=") &&
-      !url.includes("width=")
+      !url.includes("w=")
     ) {
       const separator = url.includes("?") ? "&" : "?";
-      return `${url}${separator}w=${width}&auto=format,compress`;
+      return `${url}${separator}w=${width}&q=75`;
     }
     return url;
   } catch (e) {

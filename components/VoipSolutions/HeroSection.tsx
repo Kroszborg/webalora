@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Phone, Globe, Zap } from "lucide-react";
-import { useCalendly } from "@/hooks/useCalendly";
+import { useCalendly } from "@/lib/hooks/useCalendly";
 
 export function HeroSection() {
   const { openCalendly } = useCalendly(

@@ -1,23 +1,47 @@
-import React from "react";
-import { notFound } from "next/navigation";
+// app/blog/[slug]/page.tsx
+"use client";
+
+import { useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { SocialShare } from "@/components/blog/SocialShare";
 import BlogContent from "@/components/blog/BlogContent";
 import { Calendar, User } from "lucide-react";
-import type { Metadata } from "next";
-import { getBlogPost, getRelatedPosts, getImageUrl } from "@/lib/db";
-import { Suspense } from "react";
+import { useBlogPost, useBlogPosts, prefetchBlogPosts } from "@/lib/hooks/useBlogData";
+import { getImageUrl } from "@/lib/db";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { RelatedPosts } from "@/components/blog/RelatedPosts";
+import { LoadingFallback } from "@/components/loading";
 
-type PageProps = {
-  params: { slug: string };
-};
+export default function BlogPostPage() {
+  const params = useParams();
+  const router = useRouter();
+  const slug = params.slug as string;
 
-export default async function BlogPostPage({ params }: PageProps) {
-  const strapiPost = await getBlogPost(params.slug);
+  // Use cached data hook
+  const { post: strapiPost, isLoading, isError } = useBlogPost(slug);
 
-  if (!strapiPost) {
-    notFound();
+  // Prefetch blog posts listing when viewing a detail page for faster "back" navigation
+  useEffect(() => {
+    prefetchBlogPosts();
+  }, []);
+
+  // Handle loading and error states
+  if (isLoading) {
+    return <LoadingFallback />;
+  }
+
+  if (isError || !strapiPost) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24 text-center">
+        <h1 className="text-3xl font-bold">Post Not Found</h1>
+        <button
+          onClick={() => router.push("/blog")}
+          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded"
+        >
+          Back to Blog
+        </button>
+      </div>
+    );
   }
 
   const post = {
@@ -37,17 +61,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   const postUrl = `${
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
-  }/blog/${params.slug}`;
-
-  // Start fetching related posts but don't wait for them
-  const relatedPostsPromise = getRelatedPosts(params.slug).then(posts =>
-    posts.map(post => ({
-      ...post,
-      id: post.id.toString(),
-      Description: post.Description || undefined,
-      image: getImageUrl(post.image),
-    }))
-  );
+  }/blog/${slug}`;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24">
@@ -93,79 +107,46 @@ export default async function BlogPostPage({ params }: PageProps) {
           <BlogContent content={post.body} />
         </div>
 
-        <Suspense
-          fallback={
-            <div className="border-t border-gray-100 pt-12 animate-pulse h-48"></div>
-          }
-        >
-          <RelatedPostsSection
-            slug={params.slug}
-            relatedPostsPromise={relatedPostsPromise}
-          />
-        </Suspense>
+        {/* We'll simplify related posts for now - can add back the async behavior */}
+        <ClientRelatedPosts slug={slug} />
       </article>
     </div>
   );
 }
 
-// Separate component for related posts to leverage Suspense
-async function RelatedPostsSection({
-  relatedPostsPromise,
-}: {
-  slug: string;
-  relatedPostsPromise: Promise<{
-    id: string;
-    Title: string;
-    Author?: string;
-    slug: string;
-    Description?: string;
-    content: string;
-    image: string;
-    blog_category?: { Type: string };
-    publishdate?: string;
-    publishedAt?: string;
-  }[]>;
-}) {
-  const relatedPosts = await relatedPostsPromise;
+// Client-side related posts component
+function ClientRelatedPosts({ slug }: { slug: string }) {
+  const { posts, isLoading } = useBlogPosts();
 
-  const transformedRelatedPosts = relatedPosts.map((relatedPost) => ({
-    id: relatedPost.id.toString(),
-    title: relatedPost.Title,
-    author: relatedPost.Author || "Anonymous",
-    slug: relatedPost.slug,
-    excerpt:
-      relatedPost.Description || relatedPost.content.substring(0, 160) + "...",
-    Description: relatedPost.Description || "",
-    featuredImage: getImageUrl(relatedPost.image),
-    category: relatedPost.blog_category?.Type || "General",
-    publishDate: relatedPost.publishdate || relatedPost.publishedAt || "",
-    content: relatedPost.content,
-    tags: [],
-  }));
+  if (isLoading || !Array.isArray(posts) || !posts.length) {
+    return (
+      <div className="border-t border-gray-100 pt-12 animate-pulse h-48"></div>
+    );
+  }
 
-  if (!transformedRelatedPosts.length) return null;
+  // Get 3 related posts
+  const relatedPosts = posts
+    .filter((post) => post.slug !== slug)
+    .slice(0, 3)
+    .map((post) => ({
+      id: post.id.toString(),
+      title: post.Title,
+      author: post.Author || "Anonymous",
+      slug: post.slug,
+      excerpt: post.Description || post.content.substring(0, 160) + "...",
+      Description: post.Description || "",
+      featuredImage: getImageUrl(post.image),
+      category: post.blog_category?.Type || "General",
+      publishDate: post.publishdate || post.publishedAt || "",
+      content: post.content,
+      tags: [],
+    }));
+
+  if (!relatedPosts.length) return null;
 
   return (
     <div className="border-t border-gray-100 pt-12">
-      <RelatedPosts posts={transformedRelatedPosts} />
+      <RelatedPosts posts={relatedPosts} />
     </div>
   );
-}
-
-export async function generateMetadata({
-  params,
-}: PageProps): Promise<Metadata> {
-  const strapiPost = await getBlogPost(params.slug);
-
-  if (!strapiPost) {
-    return {
-      title: "Post Not Found",
-    };
-  }
-
-  return {
-    title: strapiPost.Title,
-    description:
-      strapiPost.Description || strapiPost.content.substring(0, 160) + "...",
-  };
 }

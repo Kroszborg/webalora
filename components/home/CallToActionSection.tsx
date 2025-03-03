@@ -6,7 +6,7 @@ import { motion, useAnimation } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { GradientBlob } from "@/components/ui/gradient-blob";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { useCalendly } from "@/hooks/useCalendly";
+import { useCalendly } from "@/lib/hooks/useCalendly";
 
 export const CallToActionSection: React.FC = () => {
   const [isHovered, setIsHovered] = useState(false);

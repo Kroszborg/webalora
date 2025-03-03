@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as api from "@/lib/api";
 
-// Enhanced cache headers
-function setCacheHeaders(response: NextResponse, type: string) {
+// Set more aggressive cache headers for better performance
+function setCacheHeaders(response: NextResponse) {
   // Cache responses for 5 minutes with stale-while-revalidate for 1 hour
   response.headers.set(
     "Cache-Control",
@@ -10,21 +10,26 @@ function setCacheHeaders(response: NextResponse, type: string) {
   );
   
   // Add tags for cache invalidation
-  response.headers.set("Edge-Cache-Tag", `cms-${type}`);
+  response.headers.set("Edge-Cache-Tag", "cms-data");
   
   return response;
 }
 
+// Generic handler for all CMS types
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { type: string } }
+  request: NextRequest
 ) {
   try {
-    const { type } = params;
+    const { searchParams } = new URL(request.url);
+    const type = searchParams.get("type");
+    
+    if (!type) {
+      return NextResponse.json({ error: "Type parameter is required" }, { status: 400 });
+    }
     
     let data;
     
-    // Determine which data to fetch based on the route parameter
+    // Determine which data to fetch based on the type parameter
     switch (type) {
       case "blog":
         data = await api.getBlogPosts();
@@ -41,9 +46,9 @@ export async function GET(
     
     // Return the data with caching headers
     const response = NextResponse.json({ data });
-    return setCacheHeaders(response, type);
+    return setCacheHeaders(response);
   } catch (error) {
-    console.error(`Error in API route /api/cms/${params.type}:`, error);
+    console.error(`Error in API route /api/cms:`, error);
     return NextResponse.json(
       { error: "Failed to fetch data" },
       { status: 500 }

@@ -9,9 +9,8 @@ export function CaseStudiesHero() {
       <Image
         src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=2069"
         alt="Collaborative team"
-        layout="fill"
-        objectFit="cover"
-        className="opacity-50"
+        fill
+        className="object-cover opacity-50"
         priority
       />
       <div className="absolute inset-0 bg-gradient-to-b from-blue-900/80 via-indigo-900/80 to-purple-900/80" />

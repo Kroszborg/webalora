@@ -1,9 +1,7 @@
-// components/casestudies/CaseStudyImage.tsx
-
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
+import { OptimizedImage, optimizeImageUrl } from "@/components/OptimizedImage";
 
 interface CaseStudyImageProps {
   src: string;
@@ -27,7 +25,6 @@ export function CaseStudyImage({
   priority = false,
 }: CaseStudyImageProps) {
   const [imgSrc, setImgSrc] = useState<string>(src);
-  const [hasError, setHasError] = useState(false);
 
   // Handle specific known image URLs for debugging
   useEffect(() => {
@@ -35,38 +32,28 @@ export function CaseStudyImage({
       const strapiUrl =
         process.env.NEXT_PUBLIC_STRAPI_URL || "https://cms.webalora.com";
       const directUrl = `${strapiUrl}/uploads/pexels_peter_olexa_2214257_3875821_56b4e377dc.jpg`;
-      // console.log(`Using direct URL for case study: ${directUrl}`);
       setImgSrc(directUrl);
+    } else {
+      // Otherwise optimize the image URL
+      setImgSrc(optimizeImageUrl(src, 800));
     }
-  }, [alt]);
+  }, [alt, src]);
 
-  const handleError = () => {
-    console.error(`Failed to load image: ${imgSrc} for ${alt}`);
-    if (!hasError) {
-      // If we haven't tried the fallback yet
-      setImgSrc(fallbackSrc);
-      setHasError(true);
-    }
-  };
-
-  // console.log(`CaseStudyImage rendering for: ${alt}, using src: ${imgSrc}`);
-
-  const imageProps = {
-    src: imgSrc,
-    alt,
-    className: `${className} ${hasError ? "fallback-image" : ""}`,
-    onError: handleError,
-    priority,
-    unoptimized: true, // Skip Next.js image optimization
-  };
-
-  if (fill) {
-    return <Image {...imageProps} fill alt={alt} />;
-  } else {
-    if (!width || !height) {
-      console.warn("Width and height are required when fill=false");
-      return null;
-    }
-    return <Image {...imageProps} width={width} height={height} alt={alt} />;
-  }
+  return (
+    <OptimizedImage
+      src={imgSrc}
+      fallbackSrc={fallbackSrc}
+      alt={alt}
+      className={className}
+      fill={fill}
+      width={width}
+      height={height}
+      priority={priority}
+      sizes={
+        fill
+          ? "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          : undefined
+      }
+    />
+  );
 }
