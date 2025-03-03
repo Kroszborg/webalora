@@ -1,36 +1,14 @@
-// app/blog/page.tsx
 "use client";
-
-import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
-import BlogPage from "@/components/blog/BlogPage";
-import { useBlogPosts, prefetchBlogPost } from "@/lib/hooks/useBlogData";
+import { Suspense } from "react";
+import { useBlogPosts } from "@/lib/hooks/useBlogData";
 import { getImageUrl } from "@/lib/db";
 import { LoadingFallback } from "@/components/loading";
 import type { StrapiPost } from "@/lib/db";
+import BlogClientContent from "@/components/blog/BlogClientContent";
 
 export default function Blog() {
-  // Get search params the client-side way
-  const searchParams = useSearchParams();
-  const page = parseInt(searchParams.get("page") || "1", 10);
-  const search = searchParams.get("search") || "";
-  const category = searchParams.get("category") || "";
-  const postsPerPage = 9;
-
   // Use the cached data hook
   const { posts: strapiPosts, isLoading } = useBlogPosts();
-
-  // Important: Place useEffect before any conditional returns
-  useEffect(() => {
-    if (strapiPosts && Array.isArray(strapiPosts) && strapiPosts.length > 0) {
-      const postsToPreload = strapiPosts.slice(0, 5);
-      postsToPreload.forEach((post) => {
-        if (post && post.slug) {
-          prefetchBlogPost(post.slug);
-        }
-      });
-    }
-  }, [strapiPosts]);
 
   // After the hook, we can add conditional returns
   if (isLoading) {
@@ -68,30 +46,6 @@ export default function Blog() {
     };
   });
 
-  let filteredPosts = [...posts];
-
-  // Apply search filter if provided
-  if (search) {
-    filteredPosts = filteredPosts.filter(
-      (post) =>
-        post.title.toLowerCase().includes(search.toLowerCase()) ||
-        post.content.toLowerCase().includes(search.toLowerCase())
-    );
-  }
-
-  // Apply category filter if provided - use case-insensitive comparison
-  if (category && category !== "All") {
-    filteredPosts = filteredPosts.filter(
-      (post) => post.category.toLowerCase() === category.toLowerCase()
-    );
-  }
-
-  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
-  const currentPosts = filteredPosts.slice(
-    (page - 1) * postsPerPage,
-    page * postsPerPage
-  );
-
   // Get unique categories for the filter
   const categories: string[] = Array.from(
     new Set(posts.map((post) => post.category))
@@ -105,13 +59,8 @@ export default function Blog() {
   );
 
   return (
-    <BlogPage
-      posts={currentPosts}
-      categories={categories}
-      tags={tags}
-      totalPages={totalPages}
-      currentPage={page}
-      searchQuery={search}
-    />
+    <Suspense fallback={<LoadingFallback />}>
+      <BlogClientContent posts={posts} categories={categories} tags={tags} />
+    </Suspense>
   );
 }
