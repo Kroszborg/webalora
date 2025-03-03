@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { ResourceImage } from "./ResourceImage";
-import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
 
 interface BlogPost {
   _sys: {
@@ -36,70 +36,49 @@ const RESOURCE_CATEGORIES = [
 ];
 
 export function BlogGrid({ posts }: BlogGridProps) {
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const fallbackImage = "https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?auto=format&fit=crop&q=80&w=2070";
 
-  // Filter posts based on selected category
-  const filteredPosts = selectedCategory === "all" 
-    ? posts 
-    : posts.filter(post => post.category === selectedCategory);
-
   return (
-    <div className="space-y-8">
-      {/* Category Filter */}
-      <div className="flex flex-wrap gap-4">
-        {RESOURCE_CATEGORIES.map((category) => (
-          <button
-            key={category.id}
-            onClick={() => setSelectedCategory(category.id)}
-            className={`px-4 py-2 rounded-full transition-colors duration-300 ${
-              selectedCategory === category.id
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 hover:bg-gray-200 text-gray-700"
-            }`}
-          >
-            {category.name}
-          </button>
-        ))}
-      </div>
-
-      {/* Posts Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredPosts.map((post) => (
-          <div
-            key={post._sys.filename}
-            className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200"
-          >
-            <Link href={post._sys.path || `/resource/${post.slug}`}>
-              <div className="relative h-48 sm:h-56 md:h-64">
-                <ResourceImage
-                  src={post.featuredImage}
-                  fallbackSrc={fallbackImage}
-                  alt={post.title}
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-105"
-                  priority={false}
-                />
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {posts.map((post) => (
+        <div
+          key={post._sys.filename}
+          className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200"
+        >
+          <Link href={post._sys.path || `/resource/${post.slug}`}>
+            <div className="relative h-48 sm:h-56 md:h-64">
+              <ResourceImage
+                src={post.featuredImage}
+                fallbackSrc={fallbackImage}
+                alt={post.title}
+                fill
+                className="object-cover transition-transform duration-300 hover:scale-105"
+                priority={false}
+              />
+            </div>
+            <div className="p-6">
+              {post.category && (
+                <Badge variant="outline" className="mb-2">
+                  {post.category}
+                </Badge>
+              )}
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                {post.title}
+              </h3>
+              <p className="text-gray-600 mb-4">{post.Description}</p>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-500">
+                  {new Date(post.publishDate).toLocaleDateString()}
+                </span>
+                <span className="text-blue-600 hover:text-blue-800 font-semibold flex items-center transition-colors duration-300">
+                  Read More
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </span>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  {post.title}
-                </h3>
-                <p className="text-gray-600 mb-4">{post.Description}</p>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-500">
-                    {new Date(post.publishDate).toLocaleDateString()}
-                  </span>
-                  <span className="text-blue-600 hover:text-blue-800 font-semibold flex items-center transition-colors duration-300">
-                    Read More
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </span>
-                </div>
-              </div>
-            </Link>
-          </div>
-        ))}
-      </div>
+            </div>
+          </Link>
+        </div>
+      ))}
     </div>
   );
 }

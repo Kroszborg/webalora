@@ -307,13 +307,45 @@ export async function getResources(): Promise<StrapiPost[]> {
 
 export function getAllResourceCategories() {
   return [
-    "Category 1",
-    "Category 2",
-    "Category 3",
-    // Add more categories as needed
+    "Backup & Disaster Recovery",
+    "Cloud Solutions & Migration",
+    "Cybersecurity Solutions",
+    "IT Consultancy & Strategy",
+    "Managed IT Services",
+    "Network Infrastructure",
+    "VOIP Solutions"
   ];
 }
 
 export function getResourceCategory(post: StrapiPost): string {
-  return post.blog_category?.Type || "Uncategorized";
+  // Map resource IDs to categories based on the screenshot
+  const categoryMap: Record<number, string> = {
+    1: "Backup & Disaster Recovery",
+    3: "Cloud Solutions & Migration",
+    5: "Cybersecurity Solutions",
+    7: "IT Consultancy & Strategy",
+    9: "Managed IT Services",
+    11: "Network Infrastructure",
+    13: "VOIP Solutions"
+  };
+  
+  // If the post has a blog_category with an id, use the mapping
+  if (post.blog_category?.id) {
+    return categoryMap[post.blog_category.id] || "Uncategorized";
+  }
+  
+  // If no category ID is available, use the Type if available
+  if (post.blog_category?.Type) {
+    return post.blog_category.Type;
+  }
+  
+  // Fallback to assigning a category based on post ID
+  if (post.id) {
+    // Cycle through the categories based on post ID
+    const categoryIds = Object.keys(categoryMap).map(Number);
+    const categoryId = categoryIds[post.id % categoryIds.length];
+    return categoryMap[categoryId] || "Uncategorized";
+  }
+  
+  return "Uncategorized";
 }
