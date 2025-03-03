@@ -38,6 +38,7 @@ export interface StrapiCaseStudy {
       };
     };
   };
+  categoryId?: number;
 }
 
 interface StrapiResponse {
@@ -56,7 +57,8 @@ const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.webalora.c
 
 export async function getCaseStudies(): Promise<StrapiCaseStudy[]> {
   try {
-    const response = await fetch(`${STRAPI_URL}/api/case-studies?populate=*`, {
+    // First, get the first page to determine total pages
+    const initialResponse = await fetch(`${STRAPI_URL}/api/case-studies?populate=*&pagination[page]=1&pagination[pageSize]=100`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -65,12 +67,58 @@ export async function getCaseStudies(): Promise<StrapiCaseStudy[]> {
       next: { revalidate: 10 }
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    if (!initialResponse.ok) {
+      throw new Error(`HTTP error! status: ${initialResponse.status}`);
     }
 
-    const data: StrapiResponse = await response.json();
-    return data.data;
+    const initialData: StrapiResponse = await initialResponse.json();
+    let allCaseStudies = [...initialData.data];
+    
+    const { page, pageCount } = initialData.meta.pagination;
+    
+    // If there are more pages, fetch them
+    if (pageCount > 1) {
+      const remainingPagesPromises = [];
+      
+      for (let currentPage = 2; currentPage <= pageCount; currentPage++) {
+        const promise = fetch(`${STRAPI_URL}/api/case-studies?populate=*&pagination[page]=${currentPage}&pagination[pageSize]=100`, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          next: { revalidate: 10 }
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data: StrapiResponse) => data.data);
+        
+        remainingPagesPromises.push(promise);
+      }
+      
+      const remainingPagesResults = await Promise.all(remainingPagesPromises);
+      remainingPagesResults.forEach(pageData => {
+        allCaseStudies = [...allCaseStudies, ...pageData];
+      });
+    }
+    
+    // Assign mock category IDs based on the case study index
+    // This is a temporary solution until the API supports categories
+    const caseStudiesWithCategories = allCaseStudies.map((study, index) => {
+      // Cycle through the 7 category IDs (3, 5, 7, 9, 11, 13, 15)
+      const categoryId = 3 + ((index % 7) * 2);
+      return {
+        ...study,
+        categoryId
+      };
+    });
+    
+    console.log(`Fetched ${caseStudiesWithCategories.length} case studies in total`);
+    return caseStudiesWithCategories;
   } catch (error) {
     console.error('Error fetching case studies:', error);
     return [];
@@ -80,10 +128,22 @@ export async function getCaseStudies(): Promise<StrapiCaseStudy[]> {
 export async function getCaseStudy(slug: string) {
   try {
     const response = await fetch(
-      `https://webaloracms-production-9e8b.up.railway.app/api/case-studies?filters[slug]=${slug}&populate=*`
+      `${STRAPI_URL}/api/case-studies?filters[slug]=${slug}&populate=*`
     );
     const data = await response.json();
-    return data.data[0] || null;
+    
+    if (data.data && data.data[0]) {
+      // Assign a mock category ID (this would be replaced with real data in production)
+      const study = data.data[0];
+      // Use the ID to generate a consistent category ID
+      const categoryId = 3 + ((study.id % 7) * 2);
+      return {
+        ...study,
+        categoryId
+      };
+    }
+    
+    return null;
   } catch (error) {
     console.error('Error fetching case study:', error);
     return null;
@@ -229,4 +289,14 @@ export function getCaseStudyImageUrl(caseStudy: StrapiCaseStudy): string {
   // Final fallback
   console.log("⚠️ Function is returning fallback image");
   return fallbackImage;
+}
+
+export async function getCaseStudiesByCategory(categoryId: number): Promise<StrapiCaseStudy[]> {
+  try {
+    const allCaseStudies = await getCaseStudies();
+    return allCaseStudies.filter(study => study.categoryId === categoryId);
+  } catch (error) {
+    console.error(`Error fetching case studies for category ${categoryId}:`, error);
+    return [];
+  }
 }
