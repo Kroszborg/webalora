@@ -23,6 +23,7 @@ const navigation = {
     { name: "Network Infrastructure", href: "/networking" },
     { name: "Backup & Disaster Recovery", href: "/backup" },
     { name: "VOIP Solutions", href: "/voip-solutions" },
+    { name: "CCTV Solutions", href: "/cctv-solutions" },
   ],
   company: [
     { name: "About", href: "/about" },

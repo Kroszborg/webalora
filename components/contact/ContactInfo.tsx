@@ -4,10 +4,6 @@ import { MapPin } from "lucide-react";
 
 const offices = [
   { region: "Europe (HQ)", city: "London, United Kingdom" },
-  { region: "North America", city: "New York, USA" },
-  { region: "Asia-Pacific", city: "Singapore" },
-  { region: "Middle East", city: "Dubai, UAE" },
-  { region: "Australia", city: "Sydney, Australia" },
 ];
 
 export function ContactInfo() {
