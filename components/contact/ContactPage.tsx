@@ -2,7 +2,6 @@ import { ContactHero } from "./ContactHero";
 import { ContactInfo } from "./ContactInfo";
 import { ContactForm } from "./ContactForm";
 import { AdditionalInfo } from "./AdditionalInfo";
-import { VisitUs } from "./VisitUs";
 import { CalendlyWidget } from "./CalendlyWidget";
 
 export function ContactPage() {
@@ -21,7 +20,6 @@ export function ContactPage() {
         </div>
       </div>
       <AdditionalInfo />
-      <VisitUs />
     </div>
   );
 }
