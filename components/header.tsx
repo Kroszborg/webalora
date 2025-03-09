@@ -47,6 +47,7 @@ export function Header() {
   const resources = [
     { name: "Articles", href: "/blog" },
     { name: "Resources", href: "/resource" },
+    { name: "FAQ", href: "/faq" },
   ];
 
   const navItems = [
