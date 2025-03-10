@@ -6,7 +6,7 @@ import { InteractiveInfographic } from "./InteractiveInfographic";
 import { HighCostSection } from "./HighCostSection";
 import { CoreServicesSection } from "./CoreServicesSection";
 import { ApproachSection } from "./ApproachSection";
-import { ClientSuccessStory } from "./ClientSuccessStory";
+import { ClientTestimonials } from "./ClientSuccessStory";
 import { TrustSection } from "./TrustSection";
 import { PricingSection } from "./PricingSection";
 import { FAQSection } from "./FAQSection";
@@ -22,7 +22,7 @@ export default function ServicesPage() {
       <CoreServicesSection />
       <PricingSection />
       <ApproachSection />
-      <ClientSuccessStory />
+      <ClientTestimonials />
       <TrustSection />
       <FAQSection />
       <CTASection />
