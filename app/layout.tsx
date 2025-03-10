@@ -13,8 +13,15 @@ import { CmsDataProvider } from "@/components/CmsDataProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  title: "WebAlora",
+  description: "Managed IT Services & Cybersecurity Solutions",
   icons: {
-    icon: "/preview.ico",
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/preview.ico", sizes: "32x32" },
+      { url: "/preview.png", sizes: "192x192" },
+    ],
+    apple: { url: "/black_logo.png" },
   },
 };
 
