@@ -7,7 +7,29 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 
 const clientTestimonials = [
-  
+  {
+    client: "Shield Capital",
+    industry: "Finance",
+    quote:
+      "WebAlora transformed our IT infrastructure, improving security and efficiency. Cyber threats are no longer a concern, and our response time to clients has never been better.",
+    person: "James Cartwright",
+    title: "CIO at Shield Capital",
+    challenge:
+      "Outdated security measures and slow IT systems, causing compliance risks and client delays.",
+    solution:
+      "Cybersecurity overhaul, implementation of zero-trust security, and real-time threat monitoring.",
+    result:
+      "99.9% uptime, full FCA compliance, and a 50% improvement in system performance.",
+    image:
+      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=1470",
+    personImage:
+      "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=1470",
+    stats: [
+      { value: "99.9%", label: "Uptime" },
+      { value: "50%", label: "System Performance Improvement" },
+      { value: "100%", label: "FCA Compliance" },
+    ],
+  },
   {
     client: "Hamilton & Co. Solicitors",
     industry: "Legal",
