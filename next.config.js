@@ -2,10 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: [
-      'cms.webalora.com',
-      'images.unsplash.com'
-    ],
     remotePatterns: [
       {
         protocol: 'http',

@@ -114,7 +114,7 @@ export function ClientTestimonials() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="text-lg text-center max-w-3xl mx-auto mb-12 text-blue-200"
         >
-          See how we've helped businesses across different industries transform
+          See how we7apos;ve helped businesses across different industries transform
           their IT infrastructure
         </motion.p>
 

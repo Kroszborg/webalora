@@ -37,10 +37,9 @@ export function WhyEssential() {
       <Image
         src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&q=80&w=2070"
         alt="Data Protection"
-        layout="fill"
-        objectFit="cover"
+        fill
         quality={100}
-        className="absolute inset-0 opacity-10"
+        className="absolute inset-0 opacity-10 object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-white to-blue-50" />
 

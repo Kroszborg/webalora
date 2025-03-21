@@ -94,8 +94,7 @@ const LogoCarousel: React.FC = () => {
               alt={logo.alt}
               fill
               sizes="160px"
-              style={{ objectFit: "contain" }}
-              className="rounded-lg p-4"
+              className="rounded-lg p-4 object-cover"
             />
           </div>
         ))}

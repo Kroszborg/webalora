@@ -13,11 +13,10 @@ export function AboutHero() {
         src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=2069"
         alt="Team collaboration"
         fill
-        style={{ objectFit: "cover" }}
         className="brightness-50"
         priority
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-blue-900/80 via-blue-900/70 to-blue-950/90" />
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-900/80 via-blue-900/70 to-blue-950/90 object-cover" />
 
       {/* Animated gradient blobs */}
       <div className="absolute inset-0 overflow-hidden">

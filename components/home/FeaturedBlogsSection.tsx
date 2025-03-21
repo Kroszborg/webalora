@@ -66,8 +66,8 @@ export function FeaturedBlogsSection() {
               <Image
                 src={featuredBlogs[currentBlog].image || "/placeholder.svg"}
                 alt={featuredBlogs[currentBlog].title}
-                layout="fill"
-                objectFit="cover"
+                fill
+                className="object-cover"
               />
               <div className="absolute top-4 left-4 bg-blue-600 text-white text-sm font-semibold px-3 py-1 rounded-full">
                 {featuredBlogs[currentBlog].category}

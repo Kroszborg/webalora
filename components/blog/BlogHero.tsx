@@ -25,9 +25,8 @@ export function BlogHero() {
       <Image
         src="https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?auto=format&fit=crop&q=80&w=2070"
         alt="London Skyline"
-        layout="fill"
-        objectFit="cover"
-        className="opacity-30"
+        fill
+        className="opacity-30 object-cover"
         priority
       />
 

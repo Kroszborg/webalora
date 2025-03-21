@@ -57,9 +57,8 @@ export function FAQSection() {
       <Image
         src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2070"
         alt="Cybersecurity Background"
-        layout="fill"
-        objectFit="cover"
-        className="opacity-30"
+        fill
+        className="opacity-30 object-cover"
         priority
       />
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/90 via-indigo-900/90 to-purple-900/90" />

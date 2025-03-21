@@ -43,9 +43,8 @@ export function CybersecurityFramework() {
       <Image
         src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=2034"
         alt="Cybersecurity Background"
-        layout="fill"
-        objectFit="cover"
-        className="opacity-10"
+        fill
+        className="opacity-10 object-cover"
         priority
       />
       <div className="container mx-auto px-4 relative z-10">

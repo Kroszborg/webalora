@@ -91,7 +91,7 @@ export default async function ResourcePage({ params }: PageProps) {
     Description: relatedPost.Description || "",
     featuredImage: getImageUrl(relatedPost.image?.[0] || null),
     category: relatedPost.resource_category?.Type || "General",
-    publishDate: relatedPost.publishdate || relatedPost.publishedAt || "N/A",
+    publishDate: relatedPost.publishdate || relatedPost.publishedAt || new Date().toISOString() as string,
     content: relatedPost.Content,
     tags: [],
     _sys: {
@@ -129,8 +129,8 @@ export default async function ResourcePage({ params }: PageProps) {
               src={post.featuredImage}
               alt={post.title}
               fill
-              style={{ objectFit: "cover" }}
               priority
+              className="object-cover"
             />
           </div>
         </div>

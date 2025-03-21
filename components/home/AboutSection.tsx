@@ -79,8 +79,7 @@ export const AboutSection: React.FC = () => {
               alt="Our team collaborating"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
-              style={{ objectFit: "cover" }}
-              className="rounded-lg transition-transform duration-300 hover:scale-105"
+              className="rounded-lg transition-transform duration-300 hover:scale-105 object-cover"
             />
           </motion.div>
         </div>

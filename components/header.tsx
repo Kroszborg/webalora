@@ -77,7 +77,10 @@ export function Header() {
           : "bg-white h-24"
       } ${visible ? "top-0" : "-top-24"}`}
     >
-      <nav className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
+      <nav
+        className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center"
+        aria-label="Main Navigation"
+      >
         <div className="flex items-center justify-between w-full">
           <Link href="/" className="flex items-center">
             <Image
@@ -168,16 +171,18 @@ export function Header() {
 
           {/* Mobile menu button */}
           <div className="md:hidden">
-            <button
+            <Button
               type="button"
               className={`p-2 rounded-md ${
                 scrolled ? "text-gray-900" : "text-gray-900"
               } hover:bg-gray-100 hover:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500`}
               onClick={() => setMobileMenuOpen(true)}
               aria-label="Open main menu"
+              aria-expanded={mobileMenuOpen ? "true" : "false"}
+              aria-controls={mobileMenuOpen ? "mobile-menu" : undefined}
             >
               <Menu className="h-6 w-6" aria-hidden="true" />
-            </button>
+            </Button>
           </div>
         </div>
       </nav>
@@ -197,7 +202,11 @@ export function Header() {
 
             {/* Menu Panel */}
             <motion.div
+              id="mobile-menu"
               className="absolute top-0 left-0 right-0 z-[100] bg-white shadow-lg overflow-hidden"
+              aria-label="Mobile menu"
+              role="dialog"
+              aria-modal="true"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}

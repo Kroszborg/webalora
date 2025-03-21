@@ -74,8 +74,7 @@ export function OurMission() {
                   src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=2070"
                   alt="Team collaboration"
                   fill
-                  style={{ objectFit: "cover" }}
-                  className="hover:scale-110 transition-transform duration-500"
+                  className="hover:scale-110 transition-transform duration-500 object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent" />
               </div>

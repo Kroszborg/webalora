@@ -1,10 +1,11 @@
 // components/blog/BlogPostCard.tsx
 "use client";
 import { useState } from "react";
-import Image from "next/image";
+// import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { prefetchBlogPost } from "@/lib/hooks/useBlogData";
+import { SeoImage } from "@/components/SeoImage";
 
 interface BlogPostCardProps {
   post: {
@@ -24,7 +25,8 @@ export function BlogPostCard({ post }: BlogPostCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const fallbackImage =
     "https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?auto=format&fit=crop&q=80&w=2070";
-  const [imageError, setImageError] = useState(false);
+  // const [imageError, setImageError] = useState(false);
+  const [imageError] = useState(false);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -38,9 +40,9 @@ export function BlogPostCard({ post }: BlogPostCardProps) {
     setIsHovered(false);
   };
 
-  const handleImageError = () => {
-    setImageError(true);
-  };
+  // const handleImageError = () => {
+  //   setImageError(true);
+  // };
 
   // Use fallback if there's an error or if featuredImage is empty
   const imageSource =
@@ -54,15 +56,14 @@ export function BlogPostCard({ post }: BlogPostCardProps) {
     >
       <Link href={`/blog/${post.slug}`} prefetch={isHovered}>
         <div className="relative h-48 sm:h-56 md:h-64">
-          <Image
+          <SeoImage
             src={imageSource}
+            fallbackSrc="https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?auto=format&fit=crop&q=80&w=2070"
             alt={post.title}
             fill
+            className="object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className={`object-cover transition-transform duration-300 ${
-              isHovered ? "scale-105" : ""
-            }`}
-            onError={handleImageError}
+            priority={false}
           />
           <div className="absolute top-4 left-4 bg-blue-600 text-white text-xs font-semibold px-2 py-1 rounded-full">
             {post.category}

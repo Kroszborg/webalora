@@ -21,9 +21,8 @@ export function ClientTestimonial() {
                 <Image
                   src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&h=200&q=80"
                   alt="Laura Green"
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-full"
+                  fill
+                  className="rounded-full object-cover"
                   priority
                 />
               </div>
