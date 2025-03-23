@@ -146,7 +146,7 @@ export async function getRelatedPosts(currentSlug: string): Promise<StrapiPost[]
 export async function getResourcePost(slug: string) {
   try {
     const response = await fetch(
-      `https://webaloracms-production-9e8b.up.railway.app/api/resources?filters[slug]=${slug}&populate=*`
+      `https://cms.webalora.com/api/resources?filters[slug]=${slug}&populate=*`
     );
     const data = await response.json();
     return data.data[0] || null;

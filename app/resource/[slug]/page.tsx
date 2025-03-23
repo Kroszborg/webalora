@@ -22,14 +22,16 @@ import { getImageUrl } from "@/lib/db";
 
 // Update the getResourcePost function to fetch data from the API endpoint
 async function getResourcePost(slug: string) {
-  const res = await fetch(`https://webaloracms-production-9e8b.up.railway.app/api/resources/?populate=*&filters[slug][$eq]=${slug}`);
+  const res = await fetch(
+    `https://cms.webalora.com/api/resources/?populate=*&filters[slug][$eq]=${slug}`
+  );
   const data = await res.json();
   return data.data[0];
 }
 
 // Update the getRelatedResources function to fetch related resources
 async function getRelatedResources(slug: string) {
-  const res = await fetch(`https://webaloracms-production-9e8b.up.railway.app/api/resources/?populate=*`);
+  const res = await fetch(`https://cms.webalora.com/api/resources/?populate=*`);
   const data = await res.json();
   return data.data.filter((post: ResourcePost) => post.slug !== slug);
 }
@@ -53,7 +55,8 @@ export default async function ResourcePage({ params }: PageProps) {
     slug: strapiPost.slug,
     body: strapiPost.Content,
     content: strapiPost.Content,
-    excerpt: strapiPost.Description || strapiPost.Content.substring(0, 160) + "...",
+    excerpt:
+      strapiPost.Description || strapiPost.Content.substring(0, 160) + "...",
     Description: strapiPost.Description || "",
     featuredImage: getImageUrl(strapiPost.image?.[0]?.url),
     category: strapiPost.resource_category?.Type || "General",
@@ -82,22 +85,29 @@ export default async function ResourcePage({ params }: PageProps) {
     };
   }
 
-  const transformedRelatedPosts: TransformedPost[] = relatedPosts.map((relatedPost: ResourcePost) => ({
-    id: relatedPost.id.toString(),
-    title: relatedPost.Title,
-    author: relatedPost.Author,
-    slug: relatedPost.slug,
-    excerpt: relatedPost.Description || relatedPost.Content.substring(0, 160) + "...",
-    Description: relatedPost.Description || "",
-    featuredImage: getImageUrl(relatedPost.image?.[0] || null),
-    category: relatedPost.resource_category?.Type || "General",
-    publishDate: relatedPost.publishdate || relatedPost.publishedAt || new Date().toISOString() as string,
-    content: relatedPost.Content,
-    tags: [],
-    _sys: {
-      path: `/resource/${relatedPost.slug}`
-    }
-  }));
+  const transformedRelatedPosts: TransformedPost[] = relatedPosts.map(
+    (relatedPost: ResourcePost) => ({
+      id: relatedPost.id.toString(),
+      title: relatedPost.Title,
+      author: relatedPost.Author,
+      slug: relatedPost.slug,
+      excerpt:
+        relatedPost.Description ||
+        relatedPost.Content.substring(0, 160) + "...",
+      Description: relatedPost.Description || "",
+      featuredImage: getImageUrl(relatedPost.image?.[0] || null),
+      category: relatedPost.resource_category?.Type || "General",
+      publishDate:
+        relatedPost.publishdate ||
+        relatedPost.publishedAt ||
+        (new Date().toISOString() as string),
+      content: relatedPost.Content,
+      tags: [],
+      _sys: {
+        path: `/resource/${relatedPost.slug}`,
+      },
+    })
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24">
@@ -165,7 +175,8 @@ export async function generateMetadata({
 
   return {
     title: strapiPost.Title,
-    description: strapiPost.Description || 
+    description:
+      strapiPost.Description ||
       (strapiPost.Content ? strapiPost.Content.substring(0, 160) + "..." : ""),
   };
 }
