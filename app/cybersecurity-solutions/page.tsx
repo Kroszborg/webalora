@@ -1,4 +1,3 @@
-// app/cybersecurity-solutions/page.tsx
 import { generateMetadata } from "@/lib/seo";
 import { generateServiceSchema } from "@/lib/jsonLd";
 import { JsonLdScript } from "@/components/JsonLdScript";
@@ -6,18 +5,24 @@ import { CybersecuritySolutions } from "@/components/cybersecurity/Cybersecurity
 import type { Metadata } from "next";
 
 export const metadata: Metadata = generateMetadata({
-  title: "Cybersecurity Solutions | Protect Your Business – WebAlora",
+  title:
+    "Cybersecurity Solutions | Data Protection & Security Services – WebAlora",
   description:
-    "Safeguard your data with WebAlora's advanced cybersecurity solutions. Get proactive threat detection, compliance support, and 24/7 security monitoring.",
+    "Safeguard your business with WebAlora's comprehensive cybersecurity solutions. Our expert team provides proactive threat detection, compliance support, and 24/7 security monitoring to protect your data and systems from evolving threats.",
   path: "/cybersecurity-solutions",
   keywords: [
-    "Cybersecurity",
+    "Cybersecurity Solutions",
     "Data Protection",
     "Security Monitoring",
     "Threat Detection",
     "Compliance Support",
+    "Network Security",
+    "IT Security Services",
+    "Cyber Threat Protection",
   ],
+  ogImage: "/images/services/cybersecurity-og.jpg",
 });
+
 
 export default function CybersecuritySolutionsPage() {
   const serviceSchema = generateServiceSchema({

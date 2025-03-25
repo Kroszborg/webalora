@@ -5,12 +5,26 @@ import {
 } from "@/lib/db";
 import { Metadata } from "next";
 import { transformStrapiPosts } from "@/lib/data-transformers";
+import { generateMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Resources | WebAlora IT Knowledge Base & Insights",
+export const metadata: Metadata = generateMetadata({
+  title: "IT Resources & Guides | Technical Knowledge Base – WebAlora",
   description:
-    "Access WebAlora's comprehensive IT resource library. Find guides, white papers, and valuable insights to help your business leverage technology effectively.",
-};
+    "Access WebAlora's comprehensive IT resource library featuring practical guides, white papers, checklists, and valuable insights designed to help your business leverage technology effectively and securely.",
+  path: "/resource",
+  keywords: [
+    "IT Resources",
+    "Technology Guides",
+    "IT Knowledge Base",
+    "White Papers",
+    "Technical Guides",
+    "Business IT Resources",
+    "Technology Best Practices",
+    "IT Strategy",
+  ],
+  ogImage: "/images/resources/resources-og.jpg",
+});
+
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;

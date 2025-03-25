@@ -33,6 +33,7 @@ const navigation = {
     { name: "Articles", href: "/blog" },
     { name: "Resources", href: "/resource" },
     { name: "Careers", href: "/careers" },
+    { name: "Sitemap", href: "/sitemap" },
   ],
   legal: [
     { name: "Privacy Policy", href: "/privacy-policy" },

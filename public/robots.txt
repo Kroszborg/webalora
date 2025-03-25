@@ -3,10 +3,8 @@ User-agent: *
 Allow: /
 Disallow: /api/*
 Disallow: /_next/*
-Disallow: /cookie-policy
-Disallow: /terms
-Disallow: /modern-slavery-statement
-Disallow: /privacy-policy
+Disallow: /offline
+Disallow: /admin/*
 
 # Host
 Host: https://webalora.com
